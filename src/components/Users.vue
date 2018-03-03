@@ -3,13 +3,11 @@
     <Header />
     <h1>Usuarios</h1>
 
-    <div class="add-button">
-      <b-button @click="addItem" variant="info">Agregar</b-button>
-    </div>
+    <Add />
 
     <b-form-group class="filter-form">
       <b-input-group>
-        <b-form-input v-model="filter" placeholder="Entre el dato a buscar"/>
+        <b-form-input v-model="filter" placeholder="Entre el dato a buscar" />
         <b-btn :disabled="!filter" @click="filter = ''" variant="info" class="reset-button">Reset</b-btn>
       </b-input-group>
     </b-form-group>
@@ -28,7 +26,8 @@
     <b-pagination :total-rows="users.count" :per-page="perPage" v-model="currentPage" />
 
     <b-modal id="modal-center" title="Inactivar Usuario" v-model="show" @ok="handleOk" ok-title="Si. Inactivar" cancel-title="No. Dejar como está" ok-variant="danger" cancel-variant="success">
-      <p class="my-4">Está seguro que desea inactivar al usuario <strong>{{ selectedItem.user_name }} ({{ selectedItem.full_name }})</strong>?</p>
+      <p class="my-4">Está seguro que desea inactivar al usuario
+        <strong>{{ selectedItem.user_name }} ({{ selectedItem.full_name }})</strong>?</p>
     </b-modal>
 
   </b-container>
@@ -36,7 +35,8 @@
 
 <script>
 import Store from "../store/store";
-import Header from "./Header";
+import Header from "./lib/Header";
+import Add from "./lib/Add";
 
 export default {
   name: "Users",
@@ -89,7 +89,8 @@ export default {
     };
   },
   components: {
-    Header
+    Header,
+    Add
   },
   methods: {
     addItem() {

@@ -3,9 +3,7 @@
     <Header />
     <h1>Locations</h1>
 
-    <div class="add-button">
-      <b-button @click="addItem" variant="info">Add</b-button>
-    </div>
+    <Add />
 
     <b-form-group class="filter-form">
       <b-input-group>
@@ -16,28 +14,28 @@
 
     <b-table hover outlined small :items="locations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="cell">
-        <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Editar</b-btn>
-        <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Inactivar</b-btn>
-        <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Reactivar</b-btn>
+        <b-btn variant="info" @click.stop="editItem(cell.item)">Editar</b-btn>
+        <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Inactivar</b-btn>
+        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Reactivar</b-btn>
       </template>
       <template slot="table-caption">
         {{locations.count}} registros
       </template>
     </b-table>
 
-    <b-pagination :total-rows="locations.count" :per-page="perPage" v-model="currentPage" />
+    <b-pagination :total-rows="locations.count" :per-page="perPage" v-model="currentPage" variant="info" />
 
     <b-modal id="modal-center" title="Inactivar local" v-model="show" @ok="handleOk" ok-title="Si. Inactivar" cancel-title="No. Dejar como está" ok-variant="danger" cancel-variant="success">
       <p class="my-4">Está seguro que desea inactivar el local
         <strong>{{ selectedItem.name }} </strong>?</p>
     </b-modal>
-
   </b-container>
 </template>
 
 <script>
 import Store from "../store/store";
-import Header from "./Header";
+import Header from "./lib/Header";
+import Add from "./lib/Add";
 
 export default {
   name: "Locations",
@@ -57,12 +55,10 @@ export default {
           sortable: true
         },
         {
-          key: "address",
-          class: "text-center"
+          key: "address"
         },
         {
-          key: "phone",
-          class: "text-center"
+          key: "phone"
         },
         {
           key: "status.name",
@@ -85,10 +81,6 @@ export default {
     };
   },
   methods: {
-    addItem() {
-      Store.dispatch("ADD_ITEM", { id: 0, name: "" });
-      this.$router.push({ name: "Location" });
-    },
     editItem(item) {
       Store.dispatch("ADD_ITEM", item);
       this.$router.push({ name: "Location" });
@@ -134,7 +126,8 @@ export default {
     Store.dispatch("LOAD_LOCATIONS");
   },
   components: {
-    Header
+    Header,
+    Add
   }
 };
 </script>

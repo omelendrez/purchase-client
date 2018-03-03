@@ -1,27 +1,19 @@
 <template>
   <div>
 
-    <b-navbar toggleable="md" type="dark" variant="dark">
+    <b-navbar toggleable="md" type="dark" variant="info">
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="#/">Turnos Big Six</b-navbar-brand>
+      <b-navbar-brand href="#/">Home</b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse">
         <template v-if="isLogged">
 
           <b-navbar-nav class="admin">
             <b-nav-item v-bind:active="menuOption === '/locations'" href="#/locations">Locations</b-nav-item>
-            <b-nav-item v-bind:active="menuOption === '/sectors'" href="#/sectors">Sectores</b-nav-item>
             <b-nav-item v-bind:active="menuOption === '/positions'" href="#/positions">Funciones</b-nav-item>
-            <b-nav-item v-bind:active="menuOption === '/employees'" href="#/employees">Empleados</b-nav-item>
             <b-nav-item v-bind:active="menuOption === '/users'" href="#/users">Usuarios</b-nav-item>
-          </b-navbar-nav>
-
-          <b-navbar-nav v-if="isLogged">
-            <b-nav-item v-bind:active="menuOption === '/budgets'" href="#/budgets">Presupuestos</b-nav-item>
-            <b-nav-item v-if="isAdmin" v-bind:active="menuOption === '/program'" href="#/program">Programa</b-nav-item>
-            <b-nav-item v-bind:active="menuOption === '/grid'" href="#/grid">Grilla</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
@@ -48,7 +40,7 @@
 </template>
 
 <script>
-import Store from "../store/store";
+import Store from "../../store/store";
 
 export default {
   name: "Header",

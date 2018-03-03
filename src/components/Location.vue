@@ -12,14 +12,16 @@
       <b-form-group horizontal label="Phone" label-for="phone">
         <b-form-input id="phone" v-model.trim="form.phone" required></b-form-input>
       </b-form-group>
+
       <Buttons/>
+
     </b-form>
   </b-container>
 </template>
 
 <script>
 import Store from "../store/store";
-import Buttons from "../components/Buttons.vue";
+import Buttons from "./lib/Buttons";
 
 export default {
   name: "Location",
@@ -96,11 +98,5 @@ export default {
   margin: 0 auto;
   max-width: 800px;
   padding-top: 40px;
-}
-.to-right {
-  float: right;
-}
-.buttons {
-  margin: 0 auto;
 }
 </style>

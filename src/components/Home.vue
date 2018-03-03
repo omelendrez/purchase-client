@@ -1,16 +1,18 @@
 <template>
   <b-container class="home" fluid>
     <Header />
-    <b-jumbotron header="Turnos" lead="Administrador de programación de turnos" border-variant="dark">
-      <div>
-        <b-img thumbnail fluid alt="Turnos" src="../static/img/work-schedule.jpg" />
-      </div>
-    </b-jumbotron>
+    <b-container fluid class="p-4 bg-light">
+      <b-row>
+        <b-col>
+          <b-img thumbnail fluid class="p-4" alt="purchase+" src="../static/img/purchase+.png" />
+        </b-col>
+      </b-row>
+    </b-container>
   </b-container>
 </template>
 
 <script>
-import Header from "./Header";
+import Header from "./lib/Header";
 import Store from "../store/store";
 
 export default {
@@ -32,7 +34,6 @@ export default {
       return false;
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
-    Store.dispatch("LOAD_BRANCHES");
   }
 };
 </script>

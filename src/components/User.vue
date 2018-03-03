@@ -13,13 +13,10 @@
       </b-form-group>
 
       <b-form-group horizontal id="profile_id" label="Perfil" label-for="profile_id">
-        <b-form-select v-model="form.profile_id" :options="profiles" class="mb-3"  required/>
+        <b-form-select v-model="form.profile_id" :options="profiles" class="mb-3" required/>
       </b-form-group>
 
-      <div class="buttons">
-        <b-button type="submit" variant="info">Guardar</b-button>
-        <b-button type="reset" class="to-right">Volver</b-button>
-      </div>
+      <Buttons />
 
       <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
 
@@ -30,6 +27,7 @@
 
 <script>
 import Store from "../store/store";
+import Buttons from "./lib/Buttons";
 
 export default {
   name: "User",
@@ -45,6 +43,9 @@ export default {
       errorShow: false,
       errorMessage: ""
     };
+  },
+  components: {
+    Buttons
   },
   watch: {
     results() {
@@ -136,12 +137,5 @@ export default {
   margin: 0 auto;
   max-width: 800px;
   padding-top: 40px;
-}
-.to-right {
-  float: right;
-}
-.buttons {
-  margin: 0 auto;
-  margin-bottom: 18px;
 }
 </style>

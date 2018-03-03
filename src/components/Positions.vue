@@ -1,11 +1,9 @@
 <template>
   <b-container class="positions" fluid>
     <Header />
-    <h1>Funciones</h1>
+    <h1>Positions</h1>
 
-    <div class="add-button">
-      <b-button @click="addItem" variant="info">Agregar</b-button>
-    </div>
+    <Add />
 
     <b-form-group class="filter-form">
       <b-input-group>
@@ -16,8 +14,8 @@
 
     <b-table hover outlined small :items="positions.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="acciones" slot-scope="cell">
-        <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Editar</b-btn>
-        <b-btn size="sm" variant="danger" @click.stop="deleteItem(cell.item, 1)">Eliminar</b-btn>
+        <b-btn variant="info" @click.stop="editItem(cell.item)">Edit</b-btn>
+        <b-btn variant="danger" @click.stop="deleteItem(cell.item, 1)">Delete</b-btn>
       </template>
       <template slot="table-caption">
         {{positions.count}} registros
@@ -36,7 +34,8 @@
 
 <script>
 import Store from "../store/store";
-import Header from "./Header";
+import Header from "./lib/Header";
+import Add from "./lib/Add";
 
 export default {
   name: "Positions",
@@ -51,19 +50,9 @@ export default {
       },
       fields: [
         {
-          key: "sector.name",
-          label: "Sector",
-          sortable: true
-        },
-        {
           key: "name",
           label: "Función",
           sortable: true
-        },
-        {
-          key: "div",
-          label: "Color",
-          class: "text-center"
         },
         {
           key: "created_at",
@@ -83,13 +72,10 @@ export default {
     };
   },
   components: {
-    Header
+    Header,
+    Add
   },
   methods: {
-    addItem() {
-      Store.dispatch("ADD_ITEM", { id: 0, name: "", sector_id: 0, color: "" });
-      this.$router.push({ name: "Position" });
-    },
     editItem(item) {
       Store.dispatch("ADD_ITEM", item);
       this.$router.push({ name: "Position" });
@@ -133,7 +119,6 @@ export default {
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
     Store.dispatch("LOAD_POSITIONS");
-    Store.dispatch("LOAD_SECTORS");
   }
 };
 </script>

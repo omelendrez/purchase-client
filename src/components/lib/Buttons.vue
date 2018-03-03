@@ -4,11 +4,19 @@
     <b-button type="reset" class="to-right">Cancel</b-button>
   </div>
 </template>
-  
-<script>
-import Store from "../store/store";
 
+<script>
 export default {
   name: "Buttons"
 };
 </script>
+
+<style scoped>
+.to-right {
+  float: right;
+}
+.buttons {
+  margin: 0 auto;
+  margin-bottom: 18px;
+}
+</style>
