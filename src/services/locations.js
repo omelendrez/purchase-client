@@ -2,16 +2,16 @@ import HTTP from '../components/http-common'
 
 export default {
   fetchBranches() {
-    return HTTP.get('branch')
+    return HTTP.get('locations')
   },
   saveBranch(payload) {
     if (payload.id === 0) {
-      return HTTP.post('branch', payload)
+      return HTTP.post('locations', payload)
     } else {
-      return HTTP.put(`branch/${payload.id}`, payload)
+      return HTTP.put(`locations/${payload.id}`, payload)
     }
   },
   deleteBranch(payload) {
-    return HTTP.delete(`branch/${payload}`)
+    return HTTP.delete(`locations/${payload}`)
   }
 }

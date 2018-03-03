@@ -1,34 +1,35 @@
 <template>
-  <b-container class="branches" fluid>
+  <b-container class="locations" fluid>
     <Header />
-    <h1>Locales</h1>
+    <h1>Locations</h1>
 
     <div class="add-button">
-      <b-button @click="addItem" variant="info">Agregar</b-button>
+      <b-button @click="addItem" variant="info">Add</b-button>
     </div>
 
     <b-form-group class="filter-form">
       <b-input-group>
-        <b-form-input v-model="filter" placeholder="Entre el dato a buscar"/>
+        <b-form-input v-model="filter" placeholder="Entre el dato a buscar" />
         <b-btn :disabled="!filter" @click="filter = ''" variant="info" class="reset-button">Reset</b-btn>
       </b-input-group>
     </b-form-group>
 
-    <b-table hover outlined small :items="branches.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
-      <template slot="acciones" slot-scope="cell">
+    <b-table hover outlined small :items="locations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
+      <template slot="actions" slot-scope="cell">
         <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Editar</b-btn>
         <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Inactivar</b-btn>
         <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Reactivar</b-btn>
       </template>
       <template slot="table-caption">
-      {{branches.count}} registros
+        {{locations.count}} registros
       </template>
     </b-table>
 
-    <b-pagination :total-rows="branches.count" :per-page="perPage" v-model="currentPage" />
+    <b-pagination :total-rows="locations.count" :per-page="perPage" v-model="currentPage" />
 
     <b-modal id="modal-center" title="Inactivar local" v-model="show" @ok="handleOk" ok-title="Si. Inactivar" cancel-title="No. Dejar como está" ok-variant="danger" cancel-variant="success">
-      <p class="my-4">Está seguro que desea inactivar el local <strong>{{ selectedItem.name }} </strong>?</p>
+      <p class="my-4">Está seguro que desea inactivar el local
+        <strong>{{ selectedItem.name }} </strong>?</p>
     </b-modal>
 
   </b-container>
@@ -39,7 +40,7 @@ import Store from "../store/store";
 import Header from "./Header";
 
 export default {
-  name: "Branches",
+  name: "Locations",
   data() {
     return {
       perPage: 10,
@@ -56,38 +57,41 @@ export default {
           sortable: true
         },
         {
+          key: "address",
+          class: "text-center"
+        },
+        {
+          key: "phone",
+          class: "text-center"
+        },
+        {
           key: "status.name",
           label: "Status",
           class: "text-center"
         },
         {
           key: "created_at",
-          label: "Creado",
           class: "text-center"
         },
         {
           key: "updated_at",
-          label: "Modificado",
           class: "text-center"
         },
         {
-          key: "acciones",
+          key: "actions",
           class: "text-center"
         }
       ]
     };
   },
-  components: {
-    Header
-  },
   methods: {
     addItem() {
       Store.dispatch("ADD_ITEM", { id: 0, name: "" });
-      this.$router.push({ name: "Branch" });
+      this.$router.push({ name: "Location" });
     },
     editItem(item) {
       Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "Branch" });
+      this.$router.push({ name: "Location" });
     },
     deleteItem(item, type) {
       this.selectedItem = item;
@@ -98,7 +102,7 @@ export default {
       }
     },
     handleOk() {
-      Store.dispatch("DELETE_BRANCH", this.selectedItem);
+      Store.dispatch("DELETE_LOCATION", this.selectedItem);
     }
   },
   watch: {
@@ -107,7 +111,7 @@ export default {
       if (results.error) {
         return;
       }
-      Store.dispatch("LOAD_BRANCHES");
+      Store.dispatch("LOAD_LOCATIONS");
     }
   },
   computed: {
@@ -117,8 +121,8 @@ export default {
     isLogged() {
       return Store.state.user.id;
     },
-    branches() {
-      return Store.state.branches;
+    locations() {
+      return Store.state.locations;
     }
   },
   created() {
@@ -127,14 +131,17 @@ export default {
       return;
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
-    Store.dispatch("LOAD_BRANCHES");
+    Store.dispatch("LOAD_LOCATIONS");
+  },
+  components: {
+    Header
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.branches {
+.locations {
   background-color: white;
   padding-bottom: 10px;
 }

@@ -4,8 +4,8 @@ import Home from "@/components/Home";
 import Login from "@/components/Login";
 import ChangePassword from "@/components/ChangePassword";
 import Header from "@/components/Header";
-import Branches from "@/components/Branches";
-import Branch from "@/components/Branch";
+import Locations from "@/components/Locations";
+import Location from "@/components/Location";
 import Budgets from "@/components/Budgets";
 import Budget from "@/components/Budget";
 import Grid from "@/components/Grid";
@@ -44,14 +44,14 @@ export default new Router({
       component: Header
     },
     {
-      path: "/branches",
-      name: "Branches",
-      component: Branches
+      path: "/Locations",
+      name: "Locations",
+      component: Locations
     },
     {
-      path: "/branch",
-      name: "Branch",
-      component: Branch
+      path: "/location",
+      name: "Location",
+      component: Location
     },
     {
       path: "/budgets",

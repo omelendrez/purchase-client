@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import Branches from "./../services/branches";
+import Locations from "./../services/locations";
 import Budgets from "./../services/budgets";
 import Sectors from "./../services/sectors";
 import Schedule from "./../services/schedule";
@@ -17,7 +17,7 @@ Vue.use(Vuex);
 
 const state = {
   option: false,
-  branches: [],
+  locations: [],
   budgets: [],
   budget: {
     rows: {
@@ -79,10 +79,10 @@ export default new Vuex.Store({
       });
     },
 
-    async [types.LOAD_BRANCHES]({ commit }) {
-      const branches = await Branches.fetchBranches();
-      commit(types.SET_BRANCHES, {
-        payload: branches.data
+    async [types.LOAD_LOCATIONS]({ commit }) {
+      const locations = await Locations.fetchBranches();
+      commit(types.SET_LOCATIONS, {
+        payload: locations.data
       });
     },
     async [types.LOAD_SECTORS]({ commit }) {
@@ -134,7 +134,7 @@ export default new Vuex.Store({
       });
     },
 
-    async [types.LOAD_BRANCH_EMPLOYEES]({ commit }, item) {
+    async [types.LOAD_LOCATION_EMPLOYEES]({ commit }, item) {
       const employees = await Employees.fetchBranchEmployees(item);
       commit(types.SET_EMPLOYEES, {
         payload: employees.data
@@ -169,15 +169,15 @@ export default new Vuex.Store({
       });
     },
 
-    async [types.SAVE_BRANCH]({ commit }, item) {
-      const branch = await Branches.saveBranch(item);
+    async [types.SAVE_LOCATION]({ commit }, item) {
+      const branch = await Locations.saveBranch(item);
       commit(types.SET_RESULTS, {
         payload: branch.data
       })
     },
 
-    async [types.DELETE_BRANCH]({ commit }, item) {
-      const branch = await Branches.deleteBranch(item.id);
+    async [types.DELETE_LOCATION]({ commit }, item) {
+      const branch = await Locations.deleteBranch(item.id);
       commit(types.SET_RESULTS, {
         payload: branch.data
       })
@@ -292,8 +292,8 @@ export default new Vuex.Store({
       state.user = payload;
     },
 
-    [types.SET_BRANCHES]: (state, { payload }) => {
-      state.branches = payload;
+    [types.SET_LOCATIONS]: (state, { payload }) => {
+      state.locations = payload;
     },
 
     [types.SET_SECTORS]: (state, { payload }) => {
