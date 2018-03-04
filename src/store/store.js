@@ -195,7 +195,7 @@ export default new Vuex.Store({
       state.organizations = payload;
       payload.rows.map(item => {
         item._cellVariants = {
-          "status.name": item.status_id === 2 ? inactiveColor : activeColor
+          "status.name": item.status_id !== 1 ? inactiveColor : activeColor
         }
       })
       state.activeOrganizations = payload.rows.filter(item => {
@@ -207,7 +207,7 @@ export default new Vuex.Store({
       state.locations = payload;
       payload.rows.map(item => {
         item._cellVariants = {
-          "status.name": item.status_id === 2 ? inactiveColor : activeColor
+          "status.name": item.status_id !== 1 ? inactiveColor : activeColor
         }
       })
       state.activeLocations = payload.rows.filter(item => {
@@ -219,7 +219,7 @@ export default new Vuex.Store({
       state.departments = payload;
       payload.rows.map(item => {
         item._cellVariants = {
-          "status.name": item.status_id === 2 ? inactiveColor : activeColor
+          "status.name": item.status_id !== 1 ? inactiveColor : activeColor
         }
       })
       state.activeDepartments = payload.rows.filter(item => {
@@ -231,7 +231,7 @@ export default new Vuex.Store({
       state.positions = payload;
       payload.rows.map(item => {
         item._cellVariants = {
-          "status.name": item.status_id === 2 ? inactiveColor : activeColor
+          "status.name": item.status_id !== 1 ? inactiveColor : activeColor
         }
       })
       state.activePositions = payload.rows.filter(item => {
@@ -247,7 +247,7 @@ export default new Vuex.Store({
       state.users = payload;
       payload.rows.map(item => {
         item._cellVariants = {
-          "status.name": item.status_id === 2 ? inactiveColor : activeColor
+          "status.name": item.status_id !== 1 ? inactiveColor : activeColor
         }
         // item._rowVariant = item.status_id === 2 ? inactiveColor : ''
       })
