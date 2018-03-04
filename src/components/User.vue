@@ -85,7 +85,7 @@ export default {
       const positions = Store.state.activePositions;
       const options = [];
       for (let i = 0; i < positions.length; i++) {
-        if (positions[i].organization_id === this.form.organization_id) {
+        if (positions[i].organization_id === Store.state.user.organization_id) {
           options.push({
             value: positions[i].id,
             text: positions[i].name
@@ -98,7 +98,7 @@ export default {
       const organizations = Store.state.activeOrganizations;
       const options = [];
       for (let i = 0; i < organizations.length; i++) {
-        if (organizations[i].id === this.form.organization_id) {
+        if (organizations[i].id === Store.state.user.organization_id) {
           options.push({
             value: organizations[i].id,
             text: organizations[i].name
@@ -111,7 +111,7 @@ export default {
       const locations = Store.state.activeLocations;
       const options = [];
       for (let i = 0; i < locations.length; i++) {
-        if (locations[i].organization_id === this.form.organization_id) {
+        if (locations[i].organization_id === Store.state.user.organization_id) {
           options.push({
             value: locations[i].id,
             text: locations[i].name
@@ -124,7 +124,7 @@ export default {
       const departments = Store.state.activeDepartments;
       const options = [];
       for (let i = 0; i < departments.length; i++) {
-        if (departments[i].organization_id === this.form.organization_id) {
+        if (departments[i].organization_id === Store.state.user.organization_id) {
           options.push({
             value: departments[i].id,
             text: departments[i].name
@@ -164,6 +164,7 @@ export default {
       this.form.organization_id = 0;
       this.form.location_id = 0;
       this.form.position_id = 0;
+      this.form.department_id = 0;
       /* Trick to reset/clear native browser form validation state */
       this.form.show = false;
       this.$nextTick(() => {
@@ -177,7 +178,13 @@ export default {
       return;
     }
     if (this.item) {
-      this.form = this.item;
+      this.form.id = this.item.id;
+      this.form.user_name = this.item.user_name;
+      this.form.full_name = this.item.full_name;
+      this.form.organization_id = this.item.organization_id;
+      this.form.location_id = this.item.location_id;
+      this.form.department_id = this.item.department_id;
+      this.form.position_id = this.item.position_id;
     }
   }
 };
