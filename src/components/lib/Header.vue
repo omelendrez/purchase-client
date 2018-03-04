@@ -1,7 +1,7 @@
 <template>
   <div class="header">
 
-    <b-navbar toggleable="md" type="dark" variant="info">
+    <b-navbar toggleable="md" type="dark" variant="dark">
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -70,7 +70,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.admin {
-  margin: 0 auto;
-}
+
 </style>
