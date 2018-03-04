@@ -11,8 +11,8 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table hover outlined fixed :items="users.rows" :fields="fields" head-variant="light">
-      <template slot="acciones" slot-scope="cell" v-if="cell.item.id !== user.id">
+    <b-table hover outlined :items="users.rows" :fields="fields" head-variant="light">
+      <template slot="actions" slot-scope="cell" v-if="cell.item.id !== user.id">
         <b-btn variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
         <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
         <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
@@ -63,32 +63,36 @@ export default {
           sortable: true
         },
         {
-          key: "department.name",
-          sortable: true
-        },
-        {
           key: "position.name",
           sortable: true
         },
         {
-          key: "location.name",
-          sortable: true
-        },
-        {
           key: "created_at",
-          class: "text-center"
+          class: "text-center",
+          thStyle: {
+            width: "160px"
+          }
         },
         {
           key: "updated_at",
-          class: "text-center"
+          class: "text-center",
+          thStyle: {
+            width: "160px"
+          }
         },
         {
           key: "status.name",
-          class: "text-center"
+          class: "text-center",
+          thStyle: {
+            width: "160px"
+          }
         },
         {
-          key: "acciones",
-          class: "text-center"
+          key: "actions",
+          class: "text-center",
+          thStyle: {
+            width: "200px"
+          }
         }
       ]
     };

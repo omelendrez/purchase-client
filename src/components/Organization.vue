@@ -1,22 +1,26 @@
 <template>
-  <b-container class="organization">
-    <h1>Organization</h1>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
-      <b-form-group horizontal label="Name" label-for="name">
-        <b-form-input id="name" v-model.trim="form.name" required></b-form-input>
-      </b-form-group>
+  <b-container fluid>
+    <Header />
+    <b-container class="organization">
+      <h1>Organization</h1>
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
+        <b-form-group horizontal label="Name" label-for="name">
+          <b-form-input id="name" v-model.trim="form.name" required></b-form-input>
+        </b-form-group>
 
-      <Buttons/>
+        <Buttons/>
 
-      <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
+        <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
 
-    </b-form>
+      </b-form>
+    </b-container>
   </b-container>
 </template>
 
 <script>
 import Store from "../store/store";
 import Buttons from "./lib/Buttons";
+import Header from "./lib/Header";
 
 export default {
   name: "Organization",
@@ -32,7 +36,8 @@ export default {
     };
   },
   components: {
-    Buttons
+    Buttons,
+    Header
   },
   watch: {
     results() {
