@@ -1,6 +1,5 @@
 <template>
   <b-container class="department" fluid>
-    <Header />
 
     <Add />
 
@@ -34,7 +33,6 @@
 
 <script>
 import Store from "../store/store";
-import Header from "./lib/Header";
 import Add from "./lib/Add";
 
 export default {
@@ -130,7 +128,6 @@ export default {
     Store.dispatch("LOAD_DEPARTMENTS");
   },
   components: {
-    Header,
     Add
   }
 };

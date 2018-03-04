@@ -1,6 +1,5 @@
 <template>
   <b-container class="users" fluid>
-    <Header />
 
     <Add />
 
@@ -34,7 +33,6 @@
 
 <script>
 import Store from "../store/store";
-import Header from "./lib/Header";
 import Add from "./lib/Add";
 
 export default {
@@ -98,7 +96,6 @@ export default {
     };
   },
   components: {
-    Header,
     Add
   },
   methods: {

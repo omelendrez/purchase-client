@@ -47,7 +47,7 @@ export default new Router({
       component: Header
     },
     {
-      path: "/Organizations",
+      path: "/organizations",
       name: "Organizations",
       component: Organizations
     },
@@ -67,7 +67,7 @@ export default new Router({
       component: Department
     },
     {
-      path: "/Locations",
+      path: "/locations",
       name: "Locations",
       component: Locations
     },

@@ -1,31 +1,29 @@
 <template>
-  <b-container fluid>
-    <Header />
-    <b-container class="branch">
-      <h1>Location</h1>
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
-        <b-form-group horizontal label="Name" label-for="name">
-          <b-form-input id="name" v-model.trim="form.name" required></b-form-input>
-        </b-form-group>
-        <b-form-group horizontal label="Address" label-for="address">
-          <b-form-textarea id="address" v-model="form.address" placeholder="Enter the address of this location" :rows="3" required :max-rows="6">
-          </b-form-textarea>
-        </b-form-group>
-        <b-form-group horizontal label="Phone" label-for="phone">
-          <b-form-input id="phone" v-model.trim="form.phone" required></b-form-input>
-        </b-form-group>
 
-        <Buttons/>
+  <b-container class="branch">
+    <h1>Location</h1>
+    <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
+      <b-form-group horizontal label="Name" label-for="name">
+        <b-form-input id="name" v-model.trim="form.name" required></b-form-input>
+      </b-form-group>
+      <b-form-group horizontal label="Address" label-for="address">
+        <b-form-textarea id="address" v-model="form.address" placeholder="Enter the address of this location" :rows="3" required :max-rows="6">
+        </b-form-textarea>
+      </b-form-group>
+      <b-form-group horizontal label="Phone" label-for="phone">
+        <b-form-input id="phone" v-model.trim="form.phone" required></b-form-input>
+      </b-form-group>
 
-      </b-form>
-    </b-container>
+      <Buttons/>
+
+    </b-form>
   </b-container>
+
 </template>
 
 <script>
 import Store from "../store/store";
 import Buttons from "./lib/Buttons";
-import Header from "./lib/Header";
 
 export default {
   name: "Location",
@@ -41,8 +39,7 @@ export default {
     };
   },
   components: {
-    Buttons,
-    Header
+    Buttons
   },
   watch: {
     results() {

@@ -1,48 +1,46 @@
 <template>
-  <b-container fluid>
-    <Header />
-    <b-container class="user">
-      <h1>User</h1>
 
-      <b-form @submit="onSubmit" @reset="onReset" v-if="form.show" id="addForm">
+  <b-container class="user">
+    <h1>User</h1>
 
-        <b-form-group horizontal id="position_id" label="Organization" label-for="organization_id">
-          <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required/>
-        </b-form-group>
+    <b-form @submit="onSubmit" @reset="onReset" v-if="form.show" id="addForm">
 
-        <b-form-group horizontal id="user_name" label="User name" label-for="user_name">
-          <b-form-input id="user_name" v-model.trim="form.user_name" required></b-form-input>
-        </b-form-group>
+      <b-form-group horizontal id="position_id" label="Organization" label-for="organization_id">
+        <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required/>
+      </b-form-group>
 
-        <b-form-group horizontal id="full_name" label="Full name" label-for="full_name">
-          <b-form-input id="full_name" v-model.trim="form.full_name" required></b-form-input>
-        </b-form-group>
+      <b-form-group horizontal id="user_name" label="User name" label-for="user_name">
+        <b-form-input id="user_name" v-model.trim="form.user_name" required></b-form-input>
+      </b-form-group>
 
-        <b-form-group horizontal id="position_id" label="Position" label-for="position_id">
-          <b-form-select v-model="form.position_id" :options="positions" class="mb-3" required/>
-        </b-form-group>
+      <b-form-group horizontal id="full_name" label="Full name" label-for="full_name">
+        <b-form-input id="full_name" v-model.trim="form.full_name" required></b-form-input>
+      </b-form-group>
 
-        <b-form-group horizontal id="department_id" label="Department" label-for="department_id">
-          <b-form-select v-model="form.department_id" :options="departments" class="mb-3" required/>
-        </b-form-group>
+      <b-form-group horizontal id="position_id" label="Position" label-for="position_id">
+        <b-form-select v-model="form.position_id" :options="positions" class="mb-3" required/>
+      </b-form-group>
 
-        <b-form-group horizontal id="location_id" label="Location" label-for="location_id">
-          <b-form-select v-model="form.location_id" :options="locations" class="mb-3" required/>
-        </b-form-group>
+      <b-form-group horizontal id="department_id" label="Department" label-for="department_id">
+        <b-form-select v-model="form.department_id" :options="departments" class="mb-3" required/>
+      </b-form-group>
 
-        <Buttons />
+      <b-form-group horizontal id="location_id" label="Location" label-for="location_id">
+        <b-form-select v-model="form.location_id" :options="locations" class="mb-3" required/>
+      </b-form-group>
 
-        <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
+      <Buttons />
 
-      </b-form>
-    </b-container>
+      <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
+
+    </b-form>
   </b-container>
+
 </template>
 
 <script>
 import Store from "../store/store";
 import Buttons from "./lib/Buttons";
-import Header from "./lib/Header";
 
 export default {
   name: "User",
@@ -63,8 +61,7 @@ export default {
     };
   },
   components: {
-    Buttons,
-    Header
+    Buttons
   },
   watch: {
     results() {
