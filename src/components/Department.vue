@@ -8,8 +8,11 @@
 
       <Buttons/>
 
+      <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
+
     </b-form>
   </b-container>
+
 </template>
 
 <script>
@@ -24,7 +27,9 @@ export default {
       form: {
         name: "",
         id: 0
-      }
+      },
+      errorShow: false,
+      errorMessage: ""
     };
   },
   components: {
@@ -34,6 +39,8 @@ export default {
     results() {
       const results = Store.state.results;
       if (results.error) {
+        this.errorMessage = results.message;
+        this.errorShow = results.error;
         return;
       }
       this.$router.push({ name: "Departments" });

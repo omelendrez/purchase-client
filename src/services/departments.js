@@ -1,8 +1,8 @@
 import HTTP from '../components/http-common'
 
 export default {
-  fetchDepartments() {
-    return HTTP.get('departments')
+  fetchDepartments(payload) {
+    return HTTP.get(`departments/${payload}`)
   },
   saveDepartment(payload) {
     if (payload.id === 0) {

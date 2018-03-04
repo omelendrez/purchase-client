@@ -1,8 +1,8 @@
 import HTTP from "../components/http-common";
 
 export default {
-  fetchUsers() {
-    return HTTP.get("users");
+  fetchUsers(payload) {
+    return HTTP.get(`users/${payload}`);
   },
   login(payload) {
     return HTTP.post("login", payload);

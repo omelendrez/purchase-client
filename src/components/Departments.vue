@@ -75,7 +75,7 @@ export default {
   methods: {
     editItem(item) {
       Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "Organization" });
+      this.$router.push({ name: "Department" });
     },
     deleteItem(item, type) {
       this.selectedItem = item;

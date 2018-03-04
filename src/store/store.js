@@ -61,45 +61,10 @@ export default new Vuex.Store({
       });
     },
 
-    async [types.LOAD_LOCATIONS]({ commit }) {
-      const locations = await Locations.fetchLocations();
-      commit(types.SET_LOCATIONS, {
-        payload: locations.data
-      });
-    },
-
     async [types.LOAD_ORGANIZATIONS]({ commit }) {
-      const organizations = await Organizations.fetchOrganizations();
+      const organizations = await Organizations.fetchOrganizations(state.user.organization_id);
       commit(types.SET_ORGANIZATIONS, {
         payload: organizations.data
-      });
-    },
-
-    async [types.LOAD_DEPARTMENTS]({ commit }) {
-      const departments = await Departments.fetchDepartments();
-      commit(types.SET_DEPARTMENTS, {
-        payload: departments.data
-      });
-    },
-
-    async [types.LOAD_POSITIONS]({ commit }) {
-      const positions = await Positions.fetchPositions();
-      commit(types.SET_POSITIONS, {
-        payload: positions.data
-      });
-    },
-
-    async [types.LOAD_STATUS]({ commit }) {
-      const status = await Status.fetchStatus();
-      commit(types.SET_STATUS, {
-        payload: status.data
-      });
-    },
-
-    async [types.LOAD_USERS]({ commit }) {
-      const users = await Users.fetchUsers();
-      commit(types.SET_USERS, {
-        payload: users.data
       });
     },
 
@@ -110,24 +75,24 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_DEPARTMENT]({ commit }, item) {
-      const department = await Departments.saveDepartment(item);
-      commit(types.SET_RESULTS, {
-        payload: department.data
-      })
-    },
-
-    async [types.SAVE_LOCATION]({ commit }, item) {
-      const location = await Locations.saveLocation(item);
-      commit(types.SET_RESULTS, {
-        payload: location.data
-      })
-    },
-
     async [types.DELETE_ORGANIZATION]({ commit }, item) {
       const organization = await Organizations.deleteOrganization(item.id);
       commit(types.SET_RESULTS, {
         payload: organization.data
+      })
+    },
+
+    async [types.LOAD_DEPARTMENTS]({ commit }) {
+      const departments = await Departments.fetchDepartments(state.user.organization_id);
+      commit(types.SET_DEPARTMENTS, {
+        payload: departments.data
+      });
+    },
+
+    async [types.SAVE_DEPARTMENT]({ commit }, item) {
+      const department = await Departments.saveDepartment(item);
+      commit(types.SET_RESULTS, {
+        payload: department.data
       })
     },
 
@@ -138,11 +103,11 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_LOCATION]({ commit }, item) {
-      const location = await Locations.deleteLocation(item.id);
-      commit(types.SET_RESULTS, {
-        payload: location.data
-      })
+    async [types.LOAD_POSITIONS]({ commit }) {
+      const positions = await Positions.fetchPositions(state.user.organization_id);
+      commit(types.SET_POSITIONS, {
+        payload: positions.data
+      });
     },
 
     async [types.SAVE_POSITION]({ commit }, item) {
@@ -159,6 +124,34 @@ export default new Vuex.Store({
       })
     },
 
+    async [types.LOAD_LOCATIONS]({ commit }) {
+      const locations = await Locations.fetchLocations(state.user.organization_id);
+      commit(types.SET_LOCATIONS, {
+        payload: locations.data
+      });
+    },
+
+    async [types.SAVE_LOCATION]({ commit }, item) {
+      const location = await Locations.saveLocation(item);
+      commit(types.SET_RESULTS, {
+        payload: location.data
+      })
+    },
+
+    async [types.DELETE_LOCATION]({ commit }, item) {
+      const location = await Locations.deleteLocation(item.id);
+      commit(types.SET_RESULTS, {
+        payload: location.data
+      })
+    },
+
+    async [types.LOAD_USERS]({ commit }) {
+      const users = await Users.fetchUsers(state.user.organization_id);
+      commit(types.SET_USERS, {
+        payload: users.data
+      });
+    },
+
     async [types.SAVE_USER]({ commit }, item) {
       const user = await Users.saveUser(item);
       commit(types.SET_RESULTS, {
@@ -170,6 +163,13 @@ export default new Vuex.Store({
       const user = await Users.deleteUser(item.id);
       commit(types.SET_RESULTS, {
         payload: user.data
+      });
+    },
+
+    async [types.LOAD_STATUS]({ commit }) {
+      const status = await Status.fetchStatus();
+      commit(types.SET_STATUS, {
+        payload: status.data
       });
     }
 
@@ -184,12 +184,12 @@ export default new Vuex.Store({
       state.user = payload;
     },
 
-    [types.SET_LOCATIONS]: (state, { payload }) => {
-      state.locations = payload;
-    },
-
     [types.SET_ORGANIZATIONS]: (state, { payload }) => {
       state.organizations = payload;
+    },
+
+    [types.SET_LOCATIONS]: (state, { payload }) => {
+      state.locations = payload;
     },
 
     [types.SET_DEPARTMENTS]: (state, { payload }) => {

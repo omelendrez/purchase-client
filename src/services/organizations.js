@@ -1,8 +1,8 @@
 import HTTP from '../components/http-common'
 
 export default {
-  fetchOrganizations() {
-    return HTTP.get('organizations')
+  fetchOrganizations(payload) {
+    return HTTP.get(`organizations/${payload}`)
   },
   saveOrganization(payload) {
     if (payload.id === 0) {

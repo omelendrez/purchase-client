@@ -1,8 +1,8 @@
 import HTTP from '../components/http-common'
 
 export default {
-  fetchLocations() {
-    return HTTP.get('locations')
+  fetchLocations(payload) {
+    return HTTP.get(`locations/${payload}`)
   },
   saveLocation(payload) {
     if (payload.id === 0) {
