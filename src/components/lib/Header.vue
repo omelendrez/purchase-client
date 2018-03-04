@@ -11,9 +11,11 @@
         <template v-if="isLogged">
 
           <b-navbar-nav class="admin">
+            <b-nav-item v-bind:active="menuOption === '/organizations'" href="#/organizations">Organizations</b-nav-item>
+            <b-nav-item v-bind:active="menuOption === '/departments'" href="#/departments">Departments</b-nav-item>
             <b-nav-item v-bind:active="menuOption === '/locations'" href="#/locations">Locations</b-nav-item>
-            <b-nav-item v-bind:active="menuOption === '/positions'" href="#/positions">Funciones</b-nav-item>
-            <b-nav-item v-bind:active="menuOption === '/users'" href="#/users">Usuarios</b-nav-item>
+            <b-nav-item v-bind:active="menuOption === '/positions'" href="#/positions">Positions</b-nav-item>
+            <b-nav-item v-bind:active="menuOption === '/users'" href="#/users">Users</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
@@ -23,9 +25,9 @@
               <template slot="button-content">
                 <strong>{{userFullName}}</strong>
               </template>
-              <b-dropdown-item href="#/login">Cerrar sesión</b-dropdown-item>
+              <b-dropdown-item href="#/login">Close session</b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
-              <b-dropdown-item href="#/change_password">Cambiar password</b-dropdown-item>
+              <b-dropdown-item href="#/change_password">Change password</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
 

@@ -1,7 +1,7 @@
 <template>
   <b-container class="users" fluid>
     <Header />
-    <h1>Usuarios</h1>
+    <h1>Users</h1>
 
     <Add />
 
@@ -52,33 +52,35 @@ export default {
       },
       fields: [
         {
+          key: "organization.name",
+          sortable: true
+        },
+        {
           key: "user_name",
-          label: "Usuario",
           sortable: true
         },
         {
           key: "full_name",
-          label: "Nombre",
           sortable: true
         },
         {
-          key: "profile.name",
-          label: "Perfil",
+          key: "position.name",
+          sortable: true
+        },
+        {
+          key: "location.name",
           sortable: true
         },
         {
           key: "status.name",
-          label: "Status",
           class: "text-center"
         },
         {
           key: "created_at",
-          label: "Creado",
           class: "text-center"
         },
         {
           key: "updated_at",
-          label: "Modificado",
           class: "text-center"
         },
         {
@@ -98,7 +100,9 @@ export default {
         id: 0,
         user_name: "",
         full_name: "",
-        profile_id: 0
+        organization_id: 0,
+        positino_id: 0,
+        location_id: 0
       });
       this.$router.push({ name: "User" });
     },
@@ -143,7 +147,8 @@ export default {
       return;
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
-    Store.dispatch("LOAD_PROFILES");
+    Store.dispatch("LOAD_ORGANIZATIONS");
+    Store.dispatch("LOAD_POSITIONS");
     Store.dispatch("LOAD_STATUS");
     Store.dispatch("LOAD_USERS");
   }

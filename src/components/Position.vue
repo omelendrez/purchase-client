@@ -53,11 +53,15 @@ export default {
     },
     item() {
       return Store.state.record;
+    },
+    organization_id() {
+      return Store.state.user.organization_id;
     }
   },
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
+      this.form.organization_id = this.organization_id;
       Store.dispatch("SAVE_POSITION", this.form);
     },
     onReset(evt) {

@@ -1,17 +1,17 @@
 import HTTP from '../components/http-common'
 
 export default {
-  fetchBranches() {
+  fetchLocations() {
     return HTTP.get('locations')
   },
-  saveBranch(payload) {
+  saveLocation(payload) {
     if (payload.id === 0) {
       return HTTP.post('locations', payload)
     } else {
       return HTTP.put(`locations/${payload.id}`, payload)
     }
   },
-  deleteBranch(payload) {
+  deleteLocation(payload) {
     return HTTP.delete(`locations/${payload}`)
   }
 }

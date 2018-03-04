@@ -13,7 +13,7 @@
     </b-form-group>
 
     <b-table hover outlined small :items="positions.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
-      <template slot="acciones" slot-scope="cell">
+      <template slot="actions" slot-scope="cell">
         <b-btn variant="info" @click.stop="editItem(cell.item)">Edit</b-btn>
         <b-btn variant="danger" @click.stop="deleteItem(cell.item, 1)">Delete</b-btn>
       </template>
@@ -51,21 +51,18 @@ export default {
       fields: [
         {
           key: "name",
-          label: "Función",
           sortable: true
         },
         {
           key: "created_at",
-          label: "Creado",
           class: "text-center"
         },
         {
           key: "updated_at",
-          label: "Modificado",
           class: "text-center"
         },
         {
-          key: "acciones",
+          key: "actions",
           class: "text-center"
         }
       ]

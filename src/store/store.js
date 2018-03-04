@@ -1,9 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import Organizations from "./../services/organizations";
 import Locations from "./../services/locations";
+import Departments from "./../services/departments";
 import Positions from "./../services/positions";
-import Profiles from "./../services/profiles";
 import Status from "./../services/status";
 import Users from "./../services/users";
 
@@ -13,9 +14,10 @@ Vue.use(Vuex);
 
 const state = {
   option: false,
+  organizations: [],
+  departments: [],
   locations: [],
-  positions: [{ rows: [] }],
-  profiles: [],
+  positions: [],
   status: [],
   users: [],
   user: [],
@@ -60,9 +62,23 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_LOCATIONS]({ commit }) {
-      const locations = await Locations.fetchBranches();
+      const locations = await Locations.fetchLocations();
       commit(types.SET_LOCATIONS, {
         payload: locations.data
+      });
+    },
+
+    async [types.LOAD_ORGANIZATIONS]({ commit }) {
+      const organizations = await Organizations.fetchOrganizations();
+      commit(types.SET_ORGANIZATIONS, {
+        payload: organizations.data
+      });
+    },
+
+    async [types.LOAD_DEPARTMENTS]({ commit }) {
+      const departments = await Departments.fetchDepartments();
+      commit(types.SET_DEPARTMENTS, {
+        payload: departments.data
       });
     },
 
@@ -70,13 +86,6 @@ export default new Vuex.Store({
       const positions = await Positions.fetchPositions();
       commit(types.SET_POSITIONS, {
         payload: positions.data
-      });
-    },
-
-    async [types.LOAD_PROFILES]({ commit }) {
-      const profiles = await Profiles.fetchProfiles();
-      commit(types.SET_PROFILES, {
-        payload: profiles.data
       });
     },
 
@@ -94,17 +103,45 @@ export default new Vuex.Store({
       });
     },
 
-    async [types.SAVE_LOCATION]({ commit }, item) {
-      const branch = await Locations.saveBranch(item);
+    async [types.SAVE_ORGANIZATION]({ commit }, item) {
+      const organization = await Organizations.saveOrganization(item);
       commit(types.SET_RESULTS, {
-        payload: branch.data
+        payload: organization.data
+      })
+    },
+
+    async [types.SAVE_DEPARTMENT]({ commit }, item) {
+      const department = await Departments.saveDepartment(item);
+      commit(types.SET_RESULTS, {
+        payload: department.data
+      })
+    },
+
+    async [types.SAVE_LOCATION]({ commit }, item) {
+      const location = await Locations.saveLocation(item);
+      commit(types.SET_RESULTS, {
+        payload: location.data
+      })
+    },
+
+    async [types.DELETE_ORGANIZATION]({ commit }, item) {
+      const organization = await Organizations.deleteOrganization(item.id);
+      commit(types.SET_RESULTS, {
+        payload: organization.data
+      })
+    },
+
+    async [types.DELETE_DEPARTMENT]({ commit }, item) {
+      const department = await Departments.deleteDepartment(item.id);
+      commit(types.SET_RESULTS, {
+        payload: department.data
       })
     },
 
     async [types.DELETE_LOCATION]({ commit }, item) {
-      const branch = await Locations.deleteBranch(item.id);
+      const location = await Locations.deleteLocation(item.id);
       commit(types.SET_RESULTS, {
-        payload: branch.data
+        payload: location.data
       })
     },
 
@@ -151,31 +188,16 @@ export default new Vuex.Store({
       state.locations = payload;
     },
 
-    [types.SET_POSITIONS]: (state, { payload }) => {
-      const positions = payload.rows;
-      const records = []
-      let record = {}
-      for (let i = 0; i < positions.length; i++) {
-        record = {
-          id: positions[i].id,
-          created_at: positions[i].created_at,
-          name: positions[i].name,
-          color: positions[i].color,
-          div: `<div style="background-color:${positions[i].color};width:90px;border-radius:4px;" class="mx-auto">&nbsp;</div>`,
-          sector_id: positions[i].sector_id,
-          updated_at: positions[i].updated_at,
-          "sector.name": positions[i]["sector.name"]
-        }
-        records.push(record)
-      }
-      state.positions = {
-        rows: records,
-        count: payload.count
-      }
+    [types.SET_ORGANIZATIONS]: (state, { payload }) => {
+      state.organizations = payload;
     },
 
-    [types.SET_PROFILES]: (state, { payload }) => {
-      state.profiles = payload;
+    [types.SET_DEPARTMENTS]: (state, { payload }) => {
+      state.departments = payload;
+    },
+
+    [types.SET_POSITIONS]: (state, { payload }) => {
+      state.positions = payload;
     },
 
     [types.SET_STATUS]: (state, { payload }) => {

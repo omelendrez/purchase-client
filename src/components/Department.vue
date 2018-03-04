@@ -1,16 +1,9 @@
 <template>
-  <b-container class="branch">
-    <h1>Location</h1>
+  <b-container class="department">
+    <h1>Department</h1>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
       <b-form-group horizontal label="Name" label-for="name">
         <b-form-input id="name" v-model.trim="form.name" required></b-form-input>
-      </b-form-group>
-      <b-form-group horizontal label="Address" label-for="address">
-        <b-form-textarea id="address" v-model="form.address" placeholder="Enter the address of this location" :rows="3" required :max-rows="6">
-        </b-form-textarea>
-      </b-form-group>
-      <b-form-group horizontal label="Phone" label-for="phone">
-        <b-form-input id="phone" v-model.trim="form.phone" required></b-form-input>
       </b-form-group>
 
       <Buttons/>
@@ -24,14 +17,12 @@ import Store from "../store/store";
 import Buttons from "./lib/Buttons";
 
 export default {
-  name: "Location",
+  name: "Department",
   data() {
     return {
       show: true,
       form: {
         name: "",
-        address: "",
-        phone: "",
         id: 0
       }
     };
@@ -45,7 +36,7 @@ export default {
       if (results.error) {
         return;
       }
-      this.$router.push({ name: "Locations" });
+      this.$router.push({ name: "Departments" });
     }
   },
   computed: {
@@ -66,14 +57,14 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       this.form.organization_id = this.organization_id;
-      Store.dispatch("SAVE_LOCATION", this.form);
+      Store.dispatch("SAVE_DEPARTMENT", this.form);
     },
     onReset(evt) {
       evt.preventDefault();
       /* Trick to reset/clear native browser form validation state */
       this.show = false;
       this.$nextTick(() => {
-        this.$router.push({ name: "Locations" });
+        this.$router.push({ name: "Departments" });
       });
     }
   },
@@ -84,8 +75,6 @@ export default {
     }
     if (this.item) {
       this.form.name = this.item.name;
-      this.form.address = this.item.address;
-      this.form.phone = this.item.phone;
       this.form.id = this.item.id;
     }
   }
@@ -94,7 +83,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.branch {
+.department {
   background-color: white;
   padding: 60px;
 }

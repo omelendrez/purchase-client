@@ -1,7 +1,7 @@
 <template>
-  <b-container class="locations" fluid>
+  <b-container class="department" fluid>
     <Header />
-    <h1>Locations</h1>
+    <h1>Departments</h1>
 
     <Add />
 
@@ -12,21 +12,21 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table hover outlined small :items="locations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
+    <b-table hover outlined small :items="departments.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="cell">
-        <b-btn variant="info" @click.stop="editItem(cell.item)">Editar</b-btn>
-        <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Inactivar</b-btn>
-        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Reactivar</b-btn>
+        <b-btn variant="info" @click.stop="editItem(cell.item)">Edit</b-btn>
+        <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
+        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Activate</b-btn>
       </template>
       <template slot="table-caption">
-        {{locations.count}} registros
+        {{departments.count}} records
       </template>
     </b-table>
 
-    <b-pagination :total-rows="locations.count" :per-page="perPage" v-model="currentPage" variant="info" />
+    <b-pagination :total-rows="departments.count" :per-page="perPage" v-model="currentPage" variant="info" />
 
-    <b-modal id="modal-center" title="Inactivar local" v-model="show" @ok="handleOk" ok-title="Si. Inactivar" cancel-title="No. Dejar como está" ok-variant="danger" cancel-variant="success">
-      <p class="my-4">Está seguro que desea inactivar el local
+    <b-modal id="modal-center" title="Deactivate" v-model="show" @ok="handleOk" ok-title="Yes. Deactivate" cancel-title="No. Leave it like that" ok-variant="danger" cancel-variant="success">
+      <p class="my-4">Are you sure you want to deactivate
         <strong>{{ selectedItem.name }} </strong>?</p>
     </b-modal>
   </b-container>
@@ -38,7 +38,7 @@ import Header from "./lib/Header";
 import Add from "./lib/Add";
 
 export default {
-  name: "Locations",
+  name: "Departments",
   data() {
     return {
       perPage: 10,
@@ -52,12 +52,6 @@ export default {
         {
           key: "name",
           sortable: true
-        },
-        {
-          key: "address"
-        },
-        {
-          key: "phone"
         },
         {
           key: "status.name",
@@ -81,7 +75,7 @@ export default {
   methods: {
     editItem(item) {
       Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "Location" });
+      this.$router.push({ name: "Organization" });
     },
     deleteItem(item, type) {
       this.selectedItem = item;
@@ -92,7 +86,7 @@ export default {
       }
     },
     handleOk() {
-      Store.dispatch("DELETE_LOCATION", this.selectedItem);
+      Store.dispatch("DELETE_DEPARTMENT", this.selectedItem);
     }
   },
   watch: {
@@ -101,7 +95,7 @@ export default {
       if (results.error) {
         return;
       }
-      Store.dispatch("LOAD_LOCATIONS");
+      Store.dispatch("LOAD_DEPARTMENTS");
     }
   },
   computed: {
@@ -111,8 +105,8 @@ export default {
     isLogged() {
       return Store.state.user.id;
     },
-    locations() {
-      return Store.state.locations;
+    departments() {
+      return Store.state.departments;
     }
   },
   created() {
@@ -121,7 +115,7 @@ export default {
       return;
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
-    Store.dispatch("LOAD_LOCATIONS");
+    Store.dispatch("LOAD_DEPARTMENTS");
   },
   components: {
     Header,
@@ -132,7 +126,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.locations {
+.department {
   background-color: white;
   padding-bottom: 10px;
 }
