@@ -5,20 +5,23 @@
 
     <b-form-group class="filter-form">
       <b-input-group>
-        <b-form-input v-model="filter" placeholder="Entre el dato a buscar" />
+        <b-form-input v-model="filter" placeholder="Type here for a quick search" />
         <b-btn :disabled="!filter" @click="filter = ''" variant="info" class="reset-button">Reset</b-btn>
       </b-input-group>
     </b-form-group>
 
     <b-table hover outlined :items="locations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
+
       <template slot="actions" slot-scope="cell">
         <b-btn variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
         <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
         <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
       </template>
+
       <template slot="table-caption">
         {{locations.count}} registros
       </template>
+
     </b-table>
 
     <b-pagination :total-rows="locations.count" :per-page="perPage" v-model="currentPage" variant="info" />
