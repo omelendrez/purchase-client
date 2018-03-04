@@ -1,6 +1,6 @@
 import axios from 'axios'
-// http://localhost:3010/
-// https://pure-ridge-51583.herokuapp.com/
+// http://localhost:3020/
+// https://escng-purchase.herokuapp.com/
 const HTTP = axios.create({
   baseURL: 'https://escng-purchase.herokuapp.com/',
   headers: {
