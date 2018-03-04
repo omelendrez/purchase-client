@@ -18,7 +18,7 @@
       </b-form-group>
 
       <b-form-group horizontal label="Email address" label-for="email">
-        <b-form-input id="email" v-model.trim="form.email" required></b-form-input>
+        <b-form-input id="email" type="email" v-model.trim="form.email" required></b-form-input>
       </b-form-group>
 
       <b-form-group horizontal label="Profile" label-for="profile_id">
