@@ -1,8 +1,8 @@
 import HTTP from "../components/http-common";
 
 export default {
-  fetchPositions() {
-    return HTTP.get("positions");
+  fetchPositions(payload) {
+    return HTTP.get(`positions/${payload}`);
   },
   savePosition(payload) {
     if (payload.id === 0) {
