@@ -61,7 +61,7 @@ export default {
           sortable: true
         },
         {
-          key: "position.name",
+          key: "profile.name",
           sortable: true
         },
         {
@@ -106,7 +106,7 @@ export default {
         full_name: "",
         organization_id: 0,
         department_id: 0,
-        position_id: 0,
+        profile_id: 0,
         location_id: 0
       });
       this.$router.push({ name: "User" });
@@ -155,7 +155,7 @@ export default {
     Store.dispatch("LOAD_ORGANIZATIONS");
     Store.dispatch("LOAD_LOCATIONS");
     Store.dispatch("LOAD_DEPARTMENTS");
-    Store.dispatch("LOAD_POSITIONS");
+    Store.dispatch("LOAD_PROFILES");
     Store.dispatch("LOAD_STATUS");
     Store.dispatch("LOAD_USERS");
   }

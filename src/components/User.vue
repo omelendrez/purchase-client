@@ -5,27 +5,31 @@
 
     <b-form @submit="onSubmit" @reset="onReset" v-if="form.show" id="addForm">
 
-      <b-form-group horizontal id="position_id" label="Organization" label-for="organization_id">
+      <b-form-group horizontal label="Organization" label-for="organization_id">
         <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required/>
       </b-form-group>
 
-      <b-form-group horizontal id="user_name" label="User name" label-for="user_name">
+      <b-form-group horizontal label="User name" label-for="user_name">
         <b-form-input id="user_name" v-model.trim="form.user_name" required></b-form-input>
       </b-form-group>
 
-      <b-form-group horizontal id="full_name" label="Full name" label-for="full_name">
+      <b-form-group horizontal label="Full name" label-for="full_name">
         <b-form-input id="full_name" v-model.trim="form.full_name" required></b-form-input>
       </b-form-group>
 
-      <b-form-group horizontal id="position_id" label="Position" label-for="position_id">
-        <b-form-select v-model="form.position_id" :options="positions" class="mb-3" required/>
+      <b-form-group horizontal label="Email address" label-for="email">
+        <b-form-input id="email" v-model.trim="form.email" required></b-form-input>
       </b-form-group>
 
-      <b-form-group horizontal id="department_id" label="Department" label-for="department_id">
+      <b-form-group horizontal label="Profile" label-for="profile_id">
+        <b-form-select v-model="form.profile_id" :options="profiles" class="mb-3" required/>
+      </b-form-group>
+
+      <b-form-group horizontal label="Department" label-for="department_id">
         <b-form-select v-model="form.department_id" :options="departments" class="mb-3" required/>
       </b-form-group>
 
-      <b-form-group horizontal id="location_id" label="Location" label-for="location_id">
+      <b-form-group horizontal label="Location" label-for="location_id">
         <b-form-select v-model="form.location_id" :options="locations" class="mb-3" required/>
       </b-form-group>
 
@@ -50,7 +54,8 @@ export default {
         id: 0,
         user_name: "",
         full_name: "",
-        position_id: 0,
+        email: "",
+        profile_id: 0,
         department_id: 0,
         organization_id: 0,
         location_id: 0,
@@ -81,14 +86,14 @@ export default {
     isLogged() {
       return Store.state.user.id;
     },
-    positions() {
-      const positions = Store.state.activePositions;
+    profiles() {
+      const profiles = Store.state.activeProfiles;
       const options = [];
-      for (let i = 0; i < positions.length; i++) {
-        if (positions[i].organization_id === Store.state.user.organization_id) {
+      for (let i = 0; i < profiles.length; i++) {
+        if (profiles[i].organization_id === Store.state.user.organization_id) {
           options.push({
-            value: positions[i].id,
-            text: positions[i].name
+            value: profiles[i].id,
+            text: profiles[i].name
           });
         }
       }
@@ -124,7 +129,9 @@ export default {
       const departments = Store.state.activeDepartments;
       const options = [];
       for (let i = 0; i < departments.length; i++) {
-        if (departments[i].organization_id === Store.state.user.organization_id) {
+        if (
+          departments[i].organization_id === Store.state.user.organization_id
+        ) {
           options.push({
             value: departments[i].id,
             text: departments[i].name
@@ -161,9 +168,10 @@ export default {
       /* Reset our form values */
       this.form.user_name = "";
       this.form.full_name = "";
+      this.form.email = "";
       this.form.organization_id = 0;
       this.form.location_id = 0;
-      this.form.position_id = 0;
+      this.form.profile_id = 0;
       this.form.department_id = 0;
       /* Trick to reset/clear native browser form validation state */
       this.form.show = false;
@@ -181,10 +189,11 @@ export default {
       this.form.id = this.item.id;
       this.form.user_name = this.item.user_name;
       this.form.full_name = this.item.full_name;
+      this.form.email = this.item.email;
       this.form.organization_id = this.item.organization_id;
       this.form.location_id = this.item.location_id;
       this.form.department_id = this.item.department_id;
-      this.form.position_id = this.item.position_id;
+      this.form.profile_id = this.item.profile_id;
     }
   }
 };

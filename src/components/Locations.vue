@@ -50,6 +50,10 @@ export default {
       },
       fields: [
         {
+          key: "organization.name",
+          sortable: true
+        },
+        {
           key: "name",
           sortable: true
         },

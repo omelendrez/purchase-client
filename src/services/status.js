@@ -1,4 +1,4 @@
-import HTTP from '../components/http-common'
+import HTTP from '../components/lib/http-common'
 
 export default {
   fetchStatus () {

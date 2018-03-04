@@ -16,8 +16,8 @@ import Location from "@/components/Location";
 import Departments from "@/components/Departments";
 import Department from "@/components/Department";
 
-import Positions from "@/components/Positions";
-import Position from "@/components/Position";
+import Profiles from "@/components/Profiles";
+import Profile from "@/components/Profile";
 
 import Users from "@/components/Users";
 import User from "@/components/User";
@@ -77,14 +77,14 @@ export default new Router({
       component: Location
     },
     {
-      path: "/positions",
-      name: "Positions",
-      component: Positions
+      path: "/profiles",
+      name: "Profiles",
+      component: Profiles
     },
     {
-      path: "/position",
-      name: "Position",
-      component: Position
+      path: "/profile",
+      name: "Profile",
+      component: Profile
     },
     {
       path: "/users",

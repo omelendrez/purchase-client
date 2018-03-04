@@ -4,7 +4,7 @@ import Vuex from "vuex";
 import Organizations from "./../services/organizations";
 import Locations from "./../services/locations";
 import Departments from "./../services/departments";
-import Positions from "./../services/positions";
+import Profiles from "./../services/profiles";
 import Status from "./../services/status";
 import Users from "./../services/users";
 
@@ -12,6 +12,7 @@ import * as types from "../store/mutation-types";
 
 const activeColor = "success"
 const inactiveColor = "danger"
+const activeStatus = 1
 
 Vue.use(Vuex);
 
@@ -20,11 +21,11 @@ const state = {
   organizations: [],
   departments: [],
   locations: [],
-  positions: [],
+  profiles: [],
   activeOrganizations: [],
   activeDepartments: [],
   activeLocations: [],
-  activePositions: [],
+  activeProfiles: [],
   status: [],
   users: [],
   user: [],
@@ -110,24 +111,24 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_POSITIONS]({ commit }) {
-      const positions = await Positions.fetchPositions(state.user.organization_id);
-      commit(types.SET_POSITIONS, {
-        payload: positions.data
+    async [types.LOAD_PROFILES]({ commit }) {
+      const profiles = await Profiles.fetchProfiles(state.user.organization_id);
+      commit(types.SET_PROFILES, {
+        payload: profiles.data
       });
     },
 
-    async [types.SAVE_POSITION]({ commit }, item) {
-      const position = await Positions.savePosition(item);
+    async [types.SAVE_PROFILE]({ commit }, item) {
+      const profile = await Profiles.saveProfile(item);
       commit(types.SET_RESULTS, {
-        payload: position.data
+        payload: profile.data
       });
     },
 
-    async [types.DELETE_POSITION]({ commit }, item) {
-      const position = await Positions.deletePosition(item.id);
+    async [types.DELETE_PROFILE]({ commit }, item) {
+      const profile = await Profiles.deleteProfile(item.id);
       commit(types.SET_RESULTS, {
-        payload: position.data
+        payload: profile.data
       })
     },
 
@@ -195,11 +196,11 @@ export default new Vuex.Store({
       state.organizations = payload;
       payload.rows.map(item => {
         item._cellVariants = {
-          "status.name": item.status_id !== 1 ? inactiveColor : activeColor
+          "status.name": item.status_id !== activeStatus ? inactiveColor : activeColor
         }
       })
       state.activeOrganizations = payload.rows.filter(item => {
-        return item.status_id === 1
+        return item.status_id === activeStatus
       })
     },
 
@@ -207,11 +208,11 @@ export default new Vuex.Store({
       state.locations = payload;
       payload.rows.map(item => {
         item._cellVariants = {
-          "status.name": item.status_id !== 1 ? inactiveColor : activeColor
+          "status.name": item.status_id !== activeStatus ? inactiveColor : activeColor
         }
       })
       state.activeLocations = payload.rows.filter(item => {
-        return item.status_id === 1
+        return item.status_id === activeStatus
       })
     },
 
@@ -219,23 +220,23 @@ export default new Vuex.Store({
       state.departments = payload;
       payload.rows.map(item => {
         item._cellVariants = {
-          "status.name": item.status_id !== 1 ? inactiveColor : activeColor
+          "status.name": item.status_id !== activeStatus ? inactiveColor : activeColor
         }
       })
       state.activeDepartments = payload.rows.filter(item => {
-        return item.status_id === 1
+        return item.status_id === activeStatus
       })
     },
 
-    [types.SET_POSITIONS]: (state, { payload }) => {
-      state.positions = payload;
+    [types.SET_PROFILES]: (state, { payload }) => {
+      state.profiles = payload;
       payload.rows.map(item => {
         item._cellVariants = {
-          "status.name": item.status_id !== 1 ? inactiveColor : activeColor
+          "status.name": item.status_id !== activeStatus ? inactiveColor : activeColor
         }
       })
-      state.activePositions = payload.rows.filter(item => {
-        return item.status_id === 1
+      state.activeProfiles = payload.rows.filter(item => {
+        return item.status_id === activeStatus
       })
     },
 
@@ -247,7 +248,7 @@ export default new Vuex.Store({
       state.users = payload;
       payload.rows.map(item => {
         item._cellVariants = {
-          "status.name": item.status_id !== 1 ? inactiveColor : activeColor
+          "status.name": item.status_id !== activeStatus ? inactiveColor : activeColor
         }
         // item._rowVariant = item.status_id === 2 ? inactiveColor : ''
       })

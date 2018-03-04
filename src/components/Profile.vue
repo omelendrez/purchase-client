@@ -1,6 +1,6 @@
 <template>
-  <b-container class="position">
-    <h1>Position</h1>
+  <b-container class="profile">
+    <h1>Profile</h1>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
       <b-form-group horizontal id="name" label="Nombre" label-for="name">
@@ -21,7 +21,7 @@ import Store from "../store/store";
 import Buttons from "./lib/Buttons";
 
 export default {
-  name: "Position",
+  name: "Profile",
   data() {
     return {
       form: {
@@ -42,7 +42,7 @@ export default {
       if (results.error) {
         return;
       }
-      this.$router.push({ name: "Positions" });
+      this.$router.push({ name: "Profiles" });
     }
   },
   computed: {
@@ -63,7 +63,7 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       this.form.organization_id = this.organization_id;
-      Store.dispatch("SAVE_POSITION", this.form);
+      Store.dispatch("SAVE_PROFILE", this.form);
     },
     onReset(evt) {
       evt.preventDefault();
@@ -72,7 +72,7 @@ export default {
       /* Trick to reset/clear native browser form validation state */
       this.show = false;
       this.$nextTick(() => {
-        this.$router.push({ name: "Positions" });
+        this.$router.push({ name: "Profiles" });
       });
     },
     cleanError() {
@@ -95,7 +95,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.position {
+.profile {
   background-color: white;
   padding: 60px;
   margin-top: 18px;

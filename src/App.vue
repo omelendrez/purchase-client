@@ -1,9 +1,12 @@
 <template>
   <div id="app">
     <Header />
+    <!-- Transition will not be used for this site
     <transition mode="out-in" name="fade">
       <router-view/>
     </transition>
+    -->
+    <router-view/>
   </div>
 </template>
 
@@ -26,6 +29,7 @@ html {
 body {
   background-color: rgb(240, 240, 240);
 }
+/*  To be used with fade transition
 .fade-enter-active,
 .fade-leave-active {
   transition-property: opacity;
@@ -40,4 +44,5 @@ body {
 .fade-leave-active {
   opacity: 0;
 }
+*/
 </style>
