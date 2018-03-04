@@ -177,13 +177,7 @@ export default {
       return;
     }
     if (this.item) {
-      this.form.id = this.item.id;
-      this.form.user_name = this.item.user_name;
-      this.form.full_name = this.item.full_name;
-      this.form.organization_id = this.item.organization_id;
-      this.form.location_id = this.item.location_id;
-      this.form.department_id = this.item.department_id;
-      this.form.position_id = this.item.position_id;
+      this.form = this.item;
     }
   }
 };
