@@ -26,7 +26,7 @@
       <div class="buttons">
         <b-button type="submit" :disabled="!allOk" variant="info">Save new password</b-button>
         <b-button type="reset" class="to-center">Reset form</b-button>
-        <b-button href="#/" class="to-right" variant="danger">Cancel</b-button>
+        <b-button @click="exit" class="to-right" variant="danger">Cancel</b-button>
       </div>
 
       <b-alert variant="danger" :show="showError">{{ errorMessage }}</b-alert>
@@ -129,6 +129,10 @@ export default {
       this.form.password_new = "";
       this.form.password_retype = "";
       this.show = true;
+    },
+    exit(evt) {
+      evt.preventDefault();
+      this.$router.push({ path: Store.state.option });
     }
   },
   created() {
@@ -144,6 +148,7 @@ export default {
 .budget {
   background-color: white;
   padding: 60px;
+  margin-top: 18px;
   width: 600px;
 }
 #addForm {

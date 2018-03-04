@@ -1,6 +1,5 @@
 <template>
   <b-container class="locations" fluid>
-    <Header />
 
     <Add />
 
@@ -11,7 +10,7 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table hover outlined fixed :items="locations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
+    <b-table hover outlined :items="locations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="cell">
         <b-btn variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
         <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
@@ -33,7 +32,6 @@
 
 <script>
 import Store from "../store/store";
-import Header from "./lib/Header";
 import Add from "./lib/Add";
 
 export default {
@@ -53,26 +51,32 @@ export default {
           sortable: true
         },
         {
-          key: "address"
-        },
-        {
-          key: "phone"
-        },
-        {
           key: "created_at",
-          class: "text-center"
+          class: "text-center",
+          thStyle: {
+            width: "160px"
+          }
         },
         {
           key: "updated_at",
-          class: "text-center"
+          class: "text-center",
+          thStyle: {
+            width: "160px"
+          }
         },
         {
           key: "status.name",
-          class: "text-center"
+          class: "text-center",
+          thStyle: {
+            width: "160px"
+          }
         },
         {
           key: "actions",
-          class: "text-center"
+          class: "text-center",
+          thStyle: {
+            width: "200px"
+          }
         }
       ]
     };
@@ -123,7 +127,6 @@ export default {
     Store.dispatch("LOAD_LOCATIONS");
   },
   components: {
-    Header,
     Add
   }
 };
@@ -134,6 +137,7 @@ export default {
 .locations {
   background-color: white;
   padding-bottom: 10px;
+  padding-top: 10px;
 }
 .add-button {
   float: right;

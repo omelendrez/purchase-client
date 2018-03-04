@@ -1,6 +1,5 @@
 <template>
-  <b-container class="home" fluid>
-    <Header />
+  <b-container class="home">
     <b-container fluid class="p-4 bg-light">
       <b-row>
         <b-col>
@@ -12,16 +11,12 @@
 </template>
 
 <script>
-import Header from "./lib/Header";
 import Store from "../store/store";
 
 export default {
   name: "Home",
   data() {
     return {};
-  },
-  components: {
-    Header
   },
   computed: {
     isLogged() {

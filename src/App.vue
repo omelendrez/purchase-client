@@ -1,12 +1,20 @@
 <template>
   <div id="app">
-    <router-view/>
+    <Header />
+    <transition mode="out-in" name="fade">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
 <script>
+import Header from "./components/lib/Header";
+
 export default {
-  name: "App"
+  name: "App",
+  components: {
+    Header
+  }
 };
 </script>
 
@@ -17,5 +25,19 @@ html {
 }
 body {
   background-color: rgb(240, 240, 240);
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition-property: opacity;
+  transition-duration: 0.25s;
+}
+
+.fade-enter-active {
+  transition-delay: 0.25s;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
 }
 </style>

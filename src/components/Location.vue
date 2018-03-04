@@ -1,4 +1,5 @@
 <template>
+
   <b-container class="branch">
     <h1>Location</h1>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
@@ -17,6 +18,7 @@
 
     </b-form>
   </b-container>
+
 </template>
 
 <script>
@@ -97,6 +99,7 @@ export default {
 .branch {
   background-color: white;
   padding: 60px;
+  margin-top: 18px;
 }
 #addForm {
   margin: 0 auto;

@@ -13,6 +13,7 @@
 
     </b-form>
   </b-container>
+
 </template>
 
 <script>
@@ -97,6 +98,7 @@ export default {
 .position {
   background-color: white;
   padding: 60px;
+  margin-top: 18px;
 }
 #addForm {
   margin: 0 auto;

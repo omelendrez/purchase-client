@@ -1,4 +1,5 @@
 <template>
+
   <b-container class="user">
     <h1>User</h1>
 
@@ -33,8 +34,8 @@
       <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
 
     </b-form>
-
   </b-container>
+
 </template>
 
 <script>
@@ -193,6 +194,7 @@ export default {
 .user {
   background-color: white;
   padding: 60px;
+  margin-top: 18px;
 }
 #addForm {
   margin: 0 auto;
