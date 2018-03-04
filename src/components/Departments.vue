@@ -1,7 +1,6 @@
 <template>
   <b-container class="department" fluid>
     <Header />
-    <h1>Departments</h1>
 
     <Add />
 
@@ -12,11 +11,11 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table hover outlined small :items="departments.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
+    <b-table hover outlined fixed :items="departments.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="cell">
-        <b-btn variant="info" @click.stop="editItem(cell.item)">Edit</b-btn>
+        <b-btn variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
         <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
-        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Activate</b-btn>
+        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
       </template>
       <template slot="table-caption">
         {{departments.count}} records
@@ -25,10 +24,11 @@
 
     <b-pagination :total-rows="departments.count" :per-page="perPage" v-model="currentPage" variant="info" />
 
-    <b-modal id="modal-center" title="Deactivate" v-model="show" @ok="handleOk" ok-title="Yes. Deactivate" cancel-title="No. Leave it like that" ok-variant="danger" cancel-variant="success">
+    <b-modal id="modal-center" title="Deactivate" v-model="show" @ok="handleOk" ok-title="Yes. Deactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
       <p class="my-4">Are you sure you want to deactivate
         <strong>{{ selectedItem.name }} </strong>?</p>
     </b-modal>
+
   </b-container>
 </template>
 
@@ -54,15 +54,15 @@ export default {
           sortable: true
         },
         {
-          key: "status.name",
-          class: "text-center"
-        },
-        {
           key: "created_at",
           class: "text-center"
         },
         {
           key: "updated_at",
+          class: "text-center"
+        },
+        {
+          key: "status.name",
           class: "text-center"
         },
         {
@@ -131,7 +131,6 @@ export default {
   padding-bottom: 10px;
 }
 .add-button {
-  margin: 20px;
   float: right;
 }
 .filter-form {

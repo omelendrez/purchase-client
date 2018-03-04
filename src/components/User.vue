@@ -1,6 +1,6 @@
 <template>
   <b-container class="user">
-    <h1>Usuario</h1>
+    <h1>User</h1>
 
     <b-form @submit="onSubmit" @reset="onReset" v-if="form.show" id="addForm">
 
@@ -18,6 +18,10 @@
 
       <b-form-group horizontal id="position_id" label="Position" label-for="position_id">
         <b-form-select v-model="form.position_id" :options="positions" class="mb-3" required/>
+      </b-form-group>
+
+      <b-form-group horizontal id="department_id" label="Department" label-for="department_id">
+        <b-form-select v-model="form.department_id" :options="departments" class="mb-3" required/>
       </b-form-group>
 
       <b-form-group horizontal id="location_id" label="Location" label-for="location_id">
@@ -46,6 +50,7 @@ export default {
         user_name: "",
         full_name: "",
         position_id: 0,
+        department_id: 0,
         organization_id: 0,
         location_id: 0,
         show: true
@@ -76,35 +81,54 @@ export default {
       return Store.state.user.id;
     },
     positions() {
-      const positions = Store.state.positions.rows;
+      const positions = Store.state.activePositions;
       const options = [];
       for (let i = 0; i < positions.length; i++) {
-        options.push({
-          value: positions[i].id,
-          text: positions[i].name
-        });
+        if (positions[i].organization_id === this.form.organization_id) {
+          options.push({
+            value: positions[i].id,
+            text: positions[i].name
+          });
+        }
       }
       return options;
     },
     organizations() {
-      const organizations = Store.state.organizations.rows;
+      const organizations = Store.state.activeOrganizations;
       const options = [];
       for (let i = 0; i < organizations.length; i++) {
-        options.push({
-          value: organizations[i].id,
-          text: organizations[i].name
-        });
+        if (organizations[i].id === this.form.organization_id) {
+          options.push({
+            value: organizations[i].id,
+            text: organizations[i].name
+          });
+        }
       }
       return options;
     },
     locations() {
-      const locations = Store.state.locations.rows;
+      const locations = Store.state.activeLocations;
       const options = [];
       for (let i = 0; i < locations.length; i++) {
-        options.push({
-          value: locations[i].id,
-          text: locations[i].name
-        });
+        if (locations[i].organization_id === this.form.organization_id) {
+          options.push({
+            value: locations[i].id,
+            text: locations[i].name
+          });
+        }
+      }
+      return options;
+    },
+    departments() {
+      const departments = Store.state.activeDepartments;
+      const options = [];
+      for (let i = 0; i < departments.length; i++) {
+        if (departments[i].organization_id === this.form.organization_id) {
+          options.push({
+            value: departments[i].id,
+            text: departments[i].name
+          });
+        }
       }
       return options;
     },
@@ -157,6 +181,7 @@ export default {
       this.form.full_name = this.item.full_name;
       this.form.organization_id = this.item.organization_id;
       this.form.location_id = this.item.location_id;
+      this.form.department_id = this.item.department_id;
       this.form.position_id = this.item.position_id;
     }
   }

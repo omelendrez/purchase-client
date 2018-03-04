@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="header">
 
     <b-navbar toggleable="md" type="dark" variant="info">
 
@@ -11,11 +11,11 @@
         <template v-if="isLogged">
 
           <b-navbar-nav class="admin">
-            <b-nav-item v-bind:active="menuOption === '/organizations'" href="#/organizations">Organizations</b-nav-item>
-            <b-nav-item v-bind:active="menuOption === '/departments'" href="#/departments">Departments</b-nav-item>
-            <b-nav-item v-bind:active="menuOption === '/locations'" href="#/locations">Locations</b-nav-item>
-            <b-nav-item v-bind:active="menuOption === '/positions'" href="#/positions">Positions</b-nav-item>
-            <b-nav-item v-bind:active="menuOption === '/users'" href="#/users">Users</b-nav-item>
+            <b-nav-item v-bind:active="menuOption === '/organizations'" href="#/organizations">ORGANIZATIONS</b-nav-item>
+            <b-nav-item v-bind:active="menuOption === '/departments'" href="#/departments">DEPARTMENTS</b-nav-item>
+            <b-nav-item v-bind:active="menuOption === '/locations'" href="#/locations">LOCATIONS</b-nav-item>
+            <b-nav-item v-bind:active="menuOption === '/positions'" href="#/positions">POSITIONS</b-nav-item>
+            <b-nav-item v-bind:active="menuOption === '/users'" href="#/users">USERS</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
@@ -23,7 +23,7 @@
             <b-nav-item-dropdown right>
               <!-- Using button-content slot -->
               <template slot="button-content">
-                <strong>{{userFullName}}</strong>
+                {{userFullName}}
               </template>
               <b-dropdown-item href="#/login">Close session</b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
@@ -72,5 +72,8 @@ export default {
 <style scoped>
 .admin {
   margin: 0 auto;
+}
+.header {
+  margin-bottom: 18px;
 }
 </style>

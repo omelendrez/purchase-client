@@ -10,6 +10,9 @@ import Users from "./../services/users";
 
 import * as types from "../store/mutation-types";
 
+const activeColor = "success"
+const inactiveColor = "danger"
+
 Vue.use(Vuex);
 
 const state = {
@@ -18,6 +21,10 @@ const state = {
   departments: [],
   locations: [],
   positions: [],
+  activeOrganizations: [],
+  activeDepartments: [],
+  activeLocations: [],
+  activePositions: [],
   status: [],
   users: [],
   user: [],
@@ -186,18 +193,50 @@ export default new Vuex.Store({
 
     [types.SET_ORGANIZATIONS]: (state, { payload }) => {
       state.organizations = payload;
+      payload.rows.map(item => {
+        item._cellVariants = {
+          "status.name": item.status_id === 2 ? inactiveColor : activeColor
+        }
+      })
+      state.activeOrganizations = payload.rows.filter(item => {
+        return item.status_id === 1
+      })
     },
 
     [types.SET_LOCATIONS]: (state, { payload }) => {
       state.locations = payload;
+      payload.rows.map(item => {
+        item._cellVariants = {
+          "status.name": item.status_id === 2 ? inactiveColor : activeColor
+        }
+      })
+      state.activeLocations = payload.rows.filter(item => {
+        return item.status_id === 1
+      })
     },
 
     [types.SET_DEPARTMENTS]: (state, { payload }) => {
       state.departments = payload;
+      payload.rows.map(item => {
+        item._cellVariants = {
+          "status.name": item.status_id === 2 ? inactiveColor : activeColor
+        }
+      })
+      state.activeDepartments = payload.rows.filter(item => {
+        return item.status_id === 1
+      })
     },
 
     [types.SET_POSITIONS]: (state, { payload }) => {
       state.positions = payload;
+      payload.rows.map(item => {
+        item._cellVariants = {
+          "status.name": item.status_id === 2 ? inactiveColor : activeColor
+        }
+      })
+      state.activePositions = payload.rows.filter(item => {
+        return item.status_id === 1
+      })
     },
 
     [types.SET_STATUS]: (state, { payload }) => {
@@ -206,6 +245,12 @@ export default new Vuex.Store({
 
     [types.SET_USERS]: (state, { payload }) => {
       state.users = payload;
+      payload.rows.map(item => {
+        item._cellVariants = {
+          "status.name": item.status_id === 2 ? inactiveColor : activeColor
+        }
+        // item._rowVariant = item.status_id === 2 ? inactiveColor : ''
+      })
     },
 
     [types.SET_RECORD]: (state, { payload }) => {
