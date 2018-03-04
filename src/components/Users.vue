@@ -1,7 +1,6 @@
 <template>
   <b-container class="users" fluid>
     <Header />
-    <h1>Users</h1>
 
     <Add />
 
@@ -12,11 +11,11 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table hover outlined small :items="users.rows" :fields="fields" head-variant="light">
+    <b-table hover outlined fixed :items="users.rows" :fields="fields" head-variant="light">
       <template slot="acciones" slot-scope="cell" v-if="cell.item.id !== user.id">
-        <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Editar</b-btn>
-        <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Inactivar</b-btn>
-        <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Reactivar</b-btn>
+        <b-btn variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
+        <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
+        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
       </template>
       <template slot="table-caption">
         {{users.count}} registros
@@ -25,9 +24,9 @@
 
     <b-pagination :total-rows="users.count" :per-page="perPage" v-model="currentPage" />
 
-    <b-modal id="modal-center" title="Inactivar Usuario" v-model="show" @ok="handleOk" ok-title="Si. Inactivar" cancel-title="No. Dejar como está" ok-variant="danger" cancel-variant="success">
-      <p class="my-4">Está seguro que desea inactivar al usuario
-        <strong>{{ selectedItem.user_name }} ({{ selectedItem.full_name }})</strong>?</p>
+    <b-modal id="modal-center" title="Deactivate" v-model="show" @ok="handleOk" ok-title="Yes. Deactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
+      <p class="my-4">Are you sure you want to deactivate
+        <strong>{{ selectedItem.user_name }} </strong>?</p>
     </b-modal>
 
   </b-container>
@@ -64,6 +63,10 @@ export default {
           sortable: true
         },
         {
+          key: "department.name",
+          sortable: true
+        },
+        {
           key: "position.name",
           sortable: true
         },
@@ -72,15 +75,15 @@ export default {
           sortable: true
         },
         {
-          key: "status.name",
-          class: "text-center"
-        },
-        {
           key: "created_at",
           class: "text-center"
         },
         {
           key: "updated_at",
+          class: "text-center"
+        },
+        {
+          key: "status.name",
           class: "text-center"
         },
         {
@@ -101,7 +104,8 @@ export default {
         user_name: "",
         full_name: "",
         organization_id: 0,
-        positino_id: 0,
+        department_id: 0,
+        position_id: 0,
         location_id: 0
       });
       this.$router.push({ name: "User" });
@@ -148,6 +152,8 @@ export default {
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
     Store.dispatch("LOAD_ORGANIZATIONS");
+    Store.dispatch("LOAD_LOCATIONS");
+    Store.dispatch("LOAD_DEPARTMENTS");
     Store.dispatch("LOAD_POSITIONS");
     Store.dispatch("LOAD_STATUS");
     Store.dispatch("LOAD_USERS");
@@ -162,7 +168,6 @@ export default {
   padding-bottom: 10px;
 }
 .add-button {
-  margin: 20px;
   float: right;
 }
 .filter-form {

@@ -1,7 +1,7 @@
 
 <template>
   <div class="add-button">
-    <b-button @click="addItem" variant="info" v-b-popover.hover="'Click here to add a new record'" title="Add">Add</b-button>
+    <b-button @click="addItem" variant="info" v-b-popover.hover="'Click here to add a new record'" title="Add">Add new record</b-button>
   </div>
 </template>
 
