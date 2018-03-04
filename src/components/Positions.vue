@@ -138,6 +138,7 @@ export default {
 .positions {
   background-color: white;
   padding-bottom: 10px;
+  padding-top: 10px;
 }
 .add-button {
   float: right;

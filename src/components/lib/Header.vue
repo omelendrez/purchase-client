@@ -73,7 +73,4 @@ export default {
 .admin {
   margin: 0 auto;
 }
-.header {
-  margin-bottom: 18px;
-}
 </style>

@@ -99,6 +99,7 @@ export default {
 .branch {
   background-color: white;
   padding: 60px;
+  margin-top: 18px;
 }
 #addForm {
   margin: 0 auto;
