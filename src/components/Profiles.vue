@@ -12,9 +12,9 @@
 
     <b-table hover outlined :items="profiles.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="cell">
-        <b-btn variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
-        <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
-        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
+        <b-btn size="md" variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
+        <b-btn size="md" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
+        <b-btn size="md" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
       </template>
       <template slot="table-caption">
         {{profiles.count}} registros

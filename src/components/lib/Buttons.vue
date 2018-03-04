@@ -1,7 +1,7 @@
 <template>
   <div class="buttons">
-    <b-button size="sm" type="submit" variant="info">Save</b-button>
-    <b-button size="sm" type="reset" class="to-right">Cancel</b-button>
+    <b-button type="submit" variant="info">Save</b-button>
+    <b-button type="reset" class="to-right">Cancel</b-button>
   </div>
 </template>
 
