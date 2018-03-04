@@ -1,44 +1,44 @@
 <template>
-  <b-container class="sectors" fluid>
+  <b-container class="organizations" fluid>
     <Header />
-    <h1>Sectores</h1>
+    <h1>Organizations</h1>
 
-    <div class="add-button">
-      <b-button @click="addItem" variant="info">Agregar</b-button>
-    </div>
+    <Add />
 
     <b-form-group class="filter-form">
       <b-input-group>
-        <b-form-input v-model="filter" placeholder="Entre el dato a buscar"/>
+        <b-form-input v-model="filter" placeholder="Entre el dato a buscar" />
         <b-btn :disabled="!filter" @click="filter = ''" variant="info" class="reset-button">Reset</b-btn>
       </b-input-group>
     </b-form-group>
 
-    <b-table hover outlined small :items="sectors.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
-      <template slot="acciones" slot-scope="cell">
-        <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Editar</b-btn>
-        <b-btn size="sm" variant="danger" @click.stop="deleteItem(cell.item, 1)">Eliminar</b-btn>
+    <b-table hover outlined small :items="organizations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
+      <template slot="actions" slot-scope="cell">
+        <b-btn variant="info" @click.stop="editItem(cell.item)">Edit</b-btn>
+        <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
+        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Activate</b-btn>
       </template>
       <template slot="table-caption">
-        {{sectors.count}} registros
+        {{organizations.count}} records
       </template>
     </b-table>
 
-    <b-pagination :total-rows="sectors.count" :per-page="perPage" v-model="currentPage" />
+    <b-pagination :total-rows="organizations.count" :per-page="perPage" v-model="currentPage" variant="info" />
 
-    <b-modal id="modal-center" title="Eliminar sector" v-model="show" @ok="handleOk" ok-title="Si. Eliminar" cancel-title="No. Dejar como está" ok-variant="danger" cancel-variant="success">
-      <p class="my-4">Está seguro que desea eliminar el sector <strong>{{ selectedItem.name }} </strong>?</p>
+    <b-modal id="modal-center" title="Deactivate" v-model="show" @ok="handleOk" ok-title="Yes. Deactivate" cancel-title="No. Leave it like that" ok-variant="danger" cancel-variant="success">
+      <p class="my-4">Are you sure you want to deactivate
+        <strong>{{ selectedItem.name }} </strong>?</p>
     </b-modal>
-
   </b-container>
 </template>
 
 <script>
 import Store from "../store/store";
-import Header from "./Header";
+import Header from "./lib/Header";
+import Add from "./lib/Add";
 
 export default {
-  name: "Sectors",
+  name: "Organizations",
   data() {
     return {
       perPage: 10,
@@ -51,37 +51,31 @@ export default {
       fields: [
         {
           key: "name",
-          label: "Nombre",
           sortable: true
         },
         {
+          key: "status.name",
+          class: "text-center"
+        },
+        {
           key: "created_at",
-          label: "Creado",
           class: "text-center"
         },
         {
           key: "updated_at",
-          label: "Modificado",
           class: "text-center"
         },
         {
-          key: "acciones",
+          key: "actions",
           class: "text-center"
         }
       ]
     };
   },
-  components: {
-    Header
-  },
   methods: {
-    addItem() {
-      Store.dispatch("ADD_ITEM", { id: 0, name: "" });
-      this.$router.push({ name: "Sector" });
-    },
     editItem(item) {
       Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "Sector" });
+      this.$router.push({ name: "Organization" });
     },
     deleteItem(item, type) {
       this.selectedItem = item;
@@ -92,7 +86,7 @@ export default {
       }
     },
     handleOk() {
-      Store.dispatch("DELETE_SECTOR", this.selectedItem);
+      Store.dispatch("DELETE_ORGANIZATION", this.selectedItem);
     }
   },
   watch: {
@@ -101,7 +95,7 @@ export default {
       if (results.error) {
         return;
       }
-      Store.dispatch("LOAD_SECTORS");
+      Store.dispatch("LOAD_ORGANIZATIONS");
     }
   },
   computed: {
@@ -111,8 +105,8 @@ export default {
     isLogged() {
       return Store.state.user.id;
     },
-    sectors() {
-      return Store.state.sectors;
+    organizations() {
+      return Store.state.organizations;
     }
   },
   created() {
@@ -121,14 +115,18 @@ export default {
       return;
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
-    Store.dispatch("LOAD_SECTORS");
+    Store.dispatch("LOAD_ORGANIZATIONS");
+  },
+  components: {
+    Header,
+    Add
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.sectors {
+.organizations {
   background-color: white;
   padding-bottom: 10px;
 }

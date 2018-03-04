@@ -1,4 +1,4 @@
-# schedule-interface
+# purchase-client
 
 > A Vue.js project
 

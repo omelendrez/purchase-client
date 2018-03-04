@@ -2,71 +2,31 @@
   <b-container class="budget">
     <h1>Cambiar password</h1>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
-      <b-form-group
-        label="Usuario"
-        label-for="user_name">
-        <b-form-input
-          id="user_name"
-          type="text"
-          autocomplete="username"
-          readonly="readonly"
-          v-model.trim="form.user_name">
-        </b-form-input>
-      </b-form-group>
-      <b-form-group
-        label="Password actual"
-        label-for="password_current"
-        :valid-feedback="pwdValidFeedback"
-        :invalid-feedback="pwdInvalidFeedback"
-        :state="pwdState">
-        <b-form-input
-          id="password_current"
-          type="password"
-          autofocus="true"
-          autocomplete="current-password"
-          description="Escriba la password que usted usa actualmente para ingresar esta aplicación"
-          v-model.trim="form.password_current"
-          placeholder="Escriba aquí su password actual"
-          required>
-        </b-form-input>
-      </b-form-group>
-      <b-form-group
-        label="Nueva password"
-        label-for="password_new"
-        :valid-feedback="newValidFeedback"
-        :invalid-feedback="newInvalidFeedback"
-        :state="newState">
-        <b-form-input
-          id="password_new"
-          type="password"
-          autocomplete="new-password"
-          description="Entre su nueva password"
-          v-model.trim="form.password_new"
-          placeholder="Escriba aquí la nueva password"
-          required>
+
+      <b-form-group label="User name" label-for="user_name">
+        <b-form-input id="user_name" type="text" autocomplete="username" readonly="readonly" v-model.trim="form.user_name">
         </b-form-input>
       </b-form-group>
 
-      <b-form-group
-        label="Confirme password"
-        label-for="password_retype"
-        :valid-feedback="retValidFeedback"
-        :invalid-feedback="retInvalidFeedback"
-        :state="retState">
-        <b-form-input
-          id="password_retype"
-          type="password"
-          autocomplete="new-password"
-          v-model.trim="form.password_retype"
-          placeholder="Repita aquí la nueva password"
-          required>
+      <b-form-group label="Current password" label-for="password_current" :valid-feedback="pwdValidFeedback" :invalid-feedback="pwdInvalidFeedback" :state="pwdState">
+        <b-form-input id="password_current" type="password" autofocus="true" autocomplete="current-password" description="This is the password you use to access the application" v-model.trim="form.password_current" placeholder="Enter your current password" required>
+        </b-form-input>
+      </b-form-group>
+
+      <b-form-group label="New password" label-for="password_new" :valid-feedback="newValidFeedback" :invalid-feedback="newInvalidFeedback" :state="newState">
+        <b-form-input id="password_new" type="password" autocomplete="new-password" description="This is the new password you want to use from now on" v-model.trim="form.password_new" placeholder="Enter the new password" required>
+        </b-form-input>
+      </b-form-group>
+
+      <b-form-group label="Confirm password" label-for="password_retype" :valid-feedback="retValidFeedback" :invalid-feedback="retInvalidFeedback" :state="retState">
+        <b-form-input id="password_retype" type="password" autocomplete="new-password" v-model.trim="form.password_retype" placeholder="Re-type your new password" required>
         </b-form-input>
       </b-form-group>
 
       <div class="buttons">
-        <b-button type="submit" :disabled="!allOk" variant="info">Cambiar</b-button>
-        <b-button type="reset" class="to-center">Reset</b-button>
-        <b-button href="#/" class="to-right" variant="danger">Salir</b-button>
+        <b-button type="submit" :disabled="!allOk" variant="info">Save new password</b-button>
+        <b-button type="reset" class="to-center">Reset form</b-button>
+        <b-button href="#/" class="to-right" variant="danger">Cancel</b-button>
       </div>
 
       <b-alert variant="danger" :show="showError">{{ errorMessage }}</b-alert>
@@ -109,16 +69,16 @@ export default {
       return this.pwdState ? "Ok" : "";
     },
     pwdInvalidFeedback() {
-      return this.pwdState ? "" : "Entre su password";
+      return this.pwdState ? "" : "Enter your password";
     },
     newState() {
-      return this.form.password_new.length >= 6;
+      return this.form.password_new.length > 5;
     },
     newValidFeedback() {
       return this.newState ? "Ok" : "";
     },
     newInvalidFeedback() {
-      return this.newState ? "" : "Mínimo 6 caracteres";
+      return this.newState ? "" : "Password must be at least 6 characters long";
     },
     retState() {
       return (
@@ -132,7 +92,7 @@ export default {
     retInvalidFeedback() {
       return this.retState
         ? ""
-        : "La confirmación password debe con la nueva password";
+        : "The confirmation password must be the same than the new password";
     },
     allOk() {
       return this.newState && this.pwdState && this.retState;
@@ -148,7 +108,7 @@ export default {
         this.errorMessage = password.msg;
         this.showError = true;
       } else {
-        this.userMessage = "Password modificada con éxito";
+        this.userMessage = "Password has been successfuly changed";
         this.showMessage = true;
         setTimeout(() => {
           this.$router.push({ name: "Home" });

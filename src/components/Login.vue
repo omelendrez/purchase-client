@@ -24,7 +24,7 @@
 
 <script>
 import Store from "../store/store";
-import Header from "./Header";
+import Header from "./lib/Header";
 
 export default {
   name: "Login",

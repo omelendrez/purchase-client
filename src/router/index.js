@@ -1,21 +1,24 @@
 import Vue from "vue";
 import Router from "vue-router";
+
+import Header from "@/components/lib/Header";
 import Home from "@/components/Home";
+
 import Login from "@/components/Login";
 import ChangePassword from "@/components/ChangePassword";
-import Header from "@/components/Header";
-import Branches from "@/components/Branches";
-import Branch from "@/components/Branch";
-import Budgets from "@/components/Budgets";
-import Budget from "@/components/Budget";
-import Grid from "@/components/Grid";
-import Program from "@/components/Program";
-import Sectors from "@/components/Sectors";
-import Sector from "@/components/Sector";
+
+import Organizations from "@/components/Organizations";
+import Organization from "@/components/Organization";
+
+import Locations from "@/components/Locations";
+import Location from "@/components/Location";
+
+import Departments from "@/components/Departments";
+import Department from "@/components/Department";
+
 import Positions from "@/components/Positions";
 import Position from "@/components/Position";
-import Employees from "@/components/Employees";
-import Employee from "@/components/Employee";
+
 import Users from "@/components/Users";
 import User from "@/components/User";
 
@@ -44,44 +47,34 @@ export default new Router({
       component: Header
     },
     {
-      path: "/branches",
-      name: "Branches",
-      component: Branches
+      path: "/Organizations",
+      name: "Organizations",
+      component: Organizations
     },
     {
-      path: "/branch",
-      name: "Branch",
-      component: Branch
+      path: "/organization",
+      name: "Organization",
+      component: Organization
     },
     {
-      path: "/budgets",
-      name: "Budgets",
-      component: Budgets
+      path: "/departments",
+      name: "Departments",
+      component: Departments
     },
     {
-      path: "/budget",
-      name: "Budget",
-      component: Budget
+      path: "/department",
+      name: "Department",
+      component: Department
     },
     {
-      path: "/grid",
-      name: "Grid",
-      component: Grid
+      path: "/Locations",
+      name: "Locations",
+      component: Locations
     },
     {
-      path: "/program",
-      name: "Program",
-      component: Program
-    },
-    {
-      path: "/sectors",
-      name: "Sectors",
-      component: Sectors
-    },
-    {
-      path: "/sector",
-      name: "Sector",
-      component: Sector
+      path: "/location",
+      name: "Location",
+      component: Location
     },
     {
       path: "/positions",
@@ -92,16 +85,6 @@ export default new Router({
       path: "/position",
       name: "Position",
       component: Position
-    },
-    {
-      path: "/employees",
-      name: "Employees",
-      component: Employees
-    },
-    {
-      path: "/employee",
-      name: "Employee",
-      component: Employee
     },
     {
       path: "/users",

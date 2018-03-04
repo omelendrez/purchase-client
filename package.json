@@ -1,7 +1,7 @@
 {
-  "name": "schedule-interface",
+  "name": "purchase-client",
   "version": "1.0.0",
-  "description": "User Interface for Schedule",
+  "description": "User Interface for purchase+",
   "author": "omelendrez <omar.melendrez@gmail.com>",
   "private": true,
   "scripts": {
