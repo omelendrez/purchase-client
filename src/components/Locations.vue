@@ -10,18 +10,15 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table hover outlined :items="locations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
-
+    <b-table small hover outlined :items="locations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="cell">
-        <b-btn size="md" variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
-        <b-btn size="md" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
-        <b-btn size="md" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
+        <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
+        <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
+        <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
       </template>
-
       <template slot="table-caption">
         {{locations.count}} registros
       </template>
-
     </b-table>
 
     <b-pagination :total-rows="locations.count" :per-page="perPage" v-model="currentPage" variant="info" />
@@ -36,6 +33,10 @@
 <script>
 import Store from "../store/store";
 import Add from "./lib/Add";
+const fields = require("./lib/Fields").locations;
+const commonFields = require("./lib/Fields").commonFields;
+const actions = require("./lib/Fields").actions;
+const org = require("./lib/Fields").org;
 
 export default {
   name: "Locations",
@@ -48,44 +49,7 @@ export default {
       selectedItem: {
         name: ""
       },
-      fields: [
-        {
-          key: "organization.name",
-          sortable: true
-        },
-        {
-          key: "name",
-          sortable: true
-        },
-        {
-          key: "created_at",
-          class: "text-center",
-          thStyle: {
-            width: "160px"
-          }
-        },
-        {
-          key: "updated_at",
-          class: "text-center",
-          thStyle: {
-            width: "160px"
-          }
-        },
-        {
-          key: "status.name",
-          class: "text-center",
-          thStyle: {
-            width: "160px"
-          }
-        },
-        {
-          key: "actions",
-          class: "text-center",
-          thStyle: {
-            width: "200px"
-          }
-        }
-      ]
+      fields: fields
     };
   },
   methods: {
@@ -132,6 +96,14 @@ export default {
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
     Store.dispatch("LOAD_LOCATIONS");
+
+    if (Store.state.globalAdmin) {
+      this.fields.unshift(org);
+    }
+    this.fields.push(...commonFields);
+    if (Store.state.admin) {
+      this.fields.push(...actions);
+    }
   },
   components: {
     Add

@@ -10,11 +10,11 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table hover outlined :items="organizations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
-      <template slot="actions" slot-scope="cell">
-        <b-btn size="md" variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
-        <b-btn size="md" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
-        <b-btn size="md" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
+    <b-table small hover outlined :items="organizations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
+      <template slot="actions" slot-scope="cell" v-if="cell.item.id !== 1">
+        <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
+        <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
+        <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
       </template>
       <template slot="table-caption">
         {{organizations.count}} records
@@ -33,6 +33,9 @@
 <script>
 import Store from "../store/store";
 import Add from "./lib/Add";
+const fields = require("./lib/Fields").organizations;
+const commonFields = require("./lib/Fields").commonFields;
+const actions = require("./lib/Fields").actions;
 
 export default {
   name: "Organizations",
@@ -45,40 +48,7 @@ export default {
       selectedItem: {
         name: ""
       },
-      fields: [
-        {
-          key: "name",
-          sortable: true
-        },
-        {
-          key: "created_at",
-          class: "text-center",
-          thStyle: {
-            width: "160px"
-          }
-        },
-        {
-          key: "updated_at",
-          class: "text-center",
-          thStyle: {
-            width: "160px"
-          }
-        },
-        {
-          key: "status.name",
-          class: "text-center",
-          thStyle: {
-            width: "160px"
-          }
-        },
-        {
-          key: "actions",
-          class: "text-center",
-          thStyle: {
-            width: "200px"
-          }
-        }
-      ]
+      fields: fields
     };
   },
   methods: {
@@ -125,6 +95,11 @@ export default {
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
     Store.dispatch("LOAD_ORGANIZATIONS");
+
+    this.fields.push(...commonFields);
+    if (Store.state.admin) {
+      this.fields.push(...actions);
+    }
   },
   components: {
     Add

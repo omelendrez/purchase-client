@@ -1,8 +1,8 @@
 import HTTP from '../components/lib/http-common';
 
 export default {
-  fetchProfiles(payload) {
-    return HTTP.get(`profiles/${payload}`);
+  fetchProfiles() {
+    return HTTP.get('profiles');
   },
   saveProfile(payload) {
     if (payload.id === 0) {

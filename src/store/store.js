@@ -25,13 +25,14 @@ const state = {
   activeOrganizations: [],
   activeDepartments: [],
   activeLocations: [],
-  activeProfiles: [],
   status: [],
   users: [],
   user: [],
   password: [],
   record: [],
-  results: []
+  results: [],
+  globalAdmin: false,
+  admin: false
 };
 
 export default new Vuex.Store({
@@ -59,6 +60,13 @@ export default new Vuex.Store({
     [types.LOGOUT_USER]({ commit }) {
       commit(types.SET_USER, {
         payload: { id: null }
+      });
+    },
+
+    async [types.RESET_PASSWORD]({ commit }, item) {
+      const user = await Users.resetPassword(item);
+      commit(types.SET_RESULTS, {
+        payload: user.data
       });
     },
 
@@ -112,24 +120,10 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_PROFILES]({ commit }) {
-      const profiles = await Profiles.fetchProfiles(state.user.organization_id);
+      const profiles = await Profiles.fetchProfiles();
       commit(types.SET_PROFILES, {
         payload: profiles.data
       });
-    },
-
-    async [types.SAVE_PROFILE]({ commit }, item) {
-      const profile = await Profiles.saveProfile(item);
-      commit(types.SET_RESULTS, {
-        payload: profile.data
-      });
-    },
-
-    async [types.DELETE_PROFILE]({ commit }, item) {
-      const profile = await Profiles.deleteProfile(item.id);
-      commit(types.SET_RESULTS, {
-        payload: profile.data
-      })
     },
 
     async [types.LOAD_LOCATIONS]({ commit }) {
@@ -189,7 +183,15 @@ export default new Vuex.Store({
     },
 
     [types.SET_USER]: (state, { payload }) => {
-      state.user = payload;
+      const user = {}
+      for (const prop in payload) {
+        if (prop !== 'password') {
+          user[prop] = payload[prop]
+        }
+      }
+      state.user = user;
+      state.globalAdmin = state.user.organization_id === 1 && state.user.profile_id === 1
+      state.admin = state.user.profile_id === 1
     },
 
     [types.SET_ORGANIZATIONS]: (state, { payload }) => {
@@ -234,9 +236,6 @@ export default new Vuex.Store({
         item._cellVariants = {
           "status.name": item.status_id !== activeStatus ? inactiveColor : activeColor
         }
-      })
-      state.activeProfiles = payload.rows.filter(item => {
-        return item.status_id === activeStatus
       })
     },
 
