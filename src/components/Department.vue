@@ -1,6 +1,6 @@
 <template>
   <b-container class="department">
-    <h1>Department</h1>
+    <h3 class="text-center">Department</h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
       <b-form-group horizontal label="Name" label-for="name">
         <b-form-input id="name" v-model.trim="form.name" required></b-form-input>
