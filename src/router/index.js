@@ -16,6 +16,9 @@ import Location from "@/components/Location";
 import Departments from "@/components/Departments";
 import Department from "@/components/Department";
 
+import Projects from "@/components/Projects";
+import Project from "@/components/Project";
+
 import Users from "@/components/Users";
 import User from "@/components/User";
 
@@ -62,6 +65,16 @@ export default new Router({
       path: "/department",
       name: "Department",
       component: Department
+    },
+    {
+      path: "/projects",
+      name: "Projects",
+      component: Projects
+    },
+    {
+      path: "/project",
+      name: "Project",
+      component: Project
     },
     {
       path: "/locations",
