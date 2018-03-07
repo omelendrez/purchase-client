@@ -12,10 +12,10 @@
 
     <b-table small hover outlined :items="users.rows" :fields="fields" :filter="filter" head-variant="light">
       <template slot="actions" slot-scope="cell">
-        <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
-        <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
-        <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
-        <b-btn size="sm" variant="outline-danger" @click.stop="resetPassword(cell.item)">Reset password</b-btn>
+        <b-btn variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
+        <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Inactivate</b-btn>
+        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
+        <b-btn variant="outline-dark" @click.stop="resetPassword(cell.item)">Reset Pwd</b-btn>
       </template>
       <template slot="table-caption">
         {{users.count}} registros
@@ -24,8 +24,8 @@
 
     <b-pagination :total-rows="users.count" :per-page="perPage" v-model="currentPage" />
 
-    <b-modal id="modal-center" title="Deactivate" v-model="deleteShow" @ok="handleOk" ok-title="Yes. Deactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
-      <p class="my-4">Are you sure you want to deactivate
+    <b-modal id="modal-center" title="Inactivate" v-model="deleteShow" @ok="handleOk" ok-title="Yes. Inactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
+      <p class="my-4">Are you sure you want to inactivate
         <strong>{{ selectedItem.user_name }} </strong>?</p>
     </b-modal>
 
@@ -154,14 +154,15 @@ export default {
 <style scoped>
 .users {
   background-color: white;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-top: 20px;
 }
 .add-button {
   float: right;
 }
 .filter-form {
   max-width: 30%;
+  margin-bottom: 20px;
 }
 .reset-button {
   margin-left: 10px;

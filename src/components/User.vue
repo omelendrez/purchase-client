@@ -1,12 +1,12 @@
 <template>
 
   <b-container class="user">
-    <h1>User</h1>
+    <h3 class="text-center">User</h3>
 
     <b-form @submit="onSubmit" @reset="onReset" v-if="form.show" id="addForm">
 
       <b-form-group horizontal label="Organization" label-for="organization_id">
-        <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required/>
+        <b-form-select v-model="form.organization_id" :options="organizations" @change="updateChildrenTables" class="mb-3" required/>
       </b-form-group>
 
       <b-form-group horizontal label="User name" label-for="user_name">
@@ -26,11 +26,11 @@
       </b-form-group>
 
       <b-form-group horizontal label="Department" label-for="department_id">
-        <b-form-select v-model="form.department_id" :options="departments" class="mb-3" required/>
+        <b-form-select v-model="form.department_id" :options="departmentOptions" class="mb-3" required/>
       </b-form-group>
 
       <b-form-group horizontal label="Location" label-for="location_id">
-        <b-form-select v-model="form.location_id" :options="locations" class="mb-3" required/>
+        <b-form-select v-model="form.location_id" :options="locationOptions" class="mb-3" required/>
       </b-form-group>
 
       <Buttons />
@@ -62,7 +62,9 @@ export default {
         show: true
       },
       errorShow: false,
-      errorMessage: ""
+      errorMessage: "",
+      locationOptions: [],
+      departmentOptions: []
     };
   },
   components: {
@@ -107,7 +109,10 @@ export default {
       }
       const options = [];
       for (let i = 0; i < organizations.length; i++) {
-        if (organizations[i].id === Store.state.user.organization_id || Store.state.globalAdmin) {
+        if (
+          organizations[i].id === Store.state.user.organization_id ||
+          Store.state.globalAdmin
+        ) {
           options.push({
             value: organizations[i].id,
             text: organizations[i].name
@@ -188,6 +193,33 @@ export default {
       this.$nextTick(() => {
         this.$router.push({ name: "Users" });
       });
+    },
+    updateChildrenTables(organizationId) {
+      this.$nextTick(() => {
+        this.refreshData(
+          Store.state.activeLocations,
+          this.locationOptions,
+          organizationId
+        );
+        this.refreshData(
+          Store.state.activeDepartments,
+          this.departmentOptions,
+          organizationId
+        );
+      });
+    },
+    refreshData(table, options, organizationId) {
+      if (!table) {
+        return;
+      }
+      for (let i = 0; i < table.length; i++) {
+        if (table[i].organization_id === organizationId) {
+          options.push({
+            value: table[i].id,
+            text: table[i].name
+          });
+        }
+      }
     }
   },
   created() {
@@ -199,17 +231,28 @@ export default {
     Store.dispatch("LOAD_LOCATIONS");
     Store.dispatch("LOAD_DEPARTMENTS");
     Store.dispatch("LOAD_PROFILES");
-
-    if (this.item) {
-      this.form.id = this.item.id;
-      this.form.user_name = this.item.user_name;
-      this.form.full_name = this.item.full_name;
-      this.form.email = this.item.email;
-      this.form.organization_id = this.item.organization_id;
-      this.form.location_id = this.item.location_id;
-      this.form.department_id = this.item.department_id;
-      this.form.profile_id = this.item.profile_id;
-    }
+    this.$nextTick(() => {
+      if (this.item) {
+        this.form.id = this.item.id;
+        this.form.user_name = this.item.user_name;
+        this.form.full_name = this.item.full_name;
+        this.form.email = this.item.email;
+        this.form.organization_id = this.item.organization_id;
+        this.form.location_id = this.item.location_id;
+        this.form.department_id = this.item.department_id;
+        this.form.profile_id = this.item.profile_id;
+        this.refreshData(
+          Store.state.activeLocations,
+          this.locationOptions,
+          this.form.organization_id
+        );
+        this.refreshData(
+          Store.state.activeDepartments,
+          this.departmentOptions,
+          this.form.organization_id
+        );
+      }
+    });
   }
 };
 </script>

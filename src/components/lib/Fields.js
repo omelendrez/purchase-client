@@ -5,7 +5,7 @@ const commonFields = [{
   key: "created_at",
   class: "text-center",
   thStyle: {
-    width: "160px"
+    width: "120px"
   }
 },
 {
@@ -13,7 +13,7 @@ const commonFields = [{
   key: "updated_at",
   class: "text-center",
   thStyle: {
-    width: "160px"
+    width: "120px"
   }
 },
 {
@@ -21,7 +21,7 @@ const commonFields = [{
   key: "status.name",
   class: "text-center",
   thStyle: {
-    width: "160px"
+    width: "100px"
   }
 }]
 
@@ -29,7 +29,7 @@ const actions = [{
   key: "actions",
   class: "text-center",
   thStyle: {
-    width: "260px"
+    width: "280px"
   }
 }]
 

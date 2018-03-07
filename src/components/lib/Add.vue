@@ -1,7 +1,7 @@
 
 <template>
   <div class="add-button">
-    <b-button @click="addItem" variant="info" title="Add">Add new record</b-button>
+    <b-button @click="addItem" variant="primary" title="Add">Add new record</b-button>
   </div>
 </template>
 
@@ -18,10 +18,10 @@ export default {
   },
   computed: {
     option() {
-      let option = Store.state.option;
-      option = option.substring(1);
-      option = option.slice(0, -1);
-      option = option.charAt(0).toUpperCase() + option.slice(1).toLowerCase();
+      let option = Store.state.option.substring(1).slice(0, -1);
+      option = `${option.charAt(0).toUpperCase()}${option
+        .slice(1)
+        .toLowerCase()}`;
       return option;
     }
   }
