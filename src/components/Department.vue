@@ -2,6 +2,11 @@
   <b-container class="department">
     <h3 class="text-center">Department</h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
+
+      <b-form-group horizontal label="Organization" label-for="organization_id">
+        <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required/>
+      </b-form-group>
+
       <b-form-group horizontal label="Name" label-for="name">
         <b-form-input id="name" v-model.trim="form.name" required></b-form-input>
       </b-form-group>
@@ -25,7 +30,8 @@ export default {
       show: true,
       form: {
         name: "",
-        id: 0
+        id: 0,
+        organization_id: 0
       },
       errorShow: false,
       errorMessage: ""
@@ -46,6 +52,25 @@ export default {
     }
   },
   computed: {
+    organizations() {
+      const organizations = Store.state.activeOrganizations;
+      if (!organizations) {
+        return;
+      }
+      const options = [];
+      for (let i = 0; i < organizations.length; i++) {
+        if (
+          organizations[i].id === Store.state.user.organization_id ||
+          Store.state.globalAdmin
+        ) {
+          options.push({
+            value: organizations[i].id,
+            text: organizations[i].name
+          });
+        }
+      }
+      return options;
+    },
     results() {
       return Store.state.results;
     },
@@ -62,7 +87,6 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      this.form.organization_id = this.organization_id;
       Store.dispatch("SAVE_DEPARTMENT", this.form);
     },
     onReset(evt) {
@@ -80,8 +104,9 @@ export default {
       return;
     }
     if (this.item) {
-      this.form.name = this.item.name;
       this.form.id = this.item.id;
+      this.form.name = this.item.name;
+      this.form.organization_id = this.item.organization_id;
     }
   }
 };

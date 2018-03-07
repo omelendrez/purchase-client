@@ -3,13 +3,20 @@
   <b-container class="branch">
     <h3 class="text-center">Location</h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
+
+      <b-form-group horizontal label="Organization" label-for="organization_id">
+        <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required/>
+      </b-form-group>
+
       <b-form-group horizontal label="Name" label-for="name">
         <b-form-input id="name" v-model.trim="form.name" required></b-form-input>
       </b-form-group>
+
       <b-form-group horizontal label="Address" label-for="address">
         <b-form-textarea id="address" v-model="form.address" placeholder="Enter the address of this location" :rows="3" required :max-rows="6">
         </b-form-textarea>
       </b-form-group>
+
       <b-form-group horizontal label="Phone" label-for="phone">
         <b-form-input id="phone" v-model.trim="form.phone" required></b-form-input>
       </b-form-group>
@@ -31,10 +38,11 @@ export default {
     return {
       show: true,
       form: {
+        id: 0,
         name: "",
         address: "",
         phone: "",
-        id: 0
+        organization_id: 0
       }
     };
   },
@@ -51,6 +59,25 @@ export default {
     }
   },
   computed: {
+    organizations() {
+      const organizations = Store.state.activeOrganizations;
+      if (!organizations) {
+        return;
+      }
+      const options = [];
+      for (let i = 0; i < organizations.length; i++) {
+        if (
+          organizations[i].id === Store.state.user.organization_id ||
+          Store.state.globalAdmin
+        ) {
+          options.push({
+            value: organizations[i].id,
+            text: organizations[i].name
+          });
+        }
+      }
+      return options;
+    },
     results() {
       return Store.state.results;
     },
@@ -67,7 +94,6 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      this.form.organization_id = this.organization_id;
       Store.dispatch("SAVE_LOCATION", this.form);
     },
     onReset(evt) {
@@ -84,11 +110,13 @@ export default {
       this.$router.push({ name: "Login" });
       return;
     }
+    Store.dispatch("LOAD_ORGANIZATIONS");
     if (this.item) {
+      this.form.id = this.item.id;
       this.form.name = this.item.name;
       this.form.address = this.item.address;
       this.form.phone = this.item.phone;
-      this.form.id = this.item.id;
+      this.form.organization_id = this.item.organization_id;
     }
   }
 };
