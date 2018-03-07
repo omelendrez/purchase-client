@@ -107,7 +107,7 @@ export default {
       }
       const options = [];
       for (let i = 0; i < organizations.length; i++) {
-        if (organizations[i].id === Store.state.user.organization_id) {
+        if (organizations[i].id === Store.state.user.organization_id || Store.state.globalAdmin) {
           options.push({
             value: organizations[i].id,
             text: organizations[i].name

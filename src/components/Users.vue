@@ -11,7 +11,7 @@
     </b-form-group>
 
     <b-table small hover outlined :items="users.rows" :fields="fields" :filter="filter" head-variant="light">
-      <template slot="actions" slot-scope="cell" v-if="cell.item.id !== user.id">
+      <template slot="actions" slot-scope="cell">
         <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
         <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
         <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
@@ -141,9 +141,7 @@ export default {
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
     Store.dispatch("LOAD_USERS");
 
-    if (Store.state.globalAdmin) {
-      this.fields.unshift(org);
-    }
+    this.fields.unshift(org);
     this.fields.push(...commonFields);
     if (Store.state.admin) {
       this.fields.push(...actions);

@@ -51,6 +51,11 @@ const users = [{
   label: "Profile",
   key: "profile.name",
   sortable: true
+},
+{
+  label: "Department",
+  key: "department.name",
+  sortable: true
 }];
 
 const departments = [{

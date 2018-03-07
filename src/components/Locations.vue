@@ -97,9 +97,7 @@ export default {
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
     Store.dispatch("LOAD_LOCATIONS");
 
-    if (Store.state.globalAdmin) {
-      this.fields.unshift(org);
-    }
+    this.fields.unshift(org);
     this.fields.push(...commonFields);
     if (Store.state.admin) {
       this.fields.push(...actions);
