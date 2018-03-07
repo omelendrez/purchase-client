@@ -10,11 +10,12 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table hover outlined :items="users.rows" :fields="fields" head-variant="light">
+    <b-table small hover outlined :items="users.rows" :fields="fields" :filter="filter" head-variant="light">
       <template slot="actions" slot-scope="cell" v-if="cell.item.id !== user.id">
-        <b-btn size="md" variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
-        <b-btn size="md" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
-        <b-btn size="md" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
+        <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
+        <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Deactivate</b-btn>
+        <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
+        <b-btn size="sm" variant="outline-danger" @click.stop="resetPassword(cell.item)">Reset password</b-btn>
       </template>
       <template slot="table-caption">
         {{users.count}} registros
@@ -23,9 +24,20 @@
 
     <b-pagination :total-rows="users.count" :per-page="perPage" v-model="currentPage" />
 
-    <b-modal id="modal-center" title="Deactivate" v-model="show" @ok="handleOk" ok-title="Yes. Deactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
+    <b-modal id="modal-center" title="Deactivate" v-model="deleteShow" @ok="handleOk" ok-title="Yes. Deactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
       <p class="my-4">Are you sure you want to deactivate
         <strong>{{ selectedItem.user_name }} </strong>?</p>
+    </b-modal>
+
+    <b-modal id="modal-center" title="Password reset" v-model="resetShow" @ok="handleOkReset" ok-title="Yes. Reset" cancel-title="No. Leave it" ok-variant="danger" cancel-variant="success">
+      <p class="my-4">Are you sure you want to reset the password for user
+        <strong>{{ selectedItem.user_name }} </strong>?</p>
+      <p>You can enter below the password you want to set for the user or you can set the default password by leaving the field empty then click on Yes, Re</p>
+      <form @submit.stop.prevent="handleOkReset">
+        <b-form-group horizontal label="Password" label-for="pwd">
+          <b-form-input type="text" id="pwd" placeholder="Enter a new password or leave it blank" v-model="pwd"></b-form-input>
+        </b-form-group>
+      </form>
     </b-modal>
 
   </b-container>
@@ -34,65 +46,26 @@
 <script>
 import Store from "../store/store";
 import Add from "./lib/Add";
+const fields = require("./lib/Fields").users;
+const commonFields = require("./lib/Fields").commonFields;
+const actions = require("./lib/Fields").actions;
+const org = require("./lib/Fields").org;
 
 export default {
   name: "Users",
   data() {
     return {
+      pwd: "",
       perPage: 10,
       currentPage: 1,
       filter: null,
-      show: false,
+      deleteShow: false,
+      resetShow: false,
       selectedItem: {
         user_name: "",
         full_name: ""
       },
-      fields: [
-        {
-          key: "organization.name",
-          sortable: true
-        },
-        {
-          key: "user_name",
-          sortable: true
-        },
-        {
-          key: "full_name",
-          sortable: true
-        },
-        {
-          key: "profile.name",
-          sortable: true
-        },
-        {
-          key: "created_at",
-          class: "text-center",
-          thStyle: {
-            width: "160px"
-          }
-        },
-        {
-          key: "updated_at",
-          class: "text-center",
-          thStyle: {
-            width: "160px"
-          }
-        },
-        {
-          key: "status.name",
-          class: "text-center",
-          thStyle: {
-            width: "160px"
-          }
-        },
-        {
-          key: "actions",
-          class: "text-center",
-          thStyle: {
-            width: "200px"
-          }
-        }
-      ]
+      fields: fields
     };
   },
   components: {
@@ -121,15 +94,29 @@ export default {
     deleteItem(item, type) {
       this.selectedItem = item;
       if (type === 1) {
-        this.show = true;
+        this.deleteShow = true;
       } else {
         this.handleOk();
       }
+    },
+    handleOkReset() {
+      this.selectedItem.password = this.pwd;
+      Store.dispatch("RESET_PASSWORD", this.selectedItem);
+    },
+    handleSubmit() {
+      this.$refs.modal.hide();
+    },
+    resetPassword(item, type) {
+      this.selectedItem = item;
+      this.resetShow = true;
     }
   },
   watch: {
     results() {
       Store.dispatch("LOAD_USERS");
+    },
+    users() {
+      return Store.dispatch.users;
     }
   },
   computed: {
@@ -152,12 +139,15 @@ export default {
       return;
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
-    Store.dispatch("LOAD_ORGANIZATIONS");
-    Store.dispatch("LOAD_LOCATIONS");
-    Store.dispatch("LOAD_DEPARTMENTS");
-    Store.dispatch("LOAD_PROFILES");
-    Store.dispatch("LOAD_STATUS");
     Store.dispatch("LOAD_USERS");
+
+    if (Store.state.globalAdmin) {
+      this.fields.unshift(org);
+    }
+    this.fields.push(...commonFields);
+    if (Store.state.admin) {
+      this.fields.push(...actions);
+    }
   }
 };
 </script>

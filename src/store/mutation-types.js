@@ -29,8 +29,6 @@ export const DELETE_DEPARTMENT = 'DELETE_DEPARTMENT'
 
 export const LOAD_PROFILES = 'LOAD_PROFILES'
 export const SET_PROFILES = 'SET_PROFILES'
-export const SAVE_PROFILE = 'SAVE_PROFILE'
-export const DELETE_PROFILE = 'DELETE_PROFILE'
 
 export const LOAD_STATUS = 'LOAD_STATUS'
 export const SET_STATUS = 'SET_STATUS'
@@ -39,3 +37,4 @@ export const LOAD_USERS = 'LOAD_USERS'
 export const SET_USERS = 'SET_USERS'
 export const SAVE_USER = 'SAVE_USER'
 export const DELETE_USER = 'DELETE_USER'
+export const RESET_PASSWORD = 'RESET_PASSWORD'

@@ -18,7 +18,7 @@
       </b-form-group>
 
       <b-form-group horizontal label="Email address" label-for="email">
-        <b-form-input id="email" v-model.trim="form.email" required></b-form-input>
+        <b-form-input id="email" type="email" v-model.trim="form.email" required></b-form-input>
       </b-form-group>
 
       <b-form-group horizontal label="Profile" label-for="profile_id">
@@ -87,20 +87,24 @@ export default {
       return Store.state.user.id;
     },
     profiles() {
-      const profiles = Store.state.activeProfiles;
+      const profiles = Store.state.profiles.rows;
+      if (!profiles) {
+        return;
+      }
       const options = [];
       for (let i = 0; i < profiles.length; i++) {
-        if (profiles[i].organization_id === Store.state.user.organization_id) {
-          options.push({
-            value: profiles[i].id,
-            text: profiles[i].name
-          });
-        }
+        options.push({
+          value: profiles[i].id,
+          text: profiles[i].name
+        });
       }
       return options;
     },
     organizations() {
       const organizations = Store.state.activeOrganizations;
+      if (!organizations) {
+        return;
+      }
       const options = [];
       for (let i = 0; i < organizations.length; i++) {
         if (organizations[i].id === Store.state.user.organization_id) {
@@ -114,6 +118,9 @@ export default {
     },
     locations() {
       const locations = Store.state.activeLocations;
+      if (!locations) {
+        return;
+      }
       const options = [];
       for (let i = 0; i < locations.length; i++) {
         if (locations[i].organization_id === Store.state.user.organization_id) {
@@ -127,6 +134,9 @@ export default {
     },
     departments() {
       const departments = Store.state.activeDepartments;
+      if (!departments) {
+        return;
+      }
       const options = [];
       for (let i = 0; i < departments.length; i++) {
         if (
@@ -185,6 +195,11 @@ export default {
       this.$router.push({ name: "Login" });
       return;
     }
+    Store.dispatch("LOAD_ORGANIZATIONS");
+    Store.dispatch("LOAD_LOCATIONS");
+    Store.dispatch("LOAD_DEPARTMENTS");
+    Store.dispatch("LOAD_PROFILES");
+
     if (this.item) {
       this.form.id = this.item.id;
       this.form.user_name = this.item.user_name;

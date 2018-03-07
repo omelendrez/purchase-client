@@ -17,6 +17,9 @@ export default {
   changePassword(payload) {
     return HTTP.put(`users/${payload.id}/password`, payload);
   },
+  resetPassword(payload) {
+    return HTTP.put(`users/${payload.id}/password-reset`, payload);
+  },
   deleteUser(payload) {
     return HTTP.delete(`users/${payload}`);
   }
