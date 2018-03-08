@@ -39,6 +39,13 @@
 
     </b-navbar>
 
+    <b-navbar-nav class="font-size">
+      <b-nav-form>
+        <b-button size="sm" class="my-2 my-sm-0" @click="changeFontSize(-1)">A-</b-button>
+        <b-button size="sm" class="my-2 my-sm-0" @click="changeFontSize(+1)">A+</b-button>
+      </b-nav-form>
+    </b-navbar-nav>
+
   </div>
 
 </template>
@@ -66,14 +73,23 @@ export default {
     userFullName() {
       return Store.state.user.full_name;
     }
+  },
+  methods: {
+    changeFontSize(incrDecr) {
+      Store.dispatch("CHANGE_FONT_SIZE", incrDecr);
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 .nav-item a {
   margin-left: 60px;
+}
+.font-size {
+  position: fixed;
+  bottom: 2px;
+  right: 2px;
 }
 </style>

@@ -12,9 +12,9 @@
 
     <b-table small hover outlined :items="departments.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="cell">
-        <b-btn variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
-        <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Inactivate</b-btn>
-        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
+        <b-btn variant="info" @click.stop="editItem(cell.item)" v-bind:style="{ fontSize: fontSize + 'px' }">Modify</b-btn>
+        <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)" v-bind:style="{ fontSize: fontSize + 'px' }">Inactivate</b-btn>
+        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)" v-bind:style="{ fontSize: fontSize + 'px' }">Re-activate</b-btn>
       </template>
       <template slot="table-caption">
         {{departments.count}} records
@@ -80,6 +80,9 @@ export default {
     }
   },
   computed: {
+    fontSize() {
+      return Store.state.fontSize;
+    },
     results() {
       return Store.state.results;
     },

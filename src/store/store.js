@@ -41,12 +41,19 @@ const state = {
   results: [],
   option: false,
   globalAdmin: false,
-  admin: false
+  admin: false,
+  fontSize: 18
 };
 
 export default new Vuex.Store({
   state,
   actions: {
+    [types.CHANGE_FONT_SIZE]({ commit }, incrDecr) {
+      commit(types.SET_FONT_SIZE, {
+        payload: incrDecr
+      });
+    },
+
     [types.SET_MENU_OPTION]({ commit }, option) {
       commit(types.ASSIGN_MENU_OPTION, {
         payload: option
@@ -362,6 +369,10 @@ export default new Vuex.Store({
 
     [types.SET_STATUS]: (state, { payload }) => {
       state.status = payload;
+    },
+
+    [types.SET_FONT_SIZE]: (state, { payload }) => {
+      state.fontSize += payload;
     },
 
     [types.SET_USERS]: (state, { payload }) => {

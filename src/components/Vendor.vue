@@ -81,6 +81,9 @@ export default {
     }
   },
   computed: {
+    fontSize() {
+      return Store.state.fontSize;
+    },
     results() {
       return Store.state.results;
     },

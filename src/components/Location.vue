@@ -5,20 +5,20 @@
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
       <b-form-group horizontal label="Organization" label-for="organization_id">
-        <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required/>
+        <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required v-bind:style="{ fontSize: fontSize + 'px' }"/>
       </b-form-group>
 
       <b-form-group horizontal label="Name" label-for="name">
-        <b-form-input id="name" v-model.trim="form.name" required></b-form-input>
+        <b-form-input id="name" v-model.trim="form.name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
       </b-form-group>
 
       <b-form-group horizontal label="Address" label-for="address">
-        <b-form-textarea id="address" v-model="form.address" placeholder="Enter the address of this location" :rows="3" required :max-rows="6">
+        <b-form-textarea id="address" v-model="form.address" placeholder="Enter the address of this location" :rows="3" required :max-rows="6" v-bind:style="{ fontSize: fontSize + 'px' }">
         </b-form-textarea>
       </b-form-group>
 
       <b-form-group horizontal label="Phone" label-for="phone">
-        <b-form-input id="phone" v-model.trim="form.phone" required></b-form-input>
+        <b-form-input id="phone" v-model.trim="form.phone" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
       </b-form-group>
 
       <Buttons/>
@@ -59,6 +59,9 @@ export default {
     }
   },
   computed: {
+    fontSize() {
+      return Store.state.fontSize;
+    },
     organizations() {
       const organizations = Store.state.activeOrganizations;
       if (!organizations) {

@@ -1,6 +1,9 @@
 export const SET_MENU_OPTION = "SET_MENU_OPTION";
 export const ASSIGN_MENU_OPTION = "ASSIGN_MENU_OPTION";
 
+export const CHANGE_FONT_SIZE = "CHANGE_FONT_SIZE";
+export const SET_FONT_SIZE = "SET_FONT_SIZE";
+
 export const ADD_ITEM = "ADD_ITEM";
 export const SET_RECORD = "SET_RECORD";
 
