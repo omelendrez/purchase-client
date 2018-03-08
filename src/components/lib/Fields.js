@@ -40,7 +40,11 @@ const actions = [
 const org = {
   key: "organization.name",
   label: "Organization",
-  sortable: true
+  sortable: true,
+  thStyle: {
+    width: "200px"
+  }
+
 };
 
 const users = [
@@ -84,12 +88,36 @@ const locations = [
 const projects = [
   {
     key: "code",
-    sortable: true
+    sortable: true,
+    thStyle: {
+      width: "100px"
+    }
   },
   {
     key: "name",
     sortable: true
   }
+];
+
+const permissions = [
+  {
+    key: "code",
+    sortable: true,
+    thStyle: {
+      width: "100px"
+    }
+  },
+  {
+    key: "name",
+    sortable: true,
+    thStyle: {
+      width: "300px"
+    }
+  },
+  {
+    key: "description"
+  }
+
 ];
 
 const organizations = [
@@ -107,5 +135,6 @@ module.exports = {
   departments,
   locations,
   projects,
+  permissions,
   organizations
 };
