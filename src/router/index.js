@@ -25,6 +25,9 @@ import Permission from "@/components/Permission";
 import Users from "@/components/Users";
 import User from "@/components/User";
 
+import Vendors from "@/components/Vendors";
+import Vendor from "@/components/Vendor";
+
 Vue.use(Router);
 
 export default new Router({
@@ -108,6 +111,17 @@ export default new Router({
       path: "/user",
       name: "User",
       component: User
+    },
+    {
+      path: "/vendors",
+      name: "Vendors",
+      component: Vendors
+    },
+    {
+      path: "/vendor",
+      name: "Vendor",
+      component: Vendor
     }
+
   ]
 });

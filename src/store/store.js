@@ -9,6 +9,7 @@ import Projects from "./../services/projects";
 import Permissions from "./../services/permissions";
 import Status from "./../services/status";
 import Users from "./../services/users";
+import Vendors from "./../services/vendors";
 
 import * as types from "../store/mutation-types";
 
@@ -24,12 +25,14 @@ const state = {
   activeDepartments: [],
   activeProjects: [],
   activePermissions: [],
+  activeVendors: [],
   organizations: [],
   locations: [],
   departments: [],
   projects: [],
   permissions: [],
   profiles: [],
+  vendors: [],
   status: [],
   user: [],
   users: [],
@@ -150,6 +153,13 @@ export default new Vuex.Store({
       });
     },
 
+    async [types.LOAD_VENDORS]({ commit }) {
+      const vendors = await Vendors.fetchVendors(state.user.organization_id);
+      commit(types.SET_VENDORS, {
+        payload: vendors.data
+      });
+    },
+
     async [types.LOAD_LOCATIONS]({ commit }) {
       const locations = await Locations.fetchLocations(
         state.user.organization_id
@@ -163,6 +173,13 @@ export default new Vuex.Store({
       const location = await Locations.saveLocation(item);
       commit(types.SET_RESULTS, {
         payload: location.data
+      });
+    },
+
+    async [types.SAVE_VENDOR]({ commit }, item) {
+      const vendor = await Vendors.saveVendor(item);
+      commit(types.SET_RESULTS, {
+        payload: vendor.data
       });
     },
 
@@ -198,6 +215,13 @@ export default new Vuex.Store({
       const permission = await Permissions.deletePermission(item.id);
       commit(types.SET_RESULTS, {
         payload: permission.data
+      });
+    },
+
+    async [types.DELETE_VENDOR]({ commit }, item) {
+      const vendor = await Vendors.deleteVendor(item.id);
+      commit(types.SET_RESULTS, {
+        payload: vendor.data
       });
     },
 
@@ -319,6 +343,19 @@ export default new Vuex.Store({
         };
       });
       state.activePermissions = payload.rows.filter(item => {
+        return item.status_id === activeStatus;
+      });
+    },
+
+    [types.SET_VENDORS]: (state, { payload }) => {
+      state.vendors = payload;
+      payload.rows.map(item => {
+        item._cellVariants = {
+          "status.name":
+            item.status_id !== activeStatus ? inactiveColor : activeColor
+        };
+      });
+      state.activeVendors = payload.rows.filter(item => {
         return item.status_id === activeStatus;
       });
     },
