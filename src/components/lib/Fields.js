@@ -117,7 +117,32 @@ const permissions = [
   {
     key: "description"
   }
+];
 
+const vendors = [
+  {
+    key: "code",
+    sortable: true,
+    thStyle: {
+      width: "100px"
+    }
+  },
+  {
+    key: "name",
+    sortable: true
+  },
+  {
+    key: "phone",
+    sortable: true
+  },
+  {
+    key: "email",
+    sortable: true
+  },
+  {
+    key: "contact",
+    sortable: true
+  }
 ];
 
 const organizations = [
@@ -136,5 +161,6 @@ module.exports = {
   locations,
   projects,
   permissions,
-  organizations
+  organizations,
+  vendors
 };

@@ -17,6 +17,7 @@
             <b-nav-item v-bind:active="menuOption === '/departments'" href="#/departments">Departments</b-nav-item>
             <b-nav-item v-bind:active="menuOption === '/locations'" href="#/locations">Locations</b-nav-item>
             <b-nav-item v-bind:active="menuOption === '/projects'" href="#/projects">Projects</b-nav-item>
+            <b-nav-item v-bind:active="menuOption === '/vendors'" href="#/vendors">Vendors</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
