@@ -10,7 +10,7 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table small hover outlined :items="vendors.rows" :fields="fields" :filter="filter" head-variant="light">
+    <b-table small hover outlined :items="vendors.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="cell">
         <b-btn variant="info" @click.stop="editItem(cell.item)" v-bind:style="{ fontSize: fontSize + 'px' }">Modify</b-btn>
         <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)" v-bind:style="{ fontSize: fontSize + 'px' }">Inactivate</b-btn>
