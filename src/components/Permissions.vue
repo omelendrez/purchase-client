@@ -1,5 +1,5 @@
 <template>
-  <b-container class="departments" fluid>
+  <b-container class="permissions" fluid>
 
     <Add />
 
@@ -10,18 +10,18 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table small hover outlined :items="departments.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
+    <b-table small hover outlined :items="permissions.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="cell">
         <b-btn variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
         <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Inactivate</b-btn>
         <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)">Re-activate</b-btn>
       </template>
       <template slot="table-caption">
-        {{departments.count}} records
+        {{permissions.count}} records
       </template>
     </b-table>
 
-    <b-pagination :total-rows="departments.count" :per-page="perPage" v-model="currentPage" variant="info" />
+    <b-pagination :total-rows="permissions.count" :per-page="perPage" v-model="currentPage" variant="info" />
 
     <b-modal id="modal-center" title="Inactivate" v-model="deleteShow" @ok="handleOk" ok-title="Yes. Inactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
       <p class="my-4">Are you sure you want to inactivate
@@ -34,13 +34,12 @@
 <script>
 import Store from "../store/store";
 import Add from "./lib/Add";
-const fields = require("./lib/Fields").departments;
+const fields = require("./lib/Fields").permissions;
 const commonFields = require("./lib/Fields").commonFields;
 const actions = require("./lib/Fields").actions;
-const org = require("./lib/Fields").org;
 
 export default {
-  name: "Departments",
+  name: "Permissions",
   data() {
     return {
       perPage: 10,
@@ -48,7 +47,9 @@ export default {
       filter: null,
       deleteShow: false,
       selectedItem: {
-        name: ""
+        code: "",
+        name: "",
+        description: ""
       },
       fields: fields
     };
@@ -56,7 +57,7 @@ export default {
   methods: {
     editItem(item) {
       Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "Department" });
+      this.$router.push({ name: "Permission" });
     },
     deleteItem(item, type) {
       this.selectedItem = item;
@@ -67,7 +68,7 @@ export default {
       }
     },
     handleOk() {
-      Store.dispatch("DELETE_DEPARTMENT", this.selectedItem);
+      Store.dispatch("DELETE_PERMISSION", this.selectedItem);
     }
   },
   watch: {
@@ -76,7 +77,7 @@ export default {
       if (results.error) {
         return;
       }
-      Store.dispatch("LOAD_DEPARTMENTS");
+      Store.dispatch("LOAD_PERMISSIONS");
     }
   },
   computed: {
@@ -86,8 +87,8 @@ export default {
     isLogged() {
       return Store.state.user.id;
     },
-    departments() {
-      return Store.state.departments;
+    permissions() {
+      return Store.state.permissions;
     }
   },
   created() {
@@ -96,9 +97,8 @@ export default {
       return;
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
-    Store.dispatch("LOAD_DEPARTMENTS");
+    Store.dispatch("LOAD_PERMISSIONS");
 
-    this.fields.unshift(org);
     this.fields.push(...commonFields);
     if (Store.state.admin) {
       this.fields.push(...actions);
@@ -112,7 +112,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.departments {
+.permissions {
   background-color: white;
   padding-bottom: 20px;
   padding-top: 20px;

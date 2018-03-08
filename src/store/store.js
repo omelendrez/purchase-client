@@ -6,6 +6,7 @@ import Locations from "./../services/locations";
 import Departments from "./../services/departments";
 import Profiles from "./../services/profiles";
 import Projects from "./../services/projects";
+import Permissions from "./../services/permissions";
 import Status from "./../services/status";
 import Users from "./../services/users";
 
@@ -22,10 +23,12 @@ const state = {
   activeLocations: [],
   activeDepartments: [],
   activeProjects: [],
+  activePermissions: [],
   organizations: [],
   locations: [],
   departments: [],
   projects: [],
+  permissions: [],
   profiles: [],
   status: [],
   user: [],
@@ -140,6 +143,13 @@ export default new Vuex.Store({
       });
     },
 
+    async [types.LOAD_PERMISSIONS]({ commit }) {
+      const permissions = await Permissions.fetchPermissions();
+      commit(types.SET_PERMISSIONS, {
+        payload: permissions.data
+      });
+    },
+
     async [types.LOAD_LOCATIONS]({ commit }) {
       const locations = await Locations.fetchLocations(
         state.user.organization_id
@@ -170,10 +180,24 @@ export default new Vuex.Store({
       });
     },
 
+    async [types.SAVE_PERMISSION]({ commit }, item) {
+      const permission = await Permissions.savePermission(item);
+      commit(types.SET_RESULTS, {
+        payload: permission.data
+      });
+    },
+
     async [types.DELETE_PROJECT]({ commit }, item) {
       const project = await Projects.deleteProject(item.id);
       commit(types.SET_RESULTS, {
         payload: project.data
+      });
+    },
+
+    async [types.DELETE_PERMISSION]({ commit }, item) {
+      const permission = await Permissions.deletePermission(item.id);
+      commit(types.SET_RESULTS, {
+        payload: permission.data
       });
     },
 
@@ -282,6 +306,19 @@ export default new Vuex.Store({
         };
       });
       state.activeProjects = payload.rows.filter(item => {
+        return item.status_id === activeStatus;
+      });
+    },
+
+    [types.SET_PERMISSIONS]: (state, { payload }) => {
+      state.permissions = payload;
+      payload.rows.map(item => {
+        item._cellVariants = {
+          "status.name":
+            item.status_id !== activeStatus ? inactiveColor : activeColor
+        };
+      });
+      state.activePermissions = payload.rows.filter(item => {
         return item.status_id === activeStatus;
       });
     },

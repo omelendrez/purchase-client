@@ -19,6 +19,9 @@ import Department from "@/components/Department";
 import Projects from "@/components/Projects";
 import Project from "@/components/Project";
 
+import Permissions from "@/components/Permissions";
+import Permission from "@/components/Permission";
+
 import Users from "@/components/Users";
 import User from "@/components/User";
 
@@ -75,6 +78,16 @@ export default new Router({
       path: "/project",
       name: "Project",
       component: Project
+    },
+    {
+      path: "/permissions",
+      name: "Permissions",
+      component: Permissions
+    },
+    {
+      path: "/permission",
+      name: "Permission",
+      component: Permission
     },
     {
       path: "/locations",
