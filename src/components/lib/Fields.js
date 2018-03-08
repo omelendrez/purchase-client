@@ -6,7 +6,7 @@ const commonFields = [
     key: "created_at",
     class: "text-center",
     thStyle: {
-      width: "120px"
+      width: "140px"
     }
   },
   {
@@ -14,7 +14,7 @@ const commonFields = [
     key: "updated_at",
     class: "text-center",
     thStyle: {
-      width: "120px"
+      width: "140px"
     }
   },
   {
@@ -32,7 +32,7 @@ const actions = [
     key: "actions",
     class: "text-center",
     thStyle: {
-      width: "280px"
+      width: "300px"
     }
   }
 ];
@@ -104,14 +104,14 @@ const permissions = [
     key: "code",
     sortable: true,
     thStyle: {
-      width: "100px"
+      width: "60px"
     }
   },
   {
     key: "name",
     sortable: true,
     thStyle: {
-      width: "300px"
+      width: "240px"
     }
   },
   {

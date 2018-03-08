@@ -24,7 +24,6 @@ export default {
 <style>
 html {
   font-family: Roboto, "Open Sans", sans-serif;
-  font-size: 90%;
 }
 body {
   background-color: rgb(240, 240, 240);
