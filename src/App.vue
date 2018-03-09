@@ -28,9 +28,6 @@ export default {
 </script>
 
 <style>
-html {
-  font-family: Roboto, "Open Sans", sans-serif;
-}
 body {
   background-color: rgb(240, 240, 240);
 }
