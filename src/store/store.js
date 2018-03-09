@@ -16,6 +16,7 @@ import * as types from "../store/mutation-types";
 const activeColor = "success";
 const inactiveColor = "danger";
 const activeStatus = 1;
+const defaultFontSize = 14;
 
 Vue.use(Vuex);
 
@@ -42,7 +43,7 @@ const state = {
   option: false,
   globalAdmin: false,
   admin: false,
-  fontSize: 18
+  fontSize: defaultFontSize
 };
 
 export default new Vuex.Store({
