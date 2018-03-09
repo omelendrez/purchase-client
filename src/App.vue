@@ -30,6 +30,7 @@ export default {
 <style>
 body {
   background-color: rgb(240, 240, 240);
+  font-family: "Roboto", sans-serif;
 }
 /*  To be used with fade transition
 .fade-enter-active,

@@ -16,7 +16,9 @@ import * as types from "../store/mutation-types";
 const activeColor = "success";
 const inactiveColor = "danger";
 const activeStatus = 1;
-const defaultFontSize = 14;
+const defaultFontSize = 15;
+const maxFontSize = 20;
+const minFontSize = 10;
 
 Vue.use(Vuex);
 
@@ -50,6 +52,13 @@ export default new Vuex.Store({
   state,
   actions: {
     [types.CHANGE_FONT_SIZE]({ commit }, incrDecr) {
+      if (state.fontSize > maxFontSize && incrDecr > 0) {
+        incrDecr = 0
+      } else {
+        if (state.fontSize < minFontSize && incrDecr < 0) {
+          incrDecr = 0
+        }
+      }
       commit(types.SET_FONT_SIZE, {
         payload: incrDecr
       });
