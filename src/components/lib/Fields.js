@@ -53,6 +53,10 @@ const users = [
     sortable: true
   },
   {
+    key: "full_name",
+    sortable: true
+  },
+  {
     key: "email",
     sortable: true
   },
@@ -119,6 +123,48 @@ const permissions = [
   }
 ];
 
+const requisitions = [
+  {
+    key: "number",
+    class: "text-center",
+    sortable: true,
+    thStyle: {
+      width: "80px"
+    }
+  },
+  {
+    key: "date",
+    class: "text-center",
+    sortable: true,
+    thStyle: {
+      width: "120px"
+    }
+  },
+  {
+    key: "user.full_name",
+    label: "Requester",
+    sortable: true
+  },
+  {
+    key: "department.name",
+    label: "Department",
+    sortable: true
+  },
+  {
+    key: "project.name",
+    label: "Project",
+    sortable: true
+  },
+  {
+    key: "expected_delivery",
+    class: "text-center",
+    sortable: true,
+    thStyle: {
+      width: "160px"
+    }
+  }
+];
+
 const units = [
   {
     key: "code",
@@ -175,6 +221,7 @@ module.exports = {
   locations,
   projects,
   permissions,
+  requisitions,
   organizations,
   vendors,
   units

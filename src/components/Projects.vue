@@ -12,9 +12,9 @@
 
     <b-table small hover outlined :items="projects.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="cell">
-        <b-btn variant="info" @click.stop="editItem(cell.item)" v-bind:style="{ fontSize: fontSize + 'px' }">Modify</b-btn>
-        <b-btn v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)" v-bind:style="{ fontSize: fontSize + 'px' }">Inactivate</b-btn>
-        <b-btn v-else variant="success" @click.stop="deleteItem(cell.item, 0)" v-bind:style="{ fontSize: fontSize + 'px' }">Re-activate</b-btn>
+        <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)" v-bind:style="{ fontSize: fontSize + 'px' }">Modify</b-btn>
+        <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)" v-bind:style="{ fontSize: fontSize + 'px' }">Inactivate</b-btn>
+        <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(cell.item, 0)" v-bind:style="{ fontSize: fontSize + 'px' }">Re-activate</b-btn>
       </template>
       <template slot="table-caption">
         {{projects.count}} registros
@@ -101,7 +101,9 @@ export default {
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
     Store.dispatch("LOAD_PROJECTS");
 
-    this.fields.unshift(org);
+    if (Store.state.globalAdmin) {
+      this.fields.unshift(org);
+    }
     this.fields.push(...commonFields);
     if (Store.state.admin) {
       this.fields.push(...actions);

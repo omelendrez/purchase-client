@@ -7,6 +7,7 @@ import Departments from "./../services/departments";
 import Profiles from "./../services/profiles";
 import Projects from "./../services/projects";
 import Permissions from "./../services/permissions";
+import Requisitions from "./../services/requisitions";
 import Status from "./../services/status";
 import Units from "./../services/units";
 import Users from "./../services/users";
@@ -37,6 +38,7 @@ const state = {
   projects: [],
   permissions: [],
   profiles: [],
+  requisitions: [],
   vendors: [],
   status: [],
   units: [],
@@ -203,6 +205,29 @@ export default new Vuex.Store({
       });
     },
 
+    async [types.LOAD_REQUISITIONS]({ commit }) {
+      const requisitions = await Requisitions.fetchRequisitions(
+        state.user.organization_id
+      );
+      commit(types.SET_REQUISITIONS, {
+        payload: requisitions.data
+      });
+    },
+
+    async [types.SAVE_REQUISITION]({ commit }, item) {
+      const requisition = await Requisitions.saveRequisition(item);
+      commit(types.SET_RESULTS, {
+        payload: requisition.data
+      });
+    },
+
+    async [types.DELETE_REQUISITION]({ commit }, item) {
+      const requisition = await Requisitions.deleteRequisition(item.id);
+      commit(types.SET_RESULTS, {
+        payload: requisition.data
+      });
+    },
+
     async [types.SAVE_VENDOR]({ commit }, item) {
       const vendor = await Vendors.saveVendor(item);
       commit(types.SET_RESULTS, {
@@ -347,6 +372,15 @@ export default new Vuex.Store({
 
     [types.SET_PROFILES]: (state, { payload }) => {
       state.profiles = payload;
+      payload.rows.map(item => {
+        item._cellVariants = {
+          "status.name":
+            item.status_id !== activeStatus ? inactiveColor : activeColor
+        };
+      });
+    },
+    [types.SET_REQUISITIONS]: (state, { payload }) => {
+      state.requisitions = payload;
       payload.rows.map(item => {
         item._cellVariants = {
           "status.name":

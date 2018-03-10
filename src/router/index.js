@@ -22,6 +22,8 @@ import Project from "@/components/Project";
 import Permissions from "@/components/Permissions";
 import Permission from "@/components/Permission";
 
+import Requisitions from "@/components/Requisitions";
+
 import Units from "@/components/Units";
 import Unit from "@/components/Unit";
 
@@ -94,6 +96,11 @@ export default new Router({
       path: "/permission",
       name: "Permission",
       component: Permission
+    },
+    {
+      path: "/requisitions",
+      name: "Requisitions",
+      component: Requisitions
     },
     {
       path: "/units",
