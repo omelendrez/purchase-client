@@ -119,6 +119,20 @@ const permissions = [
   }
 ];
 
+const units = [
+  {
+    key: "code",
+    sortable: true,
+    thStyle: {
+      width: "80px"
+    }
+  },
+  {
+    key: "name",
+    sortable: true
+  }
+];
+
 const vendors = [
   {
     key: "code",
@@ -162,5 +176,6 @@ module.exports = {
   projects,
   permissions,
   organizations,
-  vendors
+  vendors,
+  units
 };

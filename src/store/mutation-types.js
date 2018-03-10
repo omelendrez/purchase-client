@@ -40,6 +40,11 @@ export const SET_PERMISSIONS = "SET_PERMISSIONS";
 export const SAVE_PERMISSION = "SAVE_PERMISSION";
 export const DELETE_PERMISSION = "DELETE_PERMISSION";
 
+export const LOAD_UNITS = "LOAD_UNITS";
+export const SET_UNITS = "SET_UNITS";
+export const SAVE_UNIT = "SAVE_UNIT";
+export const DELETE_UNIT = "DELETE_UNIT";
+
 export const LOAD_VENDORS = "LOAD_VENDORS";
 export const SET_VENDORS = "SET_VENDORS";
 export const SAVE_VENDOR = "SAVE_VENDOR";

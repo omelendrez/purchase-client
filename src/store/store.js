@@ -8,6 +8,7 @@ import Profiles from "./../services/profiles";
 import Projects from "./../services/projects";
 import Permissions from "./../services/permissions";
 import Status from "./../services/status";
+import Units from "./../services/units";
 import Users from "./../services/users";
 import Vendors from "./../services/vendors";
 
@@ -28,6 +29,7 @@ const state = {
   activeDepartments: [],
   activeProjects: [],
   activePermissions: [],
+  activeUnits: [],
   activeVendors: [],
   organizations: [],
   locations: [],
@@ -37,6 +39,7 @@ const state = {
   profiles: [],
   vendors: [],
   status: [],
+  units: [],
   user: [],
   users: [],
   password: [],
@@ -170,6 +173,13 @@ export default new Vuex.Store({
       });
     },
 
+    async [types.LOAD_UNITS]({ commit }) {
+      const units = await Units.fetchUnits();
+      commit(types.SET_UNITS, {
+        payload: units.data
+      });
+    },
+
     async [types.LOAD_VENDORS]({ commit }) {
       const vendors = await Vendors.fetchVendors(state.user.organization_id);
       commit(types.SET_VENDORS, {
@@ -218,6 +228,13 @@ export default new Vuex.Store({
       const permission = await Permissions.savePermission(item);
       commit(types.SET_RESULTS, {
         payload: permission.data
+      });
+    },
+
+    async [types.SAVE_UNIT]({ commit }, item) {
+      const unit = await Units.saveUnit(item);
+      commit(types.SET_RESULTS, {
+        payload: unit.data
       });
     },
 
@@ -360,6 +377,19 @@ export default new Vuex.Store({
         };
       });
       state.activePermissions = payload.rows.filter(item => {
+        return item.status_id === activeStatus;
+      });
+    },
+
+    [types.SET_UNITS]: (state, { payload }) => {
+      state.units = payload;
+      payload.rows.map(item => {
+        item._cellVariants = {
+          "status.name":
+            item.status_id !== activeStatus ? inactiveColor : activeColor
+        };
+      });
+      state.activeUnits = payload.rows.filter(item => {
         return item.status_id === activeStatus;
       });
     },

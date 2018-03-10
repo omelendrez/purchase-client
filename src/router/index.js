@@ -22,6 +22,9 @@ import Project from "@/components/Project";
 import Permissions from "@/components/Permissions";
 import Permission from "@/components/Permission";
 
+import Units from "@/components/Units";
+import Unit from "@/components/Unit";
+
 import Users from "@/components/Users";
 import User from "@/components/User";
 
@@ -91,6 +94,16 @@ export default new Router({
       path: "/permission",
       name: "Permission",
       component: Permission
+    },
+    {
+      path: "/units",
+      name: "Units",
+      component: Units
+    },
+    {
+      path: "/unit",
+      name: "Unit",
+      component: Unit
     },
     {
       path: "/locations",
