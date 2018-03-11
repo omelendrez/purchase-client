@@ -6,7 +6,7 @@ const commonFields = [
     key: "created_at",
     class: "text-center",
     thStyle: {
-      width: "120px"
+      width: "140px"
     }
   },
   {
@@ -14,7 +14,7 @@ const commonFields = [
     key: "updated_at",
     class: "text-center",
     thStyle: {
-      width: "120px"
+      width: "140px"
     }
   },
   {
@@ -30,10 +30,8 @@ const commonFields = [
 const actions = [
   {
     key: "actions",
-    class: "text-center",
-    thStyle: {
-      width: "280px"
-    }
+    label: " ",
+    class: "text-right"
   }
 ];
 
@@ -50,6 +48,10 @@ const org = {
 const users = [
   {
     key: "user_name",
+    sortable: true
+  },
+  {
+    key: "full_name",
     sortable: true
   },
   {
@@ -104,18 +106,95 @@ const permissions = [
     key: "code",
     sortable: true,
     thStyle: {
-      width: "100px"
+      width: "60px"
     }
   },
   {
     key: "name",
     sortable: true,
     thStyle: {
-      width: "300px"
+      width: "240px"
     }
   },
   {
-    key: "description"
+    key: "description",
+    thStyle: {
+      width: "50%"
+    }
+  }
+];
+
+const requisitions = [
+  {
+    key: "number",
+    class: "text-center",
+    sortable: true,
+    thStyle: {
+      width: "80px"
+    }
+  },
+  {
+    key: "date",
+    class: "text-center",
+    sortable: true,
+    thStyle: {
+      width: "120px"
+    }
+  },
+  {
+    key: "user.full_name",
+    label: "Requester",
+    sortable: true
+  },
+  {
+    key: "department.name",
+    label: "Department",
+    sortable: true
+  },
+  {
+    key: "project.name",
+    label: "Project",
+    sortable: true
+  },
+  {
+    key: "expected_delivery",
+    class: "text-center",
+    sortable: true,
+    thStyle: {
+      width: "160px"
+    }
+  }
+];
+
+const requisitionItems = [
+  {
+    key: "description",
+    thStyle: {
+      width: "400px"
+    }
+  },
+  {
+    key: "quantity",
+    class: "text-center"
+  },
+  {
+    key: "unit.name",
+    class: "text-center"
+  }
+
+]
+
+const units = [
+  {
+    key: "code",
+    sortable: true,
+    thStyle: {
+      width: "80px"
+    }
+  },
+  {
+    key: "name",
+    sortable: true
   }
 ];
 
@@ -161,6 +240,9 @@ module.exports = {
   locations,
   projects,
   permissions,
+  requisitions,
+  requisitionItems,
   organizations,
-  vendors
+  vendors,
+  units
 };

@@ -22,6 +22,12 @@ import Project from "@/components/Project";
 import Permissions from "@/components/Permissions";
 import Permission from "@/components/Permission";
 
+import Requisitions from "@/components/Requisitions";
+import Requisition from "@/components/Requisition";
+
+import Units from "@/components/Units";
+import Unit from "@/components/Unit";
+
 import Users from "@/components/Users";
 import User from "@/components/User";
 
@@ -91,6 +97,26 @@ export default new Router({
       path: "/permission",
       name: "Permission",
       component: Permission
+    },
+    {
+      path: "/requisitions",
+      name: "Requisitions",
+      component: Requisitions
+    },
+    {
+      path: "/requisition",
+      name: "Requisition",
+      component: Requisition
+    },
+    {
+      path: "/units",
+      name: "Units",
+      component: Units
+    },
+    {
+      path: "/unit",
+      name: "Unit",
+      component: Unit
     },
     {
       path: "/locations",

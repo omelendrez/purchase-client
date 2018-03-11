@@ -6,15 +6,21 @@
       <router-view/>
     </transition>
     -->
-    <router-view/>
+    <router-view v-bind:style="{ fontSize: fontSize + 'px' }" />
   </div>
 </template>
 
 <script>
 import Header from "./components/lib/Header";
+import Store from "./store/store";
 
 export default {
   name: "App",
+  computed: {
+    fontSize() {
+      return Store.state.fontSize;
+    }
+  },
   components: {
     Header
   }
@@ -22,12 +28,9 @@ export default {
 </script>
 
 <style>
-html {
-  font-family: Roboto, "Open Sans", sans-serif;
-  font-size: 90%;
-}
 body {
   background-color: rgb(240, 240, 240);
+  font-family: "Roboto", sans-serif;
 }
 /*  To be used with fade transition
 .fade-enter-active,

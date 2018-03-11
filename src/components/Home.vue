@@ -8,8 +8,7 @@
               <strong>purchase+</strong> is an automated procurement system that will help your organization simplify, organize and control your procurement activities.
             </p>
             <p>
-              Most procurement processes leave a lot of room for inefficiencies to arise, as well as the potential for missed savings and cash leakage. An automated purchasing process can help facilitate the procurement of goods and services by speeding up communication, reducing time for approvals and eliminating the unnecessary paperwork.
-            </p>
+              Businesses handle creating and monitoring purchase requisitions and purchase orders in many ways, but the most efficient is having an electronic system that integrates easily with other financial systems. Businesses that use sophisticated electronic systems instead of relying on Excel and email to create, share, and track these documents enjoy a significant reduction in costs, greater control over company spend, and more streamlined processes, and more. Regardless of the process used, purchase requisitions and purchase orders are a critical part of spend management. Not only do they help with managing costs and inventory, they help businesses avoid duplicate or missing orders, clarify important details, stay protected against financial audits, and protect both purchasers and vendors. </p>
           </b-card>
         </b-col>
         <b-col>
