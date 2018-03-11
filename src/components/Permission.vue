@@ -1,6 +1,9 @@
 <template>
   <b-container class="permission">
-    <h3 class="text-center">Permission</h3>
+    <h3 class="text-center">
+      <i class="fas fa-key"></i>
+      Permission
+    </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
       <b-form-group horizontal label="Code" label-for="code">

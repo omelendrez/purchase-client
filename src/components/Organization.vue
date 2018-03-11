@@ -1,6 +1,9 @@
 <template>
   <b-container class="organization">
-    <h3 class="text-center">Organization</h3>
+    <h3 class="text-center">
+      <i class="fas fa-building"></i>
+      Organization
+    </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
       <b-form-group horizontal label="Name" label-for="name">
         <b-form-input id="name" v-model.trim="form.name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>

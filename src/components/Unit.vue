@@ -1,6 +1,9 @@
 <template>
   <b-container class="unit">
-    <h3 class="text-center">Unit</h3>
+    <h3 class="text-center">
+      <i class="fas fa-boxes"></i>
+      Unit
+    </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
       <b-form-group horizontal label="Code" label-for="code">

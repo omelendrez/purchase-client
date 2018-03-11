@@ -1,10 +1,13 @@
 <template>
   <b-container class="department">
-    <h3 class="text-center">Department</h3>
+    <h3 class="text-center">
+      <i class="fas fa-users"></i>
+      Department
+    </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
       <b-form-group horizontal label="Organization" label-for="organization_id">
-        <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required v-bind:style="{ fontSize: fontSize + 'px' }"/>
+        <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required v-bind:style="{ fontSize: fontSize + 'px' }" />
       </b-form-group>
 
       <b-form-group horizontal label="Name" label-for="name">

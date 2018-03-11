@@ -1,7 +1,10 @@
 eq<template>
 
   <b-container class="requisition">
-    <h5 class="text-center">Requisition</h5>
+    <h3 class="text-center">
+    <i class="fas fa-shopping-cart"></i>
+      Purchase Requisition
+    </h3>
     <b-card no-body>
       <b-tabs card>
         <b-tab title="Header">
