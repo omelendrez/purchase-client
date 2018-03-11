@@ -29,7 +29,7 @@
             <b-col class="text-sm-right">
               <b>Number:</b>
             </b-col>
-            <b-col>
+            <b-col cols="8">
               {{ row.item["number"] }}
             </b-col>
           </b-row>
@@ -37,7 +37,7 @@
             <b-col class="text-sm-right">
               <b>Requester:</b>
             </b-col>
-            <b-col>
+            <b-col cols="8">
               {{ row.item["user.full_name"] }}
             </b-col>
           </b-row>
@@ -45,7 +45,7 @@
             <b-col class="text-sm-right">
               <b>Date:</b>
             </b-col>
-            <b-col>
+            <b-col cols="8">
               {{ row.item["date"] }}
             </b-col>
           </b-row>
@@ -53,7 +53,7 @@
             <b-col class="text-sm-right">
               <b>Department:</b>
             </b-col>
-            <b-col>
+            <b-col cols="8">
               {{ row.item["department.name"] }}
             </b-col>
           </b-row>
@@ -61,23 +61,23 @@
             <b-col class="text-sm-right">
               <b>Project:</b>
             </b-col>
-            <b-col>
-              {{ row.item["project.code"] }}-{{ row.item["project.name"] }}
+            <b-col cols="8">
+              {{ row.item["project.name"] }}
             </b-col>
           </b-row>
           <b-row>
             <b-col class="text-sm-right">
               <b>Delivery location:</b>
             </b-col>
-            <b-col>
-              {{ row.item["user.location.name"] }}
+            <b-col cols="8">
+              {{ row.item["location.name"] }}
             </b-col>
           </b-row>
           <b-row>
             <b-col class="text-sm-right">
               <b>Expected delivery date:</b>
             </b-col>
-            <b-col>
+            <b-col cols="8">
               {{ row.item["expected_delivery"] }}
             </b-col>
           </b-row>
@@ -85,7 +85,7 @@
             <b-col class="text-sm-right">
               <b>Remarks/purpose:</b>
             </b-col>
-            <b-col>
+            <b-col cols="8">
               {{ row.item["remarks"] }}
             </b-col>
           </b-row>
@@ -205,6 +205,6 @@ export default {
   margin-left: 10px;
 }
 .card-data {
-  max-width: 600px;
+  max-width: 800px;
 }
 </style>

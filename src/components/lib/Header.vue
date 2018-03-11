@@ -49,6 +49,9 @@
       </b-nav-form>
     </b-navbar-nav>
 
+    <div v-if="isLoading" class="loading-spinner">
+      <i class="fa fa-spinner fa-spin"></i>
+    </div>
   </div>
 
 </template>
@@ -64,6 +67,9 @@ export default {
     };
   },
   computed: {
+    isLoading() {
+      return Store.state.loading;
+    },
     menuOption() {
       return Store.state.option;
     },
@@ -94,5 +100,12 @@ export default {
   position: fixed;
   bottom: 2px;
   right: 2px;
+}
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  font-size: 40px;
+  z-index: 1;
 }
 </style>

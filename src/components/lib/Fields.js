@@ -30,10 +30,8 @@ const commonFields = [
 const actions = [
   {
     key: "actions",
-    class: "text-center",
-    thStyle: {
-      width: "300px"
-    }
+    label: " ",
+    class: "text-right"
   }
 ];
 
@@ -119,7 +117,10 @@ const permissions = [
     }
   },
   {
-    key: "description"
+    key: "description",
+    thStyle: {
+      width: "50%"
+    }
   }
 ];
 
@@ -164,6 +165,24 @@ const requisitions = [
     }
   }
 ];
+
+const requisitionItems = [
+  {
+    key: "description",
+    thStyle: {
+      width: "400px"
+    }
+  },
+  {
+    key: "quantity",
+    class: "text-center"
+  },
+  {
+    key: "unit.name",
+    class: "text-center"
+  }
+
+]
 
 const units = [
   {
@@ -222,6 +241,7 @@ module.exports = {
   projects,
   permissions,
   requisitions,
+  requisitionItems,
   organizations,
   vendors,
   units
