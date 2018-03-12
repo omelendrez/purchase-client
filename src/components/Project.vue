@@ -1,7 +1,10 @@
 <template>
 
   <b-container class="project">
-    <h3 class="text-center">Project</h3>
+    <h3 class="text-center">
+      <i class="fas fa-industry"></i>
+      Project
+      </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
       <b-form-group horizontal label="Organization" label-for="organization_id">

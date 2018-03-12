@@ -1,8 +1,10 @@
 <template>
 
   <b-container class="user">
-    <h3 class="text-center">User</h3>
-
+    <h3 class="text-center">
+      <i class="fas fa-user"></i>
+      User
+    </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="form.show" id="addForm">
 
       <b-form-group horizontal label="Organization" label-for="organization_id">
