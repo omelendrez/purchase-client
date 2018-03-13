@@ -11,7 +11,7 @@
             <i class="fas fa-times"></i>
           </a>
           <b-nav-item class="mx-4" v-if="mainOptionIs('admin')" @click="closeNav" v-bind:active="menuOption === '/organizations'" href="#/organizations">
-            <i class="fas fa-building"></i> Organizations</b-nav-item>
+            <i class="fas fa-building"></i> Companies</b-nav-item>
           <b-nav-item class="mx-4" v-if="mainOptionIs('admin')" @click="closeNav" v-bind:active="menuOption === '/users'" href="#/users">
             <i class="fas fa-user"></i> Users</b-nav-item>
           <b-nav-item class="mx-4" v-if="mainOptionIs('global')" @click="closeNav" v-bind:active="menuOption === '/permissions'" href="#/permissions">

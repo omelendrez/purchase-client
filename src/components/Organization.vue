@@ -2,7 +2,7 @@
   <b-container class="organization">
     <h3 class="text-center">
       <i class="fas fa-building"></i>
-      Organization
+      Company
     </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
       <b-form-group horizontal label="Name" label-for="name">

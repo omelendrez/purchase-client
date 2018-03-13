@@ -210,4 +210,5 @@ export default {
 .card-data {
   max-width: 800px;
 }
+
 </style>
