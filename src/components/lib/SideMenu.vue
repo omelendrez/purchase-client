@@ -43,13 +43,16 @@ export default {
     return {};
   },
   watch: {
-    mainOption() {
+    mainOptionChanged() {
       this.openNav();
     }
   },
   computed: {
     mainOption() {
       return Store.state.mainOption;
+    },
+    mainOptionChanged() {
+      return Store.state.mainOptionChanged;
     },
     fontSize() {
       return Store.state.fontSize;
