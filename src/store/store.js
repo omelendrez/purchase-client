@@ -20,7 +20,7 @@ import * as types from "../store/mutation-types";
 const inactiveColor = "danger";
 const selectedRecordColor = "warning";
 const activeStatus = 1;
-const defaultFontSize = 13;
+const defaultFontSize = 14; // github default
 const maxFontSize = 20;
 const minFontSize = 10;
 

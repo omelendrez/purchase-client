@@ -95,10 +95,7 @@ const permissions = [
     class: "text-nowrap"
   },
   {
-    key: "description",
-    thStyle: {
-      width: "auto"
-    }
+    key: "description"
   }
 ];
 
@@ -135,10 +132,7 @@ const requisitions = [
 
 const requisitionItems = [
   {
-    key: "description",
-    thStyle: {
-      width: "400px"
-    }
+    key: "description"
   },
   {
     key: "quantity",
@@ -154,10 +148,7 @@ const requisitionItems = [
 const units = [
   {
     key: "code",
-    sortable: true,
-    thStyle: {
-      width: "80px"
-    }
+    sortable: true
   },
   {
     key: "name",
@@ -168,26 +159,20 @@ const units = [
 const vendors = [
   {
     key: "code",
-    sortable: true,
-    thStyle: {
-      width: "100px"
-    }
+    sortable: true
   },
   {
     key: "name",
     sortable: true
   },
   {
-    key: "phone",
-    sortable: true
+    key: "phone"
   },
   {
-    key: "email",
-    sortable: true
+    key: "email"
   },
   {
-    key: "contact",
-    sortable: true
+    key: "contact"
   }
 ];
 
