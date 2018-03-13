@@ -131,6 +131,7 @@ import Store from "../store/store";
 import RequstButtons from "./lib/RequestButtons";
 import ItemsButtons from "./lib/ItemsButtons";
 import Add from "./lib/Add";
+import { setTimeout } from "timers";
 const fields = require("./lib/Fields").requisitionItems;
 const actions = require("./lib/Fields").actions;
 
@@ -400,7 +401,7 @@ export default {
       this.tabIndex = 0;
     },
     refreshData(table, options, organizationId) {
-      if (!table) {
+      if (!table.length) {
         return;
       }
       for (let i = 0; i < table.length; i++) {
