@@ -9,7 +9,6 @@
                 <i class="fas fa-bookmark"></i>
                 <i class="fa-inverse fas fa-heart" data-fa-transform="shrink-10 up-2" style="color:Tomato"></i>
               </span>
-
               <strong>purchase+</strong> is an automated procurement system that will help your organization simplify, organize and control your procurement activities.
             </p>
             <p>
