@@ -1,5 +1,5 @@
 <template>
-  <div class="header" v-bind:style="{ fontSize: fontSize + 'px' }">
+  <div class="header">
 
     <b-navbar toggleable="md" type="dark" variant="dark">
 
@@ -14,30 +14,19 @@
         <template v-if="isLogged">
 
           <b-navbar-nav class="admin">
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/organizations'" href="#/organizations">
-              <i class="fas fa-building"></i> Organizations</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/users'" href="#/users">
-              <i class="fas fa-user"></i> Users</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/permissions'" href="#/permissions">
-              <i class="fas fa-key"></i> Permissions</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/units'" href="#/units">
-              <i class="fas fa-boxes"></i> Units of measure</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/departments'" href="#/departments">
-              <i class="fas fa-users"></i> Departments</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/locations'" href="#/locations">
-              <i class="fas fa-location-arrow"></i> Locations</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/projects'" href="#/projects">
-              <i class="fas fa-industry"></i> Projects</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/vendors'" href="#/vendors">
-              <i class="fas fa-handshake"></i> Vendors</b-nav-item>
-
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/requisitions'" href="#/requisitions">
-              <i class="fas fa-shopping-cart"></i> Requisitions</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('admin')" @click.stop="setMainOption('admin')">
+              Admin</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('global')" @click.stop="setMainOption('global')">
+              Global tables</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('master')" @click.stop="setMainOption('master')">
+              Master tables</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('activities')" @click.stop="setMainOption('activities')">
+              Activities</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto" v-if="isLogged">
-            <b-nav-item-dropdown right v-bind:style="{ fontSize: fontSize + 'px' }">
+            <b-nav-item-dropdown right>
               <!-- Using button-content slot -->
               <template slot="button-content">
                 <i class="fas fa-user"></i>
@@ -46,7 +35,7 @@
               <b-dropdown-item href="#/login">
                 <i class="fas fa-sign-out-alt"></i> Close session</b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
-              <b-dropdown-item href="#/change_password" v-bind:style="{ fontSize: fontSize + 'px' }">
+              <b-dropdown-item href="#/change_password">
                 <i class="fas fa-unlock-alt"></i> Change password</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
@@ -64,6 +53,8 @@
       </b-nav-form>
     </b-navbar-nav>
 
+    <SideMenu />
+
     <div v-if="isLoading" class="fa-3x loading-spinner">
       <i class="fas fa-circle-notch fa-spin"></i>
     </div>
@@ -73,29 +64,27 @@
 
 <script>
 import Store from "../../store/store";
-
+import SideMenu from "./SideMenu";
 export default {
   name: "Header",
   data() {
-    return {
-      tab: 0
-    };
+    return {};
+  },
+  components: {
+    SideMenu
   },
   computed: {
-    fontSize() {
-      return Store.state.fontSize;
-    },
     isLoading() {
       return Store.state.loading;
-    },
-    menuOption() {
-      return Store.state.option;
     },
     isLogged() {
       return Store.state.user.id;
     },
     isAdmin() {
       return Store.state.user.profile_id === 1;
+    },
+    mainOption() {
+      return Store.state.mainOption;
     },
     userFullName() {
       return Store.state.user.full_name;
@@ -104,6 +93,12 @@ export default {
   methods: {
     changeFontSize(incrDecr) {
       Store.dispatch("CHANGE_FONT_SIZE", incrDecr);
+    },
+    setMainOption(option) {
+      Store.dispatch("SET_MAIN_OPTION", option);
+    },
+    mainOptionIs(option) {
+      return this.mainOption === option;
     }
   }
 };
@@ -121,5 +116,15 @@ export default {
   top: 50%;
   left: 50%;
   z-index: 1;
+}
+.fa-home {
+  margin-left: 40px;
+}
+.admin {
+  font-size: 16px;
+  margin: 0 auto;
+}
+.nav-link.active {
+  background-color: #202020;
 }
 </style>

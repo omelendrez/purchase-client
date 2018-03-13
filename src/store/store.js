@@ -51,6 +51,7 @@ const state = {
   record: [],
   results: [],
   option: false,
+  mainOption: "",
   globalAdmin: false,
   admin: false,
   fontSize: defaultFontSize,
@@ -82,6 +83,17 @@ export default new Vuex.Store({
     [types.SET_MENU_OPTION]({ commit }, option) {
       if (option !== state.option) {
         commit(types.ASSIGN_MENU_OPTION, {
+          payload: option
+        });
+        commit(types.SET_RECORD, {
+          payload: []
+        });
+      }
+    },
+
+    [types.SET_MAIN_OPTION]({ commit }, option) {
+      if (option !== state.mainOption) {
+        commit(types.ASSIGN_MAIN_OPTION, {
           payload: option
         });
         commit(types.SET_RECORD, {
@@ -394,6 +406,10 @@ export default new Vuex.Store({
   mutations: {
     [types.ASSIGN_MENU_OPTION]: (state, { payload }) => {
       state.option = payload;
+    },
+
+    [types.ASSIGN_MAIN_OPTION]: (state, { payload }) => {
+      state.mainOption = payload;
     },
 
     [types.SET_USER]: (state, { payload }) => {
