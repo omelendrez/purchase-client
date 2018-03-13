@@ -2,7 +2,7 @@ eq<template>
 
   <b-container class="requisition">
     <h3 class="text-center">
-    <i class="fas fa-shopping-cart"></i>
+      <i class="fas fa-shopping-cart"></i>
       Purchase Requisition
     </h3>
     <b-card no-body>
@@ -48,7 +48,7 @@ eq<template>
         </b-tab>
 
         <b-tab title="Items">
-          <b-container class="items">
+          <b-container>
             <div class="add-button">
               <b-button @click="addItem" variant="primary" title="Add">Add item</b-button>
             </div>
@@ -91,6 +91,7 @@ eq<template>
               <p>This action cannot be undone</p>
             </b-modal>
 
+            <ItemsButtons />
           </b-container>
 
         </b-tab>
@@ -106,6 +107,7 @@ eq<template>
             <div class="col-md-4 pb-2">
               <b-button class="cancel-pr" variant="danger">Cancel PR</b-button>
             </div>
+            <ItemsButtons />
           </b-container>
         </b-tab>
 
@@ -122,6 +124,7 @@ eq<template>
 <script>
 import Store from "../store/store";
 import RequstButtons from "./lib/RequestButtons";
+import ItemsButtons from "./lib/ItemsButtons";
 import Add from "./lib/Add";
 const fields = require("./lib/Fields").requisitionItems;
 const actions = require("./lib/Fields").actions;
@@ -168,6 +171,7 @@ export default {
   },
   components: {
     RequstButtons,
+    ItemsButtons,
     Add
   },
   watch: {
@@ -326,7 +330,24 @@ export default {
       this.itemForm = item;
     },
     saveItem(item, index, target) {
+      this.errorMessage = "";
+      this.errorShow = false;
       this.updatingItem = true;
+      if (this.itemForm.quantity < 1) {
+        this.errorMessage = "Quantity cannot be lower than 1";
+      }
+      if (
+        !this.itemForm.unit_id ||
+        !this.itemForm.quantity ||
+        !this.itemForm.description.length
+      ) {
+        this.errorMessage =
+          "You must fill all item fields in oder to be able to save";
+      }
+      if (this.errorMessage) {
+        this.errorShow = true;
+        return;
+      }
       Store.dispatch("SAVE_REQUISITION_ITEM", this.itemForm);
     },
     editItem(item, index, target) {
@@ -453,7 +474,7 @@ export default {
   float: right;
 }
 table input[type="number"] {
-  max-width: 64px;
+  max-width: 96px;
   margin: 0 auto;
   text-align: center;
 }

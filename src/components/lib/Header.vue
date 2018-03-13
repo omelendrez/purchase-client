@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" v-bind:style="{ fontSize: fontSize + 'px' }">
 
     <b-navbar toggleable="md" type="dark" variant="dark">
 
@@ -14,29 +14,40 @@
         <template v-if="isLogged">
 
           <b-navbar-nav class="admin">
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/organizations'" href="#/organizations"><i class="fas fa-building"></i> Organizations</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/users'" href="#/users"><i class="fas fa-user"></i> Users</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/permissions'" href="#/permissions"><i class="fas fa-key"></i> Permissions</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/units'" href="#/units"><i class="fas fa-boxes"></i> Units of measure</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/departments'" href="#/departments"><i class="fas fa-users"></i> Departments</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/locations'" href="#/locations"><i class="fas fa-location-arrow"></i> Locations</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/projects'" href="#/projects"><i class="fas fa-industry"></i> Projects</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/vendors'" href="#/vendors"><i class="fas fa-handshake"></i> Vendors</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="menuOption === '/organizations'" href="#/organizations">
+              <i class="fas fa-building"></i> Organizations</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="menuOption === '/users'" href="#/users">
+              <i class="fas fa-user"></i> Users</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="menuOption === '/permissions'" href="#/permissions">
+              <i class="fas fa-key"></i> Permissions</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="menuOption === '/units'" href="#/units">
+              <i class="fas fa-boxes"></i> Units of measure</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="menuOption === '/departments'" href="#/departments">
+              <i class="fas fa-users"></i> Departments</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="menuOption === '/locations'" href="#/locations">
+              <i class="fas fa-location-arrow"></i> Locations</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="menuOption === '/projects'" href="#/projects">
+              <i class="fas fa-industry"></i> Projects</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="menuOption === '/vendors'" href="#/vendors">
+              <i class="fas fa-handshake"></i> Vendors</b-nav-item>
 
-            <b-nav-item class="mx-4" v-bind:active="menuOption === '/requisitions'" href="#/requisitions"><i class="fas fa-shopping-cart"></i> Requisitions</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="menuOption === '/requisitions'" href="#/requisitions">
+              <i class="fas fa-shopping-cart"></i> Requisitions</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto" v-if="isLogged">
-            <b-nav-item-dropdown right>
+            <b-nav-item-dropdown right v-bind:style="{ fontSize: fontSize + 'px' }">
               <!-- Using button-content slot -->
               <template slot="button-content">
                 <i class="fas fa-user"></i>
                 {{userFullName}}
               </template>
-              <b-dropdown-item href="#/login"><i class="fas fa-sign-out-alt"></i> Close session</b-dropdown-item>
+              <b-dropdown-item href="#/login">
+                <i class="fas fa-sign-out-alt"></i> Close session</b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
-              <b-dropdown-item href="#/change_password"><i class="fas fa-unlock-alt"></i> Change password</b-dropdown-item>
+              <b-dropdown-item href="#/change_password" v-bind:style="{ fontSize: fontSize + 'px' }">
+                <i class="fas fa-unlock-alt"></i> Change password</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
 
@@ -71,6 +82,9 @@ export default {
     };
   },
   computed: {
+    fontSize() {
+      return Store.state.fontSize;
+    },
     isLoading() {
       return Store.state.loading;
     },
