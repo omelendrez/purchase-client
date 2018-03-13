@@ -2,13 +2,13 @@ eq<template>
 
   <b-container class="requisition">
     <h3 class="text-center">
-    <i class="fas fa-shopping-cart"></i>
+      <i class="fas fa-shopping-cart"></i>
       Purchase Requisition
     </h3>
     <b-card no-body>
-      <b-tabs card>
+      <b-tabs card v-model="tabIndex">
         <b-tab title="Header">
-          <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
+          <b-form @submit="onSubmit" @reset="onReset" v-if="showForm" id="addForm">
 
             <b-form-group horizontal label="Number" label-for="number">
               <b-form-input id="number" v-model="form.number" readonly v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
@@ -48,7 +48,7 @@ eq<template>
         </b-tab>
 
         <b-tab title="Items">
-          <b-container class="items">
+          <b-container>
             <div class="add-button">
               <b-button @click="addItem" variant="primary" title="Add">Add item</b-button>
             </div>
@@ -91,6 +91,10 @@ eq<template>
               <p>This action cannot be undone</p>
             </b-modal>
 
+            <b-form @reset="closeTabIndex">
+              <ItemsButtons />
+            </b-form>
+
           </b-container>
 
         </b-tab>
@@ -106,6 +110,9 @@ eq<template>
             <div class="col-md-4 pb-2">
               <b-button class="cancel-pr" variant="danger">Cancel PR</b-button>
             </div>
+            <b-form @reset="closeTabIndex">
+              <ItemsButtons />
+            </b-form>
           </b-container>
         </b-tab>
 
@@ -122,7 +129,9 @@ eq<template>
 <script>
 import Store from "../store/store";
 import RequstButtons from "./lib/RequestButtons";
+import ItemsButtons from "./lib/ItemsButtons";
 import Add from "./lib/Add";
+import { setTimeout } from "timers";
 const fields = require("./lib/Fields").requisitionItems;
 const actions = require("./lib/Fields").actions;
 
@@ -130,7 +139,8 @@ export default {
   date: "Requisition",
   data() {
     return {
-      show: true,
+      tabIndex: 0,
+      showForm: true,
       form: {
         id: 0,
         user_id: 0,
@@ -168,6 +178,7 @@ export default {
   },
   components: {
     RequstButtons,
+    ItemsButtons,
     Add
   },
   watch: {
@@ -326,7 +337,24 @@ export default {
       this.itemForm = item;
     },
     saveItem(item, index, target) {
+      this.errorMessage = "";
+      this.errorShow = false;
       this.updatingItem = true;
+      if (this.itemForm.quantity < 1) {
+        this.errorMessage = "Quantity cannot be lower than 1";
+      }
+      if (
+        !this.itemForm.unit_id ||
+        !this.itemForm.quantity ||
+        !this.itemForm.description.length
+      ) {
+        this.errorMessage =
+          "You must fill all item fields in oder to be able to save";
+      }
+      if (this.errorMessage) {
+        this.errorShow = true;
+        return;
+      }
       Store.dispatch("SAVE_REQUISITION_ITEM", this.itemForm);
     },
     editItem(item, index, target) {
@@ -365,13 +393,15 @@ export default {
     onReset(evt) {
       evt.preventDefault();
       /* Trick to reset/clear native browser form validation state */
-      this.show = false;
       this.$nextTick(() => {
         this.$router.push({ name: "Requisitions" });
       });
     },
+    closeTabIndex() {
+      this.tabIndex = 0;
+    },
     refreshData(table, options, organizationId) {
-      if (!table) {
+      if (!table.length) {
         return;
       }
       for (let i = 0; i < table.length; i++) {
@@ -453,7 +483,7 @@ export default {
   float: right;
 }
 table input[type="number"] {
-  max-width: 64px;
+  max-width: 96px;
   margin: 0 auto;
   text-align: center;
 }

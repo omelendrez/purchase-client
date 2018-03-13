@@ -18,8 +18,9 @@ import * as types from "../store/mutation-types";
 
 // const activeColor = "success";
 const inactiveColor = "danger";
+const selectedRecordColor = "warning";
 const activeStatus = 1;
-const defaultFontSize = 15;
+const defaultFontSize = 14; // github default
 const maxFontSize = 20;
 const minFontSize = 10;
 
@@ -50,6 +51,8 @@ const state = {
   record: [],
   results: [],
   option: false,
+  mainOption: "",
+  mainOptionChanged: false,
   globalAdmin: false,
   admin: false,
   fontSize: defaultFontSize,
@@ -79,9 +82,25 @@ export default new Vuex.Store({
     },
 
     [types.SET_MENU_OPTION]({ commit }, option) {
-      commit(types.ASSIGN_MENU_OPTION, {
+      if (option !== state.option) {
+        commit(types.ASSIGN_MENU_OPTION, {
+          payload: option
+        });
+        commit(types.SET_RECORD, {
+          payload: []
+        });
+      }
+    },
+
+    [types.SET_MAIN_OPTION]({ commit }, option) {
+      commit(types.ASSIGN_MAIN_OPTION, {
         payload: option
       });
+      if (option !== state.mainOption) {
+        commit(types.SET_RECORD, {
+          payload: []
+        });
+      }
     },
 
     [types.ADD_ITEM]({ commit }, item) {
@@ -390,6 +409,11 @@ export default new Vuex.Store({
       state.option = payload;
     },
 
+    [types.ASSIGN_MAIN_OPTION]: (state, { payload }) => {
+      state.mainOption = payload;
+      state.mainOptionChanged = !state.mainOptionChanged
+    },
+
     [types.SET_USER]: (state, { payload }) => {
       const user = {};
       for (const prop in payload) {
@@ -407,6 +431,9 @@ export default new Vuex.Store({
       state.organizations = payload;
       payload.rows.map(item => {
         item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        if (item.id === state.record.id) {
+          item._rowVariant = selectedRecordColor
+        }
       });
       state.activeOrganizations = payload.rows.filter(item => {
         return item.status_id === activeStatus;
@@ -417,6 +444,9 @@ export default new Vuex.Store({
       state.locations = payload;
       payload.rows.map(item => {
         item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        if (item.id === state.record.id) {
+          item._rowVariant = selectedRecordColor
+        }
       });
       state.activeLocations = payload.rows.filter(item => {
         return item.status_id === activeStatus;
@@ -427,6 +457,9 @@ export default new Vuex.Store({
       state.departments = payload;
       payload.rows.map(item => {
         item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        if (item.id === state.record.id) {
+          item._rowVariant = selectedRecordColor
+        }
       });
       state.activeDepartments = payload.rows.filter(item => {
         return item.status_id === activeStatus;
@@ -437,12 +470,18 @@ export default new Vuex.Store({
       state.profiles = payload;
       payload.rows.map(item => {
         item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        if (item.id === state.record.id) {
+          item._rowVariant = selectedRecordColor
+        }
       });
     },
     [types.SET_REQUISITIONS]: (state, { payload }) => {
       state.requisitions = payload;
       payload.rows.map(item => {
         item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        if (item.id === state.record.id) {
+          item._rowVariant = selectedRecordColor
+        }
         /*
         item._cellVariants = {
           "status.name":
@@ -459,6 +498,9 @@ export default new Vuex.Store({
       state.projects = payload;
       payload.rows.map(item => {
         item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        if (item.id === state.record.id) {
+          item._rowVariant = selectedRecordColor
+        }
       });
       state.activeProjects = payload.rows.filter(item => {
         return item.status_id === activeStatus;
@@ -469,6 +511,9 @@ export default new Vuex.Store({
       state.permissions = payload;
       payload.rows.map(item => {
         item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        if (item.id === state.record.id) {
+          item._rowVariant = selectedRecordColor
+        }
       });
       state.activePermissions = payload.rows.filter(item => {
         return item.status_id === activeStatus;
@@ -479,6 +524,9 @@ export default new Vuex.Store({
       state.units = payload;
       payload.rows.map(item => {
         item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        if (item.id === state.record.id) {
+          item._rowVariant = selectedRecordColor
+        }
       });
       state.activeUnits = payload.rows.filter(item => {
         return item.status_id === activeStatus;
@@ -489,6 +537,9 @@ export default new Vuex.Store({
       state.vendors = payload;
       payload.rows.map(item => {
         item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        if (item.id === state.record.id) {
+          item._rowVariant = selectedRecordColor
+        }
       });
       state.activeVendors = payload.rows.filter(item => {
         return item.status_id === activeStatus;
@@ -508,6 +559,9 @@ export default new Vuex.Store({
       payload.rows.map(item => {
         item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
         // item._rowVariant = item.status_id === 2 ? inactiveColor : ''
+        if (item.id === state.record.id) {
+          item._rowVariant = selectedRecordColor
+        }
       });
     },
 

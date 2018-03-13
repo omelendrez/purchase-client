@@ -8,8 +8,8 @@
 
     <b-form @submit="onSubmit" @reset="onReset" v-if="form.show" id="addForm">
 
-      <b-form-group horizontal label="Organization" label-for="organization_id">
-        <b-form-select v-model="form.organization_id" :options="organizations" class="mb-3" required/>
+      <b-form-group horizontal label="Company" label-for="organization_id">
+        <b-form-select v-model="form.organization_id" :options="organizations" required/>
       </b-form-group>
 
       <b-form-group horizontal label="Vendor code" label-for="code">

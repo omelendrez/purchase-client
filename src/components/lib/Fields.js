@@ -4,26 +4,17 @@ const commonFields = [
   {
     label: "Created",
     key: "created_at",
-    class: "text-center",
-    thStyle: {
-      width: "140px"
-    }
+    class: "text-center text-nowrap"
   },
   {
     label: "Updated",
     key: "updated_at",
-    class: "text-center",
-    thStyle: {
-      width: "140px"
-    }
+    class: "text-center text-nowrap"
   },
   {
     label: "Status",
     key: "status.name",
-    class: "text-center",
-    thStyle: {
-      width: "100px"
-    }
+    class: "text-center"
   }
 ];
 
@@ -31,18 +22,13 @@ const actions = [
   {
     key: "actions",
     label: " ",
-    class: "text-right"
+    class: "text-right text-nowrap"
   }
 ];
 
 const org = {
   key: "organization.name",
-  label: "Organization",
-  sortable: true,
-  thStyle: {
-    width: "200px"
-  }
-
+  label: "Company"
 };
 
 const users = [
@@ -90,10 +76,7 @@ const locations = [
 const projects = [
   {
     key: "code",
-    sortable: true,
-    thStyle: {
-      width: "100px"
-    }
+    sortable: true
   },
   {
     key: "name",
@@ -104,23 +87,15 @@ const projects = [
 const permissions = [
   {
     key: "code",
-    sortable: true,
-    thStyle: {
-      width: "60px"
-    }
+    sortable: true
   },
   {
     key: "name",
     sortable: true,
-    thStyle: {
-      width: "240px"
-    }
+    class: "text-nowrap"
   },
   {
-    key: "description",
-    thStyle: {
-      width: "50%"
-    }
+    key: "description"
   }
 ];
 
@@ -128,18 +103,11 @@ const requisitions = [
   {
     key: "number",
     class: "text-center",
-    sortable: true,
-    thStyle: {
-      width: "80px"
-    }
+    sortable: true
   },
   {
     key: "date",
-    class: "text-center",
-    sortable: true,
-    thStyle: {
-      width: "120px"
-    }
+    class: "text-center text-nowrap"
   },
   {
     key: "user.full_name",
@@ -158,20 +126,13 @@ const requisitions = [
   },
   {
     key: "expected_delivery",
-    class: "text-center",
-    sortable: true,
-    thStyle: {
-      width: "160px"
-    }
+    class: "text-center text-nowrap"
   }
 ];
 
 const requisitionItems = [
   {
-    key: "description",
-    thStyle: {
-      width: "400px"
-    }
+    key: "description"
   },
   {
     key: "quantity",
@@ -187,10 +148,7 @@ const requisitionItems = [
 const units = [
   {
     key: "code",
-    sortable: true,
-    thStyle: {
-      width: "80px"
-    }
+    sortable: true
   },
   {
     key: "name",
@@ -201,26 +159,20 @@ const units = [
 const vendors = [
   {
     key: "code",
-    sortable: true,
-    thStyle: {
-      width: "100px"
-    }
+    sortable: true
   },
   {
     key: "name",
     sortable: true
   },
   {
-    key: "phone",
-    sortable: true
+    key: "phone"
   },
   {
-    key: "email",
-    sortable: true
+    key: "email"
   },
   {
-    key: "contact",
-    sortable: true
+    key: "contact"
   }
 ];
 

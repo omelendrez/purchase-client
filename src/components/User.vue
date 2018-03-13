@@ -7,8 +7,8 @@
     </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="form.show" id="addForm">
 
-      <b-form-group horizontal label="Organization" label-for="organization_id">
-        <b-form-select v-model="form.organization_id" :options="organizations" @change="updateChildrenTables" class="mb-3" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+      <b-form-group horizontal label="Company" label-for="organization_id">
+        <b-form-select v-model="form.organization_id" :options="organizations" @change="updateChildrenTables" required v-bind:style="{ fontSize: fontSize + 'px' }" />
       </b-form-group>
 
       <b-form-group horizontal label="User name" label-for="user_name">
@@ -24,15 +24,15 @@
       </b-form-group>
 
       <b-form-group horizontal label="Profile" label-for="profile_id">
-        <b-form-select v-model="form.profile_id" :options="profiles" class="mb-3" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+        <b-form-select v-model="form.profile_id" :options="profiles" required v-bind:style="{ fontSize: fontSize + 'px' }" />
       </b-form-group>
 
       <b-form-group horizontal label="Department" label-for="department_id">
-        <b-form-select v-model="form.department_id" :options="departmentOptions" class="mb-3" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+        <b-form-select v-model="form.department_id" :options="departmentOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
       </b-form-group>
 
       <b-form-group horizontal label="Location" label-for="location_id">
-        <b-form-select v-model="form.location_id" :options="locationOptions" class="mb-3" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+        <b-form-select v-model="form.location_id" :options="locationOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
       </b-form-group>
 
       <Buttons />
