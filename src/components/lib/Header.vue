@@ -5,12 +5,11 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="#/">
+      <b-navbar-brand @click.stop="setMainOption('home')" href="#/">
         <i class="fas fa-home"></i>
-        Home
       </b-navbar-brand>
 
-      <b-collapse is-nav id="nav_collapse">
+      <b-collapse is-nav id="nav_collapse_main">
         <template v-if="isLogged">
 
           <b-navbar-nav class="admin">
@@ -22,6 +21,8 @@
               Master tables</b-nav-item>
             <b-nav-item class="mx-4" v-bind:active="mainOptionIs('activities')" @click.stop="setMainOption('activities')">
               Activities</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('reports')" @click.stop="setMainOption('reports')">
+              Reporting</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
@@ -46,14 +47,50 @@
 
     </b-navbar>
 
+    <b-navbar toggleable="md" type="light" variant="faded">
+
+      <b-collapse is-nav id="nav_collapse_sub">
+        <template v-if="isLogged">
+          <b-navbar-nav class="admin">
+            <b-nav-item class="mx-4" v-if="mainOptionIs('admin')" v-bind:active="menuOptionIs('/organizations')" href="#/organizations">
+              <i class="fas fa-building"></i> Companies</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('admin')" v-bind:active="menuOptionIs('/users')" href="#/users">
+              <i class="fas fa-user"></i> Users</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('admin')" v-bind:active="menuOptionIs('/workflow')" href="#/workflow">
+              <i class="fas fa-thumbs-up"></i> Workflow</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('global')" v-bind:active="menuOptionIs('/permissions')" href="#/permissions">
+              <i class="fas fa-key"></i> Permissions</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('global')" v-bind:active="menuOptionIs('/units')" href="#/units">
+              <i class="fas fa-boxes"></i> Units of measure</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('master')" v-bind:active="menuOptionIs('/departments')" href="#/departments">
+              <i class="fas fa-users"></i> Departments</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('master')" v-bind:active="menuOptionIs('/locations')" href="#/locations">
+              <i class="fas fa-location-arrow"></i> Locations</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('master')" v-bind:active="menuOptionIs('/projects')" href="#/projects">
+              <i class="fas fa-industry"></i> Projects</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('master')" v-bind:active="menuOptionIs('/vendors')" href="#/vendors">
+              <i class="fas fa-handshake"></i> Vendors</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/requisitions')" href="#/requisitions">
+              <i class="fas fa-shopping-cart"></i> Purchase Requisitions</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/purchase_orders')" href="#/purchase_orders">
+              <i class="fas fa-shopping-cart"></i> Purchase Orders</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/approvals')" href="#/approvals">
+              <i class="fas fa-thumbs-up"></i> Approvals</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/payment_requests')" href="#/payment_requests">
+              <i class="fas fa-money-bill-alt"></i> Payment Requests</b-nav-item>
+          </b-navbar-nav>
+        </template>
+
+      </b-collapse>
+
+    </b-navbar>
+
     <b-navbar-nav class="font-size">
       <b-nav-form>
         <b-button size="sm" class="my-2 my-sm-0" @click="changeFontSize(-1)">A-</b-button>
         <b-button size="sm" class="my-2 my-sm-0" @click="changeFontSize(+1)">A+</b-button>
       </b-nav-form>
     </b-navbar-nav>
-
-    <SideMenu />
 
     <div v-if="isLoading" class="fa-3x loading-spinner">
       <i class="fas fa-circle-notch fa-spin"></i>
@@ -64,14 +101,10 @@
 
 <script>
 import Store from "../../store/store";
-import SideMenu from "./SideMenu";
 export default {
   name: "Header",
   data() {
     return {};
-  },
-  components: {
-    SideMenu
   },
   computed: {
     isLoading() {
@@ -86,6 +119,9 @@ export default {
     mainOption() {
       return Store.state.mainOption;
     },
+    menuOption() {
+      return Store.state.option;
+    },
     userFullName() {
       return Store.state.user.full_name;
     }
@@ -99,6 +135,9 @@ export default {
     },
     mainOptionIs(option) {
       return this.mainOption === option;
+    },
+    menuOptionIs(option) {
+      return this.menuOption === option;
     }
   }
 };
@@ -113,18 +152,19 @@ export default {
 }
 .loading-spinner {
   position: fixed;
-  top: 50%;
+  top: 40%;
   left: 50%;
   z-index: 1;
 }
-.fa-home {
-  margin-left: 40px;
+
+#nav_collapse_main a.active {
+  background-color: #90a4ae;
+  border-radius: 3px;
+  color: black;
 }
-.admin {
-  font-size: 16px;
-  margin: 0 auto;
-}
-.nav-link.active {
-  background-color: #202020;
+
+#nav_collapse_sub a.active {
+  background-color: #90a4ae;
+  border-radius: 3px;
 }
 </style>
