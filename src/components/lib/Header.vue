@@ -21,6 +21,8 @@
               Master tables</b-nav-item>
             <b-nav-item class="mx-4" v-bind:active="mainOptionIs('activities')" @click.stop="setMainOption('activities')">
               Activities</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('reports')" @click.stop="setMainOption('reports')">
+              Reporting</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
@@ -54,6 +56,8 @@
               <i class="fas fa-building"></i> Companies</b-nav-item>
             <b-nav-item class="mx-4" v-if="mainOptionIs('admin')" v-bind:active="menuOptionIs('/users')" href="#/users">
               <i class="fas fa-user"></i> Users</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('admin')" v-bind:active="menuOptionIs('/workflow')" href="#/workflow">
+              <i class="fas fa-thumbs-up"></i> Workflow</b-nav-item>
             <b-nav-item class="mx-4" v-if="mainOptionIs('global')" v-bind:active="menuOptionIs('/permissions')" href="#/permissions">
               <i class="fas fa-key"></i> Permissions</b-nav-item>
             <b-nav-item class="mx-4" v-if="mainOptionIs('global')" v-bind:active="menuOptionIs('/units')" href="#/units">
@@ -67,7 +71,13 @@
             <b-nav-item class="mx-4" v-if="mainOptionIs('master')" v-bind:active="menuOptionIs('/vendors')" href="#/vendors">
               <i class="fas fa-handshake"></i> Vendors</b-nav-item>
             <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/requisitions')" href="#/requisitions">
-              <i class="fas fa-shopping-cart"></i> Requisitions</b-nav-item>
+              <i class="fas fa-shopping-cart"></i> Purchase Requisitions</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/purchase_orders')" href="#/purchase_orders">
+              <i class="fas fa-shopping-cart"></i> Purchase Orders</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/approvals')" href="#/approvals">
+              <i class="fas fa-thumbs-up"></i> Approvals</b-nav-item>
+            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/payment_requests')" href="#/payment_requests">
+              <i class="fas fa-money-bill-alt"></i> Payment Requests</b-nav-item>
           </b-navbar-nav>
         </template>
 
@@ -148,12 +158,13 @@ export default {
 }
 
 #nav_collapse_main a.active {
-  border-left: 1px solid #90a4ae;
-  border-right: 1px solid #90a4ae;
+  background-color: #90a4ae;
+  border-radius: 3px;
+  color: black;
 }
 
 #nav_collapse_sub a.active {
-  border-left: 1px solid #90a4ae;
-  border-right: 1px solid #90a4ae;
+  background-color: #90a4ae;
+  border-radius: 3px;
 }
 </style>
