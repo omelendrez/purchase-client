@@ -1,11 +1,6 @@
 <template>
   <div id="app">
     <Header />
-    <!-- Transition will not be used for this site
-    <transition mode="out-in" name="fade">
-      <router-view/>
-    </transition>
-    -->
     <router-view v-bind:style="{ fontSize: fontSize + 'px' }" />
   </div>
 </template>
@@ -32,20 +27,14 @@ body {
   background-color: rgb(240, 240, 240) !important;
   font-family: "Roboto", sans-serif !important;
 }
-/*  To be used with fade transition
-.fade-enter-active,
-.fade-leave-active {
-  transition-property: opacity;
-  transition-duration: 0.25s;
+.table-inactive {
+  color: red;
+}
+.table-selected {
+  background-color: #f5f3ee;
+}
+table.b-table.b-table-stacked > tbody > tr > [data-label] {
+  grid-template-columns: 10% auto;
 }
 
-.fade-enter-active {
-  transition-delay: 0.25s;
-}
-
-.fade-enter,
-.fade-leave-active {
-  opacity: 0;
-}
-*/
 </style>

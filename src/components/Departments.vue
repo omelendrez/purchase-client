@@ -100,6 +100,7 @@ export default {
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
     Store.dispatch("LOAD_DEPARTMENTS");
+    Store.dispatch("LOAD_ORGANIZATIONS");
 
     if (Store.state.globalAdmin) {
       this.fields.unshift(org);

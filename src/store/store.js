@@ -12,13 +12,14 @@ import RequisitionItems from "./../services/requisition_items";
 import Status from "./../services/status";
 import Units from "./../services/units";
 import Users from "./../services/users";
+import UserPermissions from "./../services/users_permissions";
 import Vendors from "./../services/vendors";
 
 import * as types from "../store/mutation-types";
 
 // const activeColor = "success";
-const inactiveColor = "danger";
-const selectedRecordColor = "warning";
+const inactiveColor = "inactive";
+const selectedRecordColor = "selected";
 const activeStatus = 1;
 const defaultFontSize = 14; // github default
 const maxFontSize = 20;
@@ -46,6 +47,8 @@ const state = {
   status: [],
   units: [],
   user: [],
+  userPermissions: [],
+  notUserPermissions: [],
   users: [],
   password: [],
   record: [],
@@ -70,10 +73,10 @@ export default new Vuex.Store({
     },
     [types.CHANGE_FONT_SIZE]({ commit }, incrDecr) {
       if (state.fontSize > maxFontSize && incrDecr > 0) {
-        incrDecr = 0
+        incrDecr = 0;
       } else {
         if (state.fontSize < minFontSize && incrDecr < 0) {
-          incrDecr = 0
+          incrDecr = 0;
         }
       }
       commit(types.SET_FONT_SIZE, {
@@ -110,7 +113,7 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_STATUS]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const status = await Status.fetchStatus();
       commit(types.SET_STATUS, {
         payload: status.data
@@ -118,7 +121,7 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_PROFILES]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const profiles = await Profiles.fetchProfiles();
       commit(types.SET_PROFILES, {
         payload: profiles.data
@@ -126,31 +129,59 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_PERMISSIONS]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const permissions = await Permissions.fetchPermissions();
       commit(types.SET_PERMISSIONS, {
         payload: permissions.data
       });
     },
 
+    async [types.LOAD_USER_PERMISSIONS]({ commit }, item) {
+      this.dispatch("LOADING");
+      const userPermissions = await UserPermissions.fetchUserPermissions(
+        item.id
+      );
+      commit(types.SET_USER_PERMISSIONS, {
+        payload: userPermissions.data
+      });
+    },
+
     async [types.SAVE_PERMISSION]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const permission = await Permissions.savePermission(item);
       commit(types.SET_RESULTS, {
         payload: permission.data
       });
     },
 
+    async [types.SAVE_USER_PERMISSION]({ commit }, item) {
+      this.dispatch("LOADING");
+      const userPermission = await UserPermissions.saveUserPermission(item);
+      commit(types.SET_RESULTS, {
+        payload: userPermission.data
+      });
+    },
+
     async [types.DELETE_PERMISSION]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const permission = await Permissions.deletePermission(item.id);
       commit(types.SET_RESULTS, {
         payload: permission.data
       });
     },
 
+    async [types.DELETE_USER_PERMISSION]({ commit }, item) {
+      this.dispatch("LOADING");
+      const userPermission = await UserPermissions.deleteUserPermission(
+        item.id
+      );
+      commit(types.SET_RESULTS, {
+        payload: userPermission.data
+      });
+    },
+
     async [types.LOAD_USERS]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const users = await Users.fetchUsers(state.user.organization_id);
       commit(types.SET_USERS, {
         payload: users.data
@@ -158,7 +189,7 @@ export default new Vuex.Store({
     },
 
     async [types.SAVE_USER]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const user = await Users.saveUser(item);
       commit(types.SET_RESULTS, {
         payload: user.data
@@ -166,7 +197,7 @@ export default new Vuex.Store({
     },
 
     async [types.DELETE_USER]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const user = await Users.deleteUser(item.id);
       commit(types.SET_RESULTS, {
         payload: user.data
@@ -174,7 +205,7 @@ export default new Vuex.Store({
     },
 
     async [types.RESET_PASSWORD]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const user = await Users.resetPassword(item);
       commit(types.SET_RESULTS, {
         payload: user.data
@@ -182,7 +213,7 @@ export default new Vuex.Store({
     },
 
     async [types.CHANGE_PASSWORD]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const user = await Users.changePassword(item);
       commit(types.CHANGE_PASSWORD_ALERT, {
         payload: user.data
@@ -190,7 +221,7 @@ export default new Vuex.Store({
     },
 
     async [types.LOGIN]({ commit }, payload) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const user = await Users.login(payload);
       commit(types.SET_USER, {
         payload: user.data
@@ -204,7 +235,7 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_ORGANIZATIONS]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const organizations = await Organizations.fetchOrganizations(
         state.user.organization_id
       );
@@ -214,7 +245,7 @@ export default new Vuex.Store({
     },
 
     async [types.SAVE_ORGANIZATION]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const organization = await Organizations.saveOrganization(item);
       commit(types.SET_RESULTS, {
         payload: organization.data
@@ -222,7 +253,7 @@ export default new Vuex.Store({
     },
 
     async [types.DELETE_ORGANIZATION]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const organization = await Organizations.deleteOrganization(item.id);
       commit(types.SET_RESULTS, {
         payload: organization.data
@@ -230,7 +261,7 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_DEPARTMENTS]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const departments = await Departments.fetchDepartments(
         state.user.organization_id
       );
@@ -240,7 +271,7 @@ export default new Vuex.Store({
     },
 
     async [types.SAVE_DEPARTMENT]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const department = await Departments.saveDepartment(item);
       commit(types.SET_RESULTS, {
         payload: department.data
@@ -248,7 +279,7 @@ export default new Vuex.Store({
     },
 
     async [types.DELETE_DEPARTMENT]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const department = await Departments.deleteDepartment(item.id);
       commit(types.SET_RESULTS, {
         payload: department.data
@@ -256,7 +287,7 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_PROJECTS]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const projects = await Projects.fetchProjects(state.user.organization_id);
       commit(types.SET_PROJECTS, {
         payload: projects.data
@@ -264,7 +295,7 @@ export default new Vuex.Store({
     },
 
     async [types.SAVE_PROJECT]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const project = await Projects.saveProject(item);
       commit(types.SET_RESULTS, {
         payload: project.data
@@ -272,7 +303,7 @@ export default new Vuex.Store({
     },
 
     async [types.DELETE_PROJECT]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const project = await Projects.deleteProject(item.id);
       commit(types.SET_RESULTS, {
         payload: project.data
@@ -280,7 +311,7 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_UNITS]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const units = await Units.fetchUnits();
       commit(types.SET_UNITS, {
         payload: units.data
@@ -288,7 +319,7 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_VENDORS]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const vendors = await Vendors.fetchVendors(state.user.organization_id);
       commit(types.SET_VENDORS, {
         payload: vendors.data
@@ -296,7 +327,7 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_LOCATIONS]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const locations = await Locations.fetchLocations(
         state.user.organization_id
       );
@@ -306,7 +337,7 @@ export default new Vuex.Store({
     },
 
     async [types.SAVE_LOCATION]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const location = await Locations.saveLocation(item);
       commit(types.SET_RESULTS, {
         payload: location.data
@@ -314,7 +345,7 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_REQUISITIONS]({ commit }) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const requisitions = await Requisitions.fetchRequisitions(
         state.user.organization_id
       );
@@ -324,15 +355,17 @@ export default new Vuex.Store({
     },
 
     async [types.LOAD_REQUISITION_ITEMS]({ commit }, item) {
-      this.dispatch("LOADING")
-      const requisitioItems = await RequisitionItems.fetchRequisitionItems(item);
+      this.dispatch("LOADING");
+      const requisitioItems = await RequisitionItems.fetchRequisitionItems(
+        item
+      );
       commit(types.SET_REQUISITION_ITEMS, {
         payload: requisitioItems.data
       });
     },
 
     async [types.SAVE_REQUISITION]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const requisition = await Requisitions.saveRequisition(item);
       commit(types.SET_RESULTS, {
         payload: requisition.data
@@ -340,7 +373,7 @@ export default new Vuex.Store({
     },
 
     async [types.DELETE_REQUISITION]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const requisition = await Requisitions.deleteRequisition(item.id);
       commit(types.SET_RESULTS, {
         payload: requisition.data
@@ -348,7 +381,7 @@ export default new Vuex.Store({
     },
 
     async [types.SAVE_REQUISITION_ITEM]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const requisition = await RequisitionItems.saveRequisitionItem(item);
       commit(types.SET_RESULTS, {
         payload: requisition.data
@@ -356,15 +389,17 @@ export default new Vuex.Store({
     },
 
     async [types.DELETE_REQUISITION_ITEM]({ commit }, item) {
-      this.dispatch("LOADING")
-      const requisitionItem = await RequisitionItems.deleteRequisitionItem(item.id);
+      this.dispatch("LOADING");
+      const requisitionItem = await RequisitionItems.deleteRequisitionItem(
+        item.id
+      );
       commit(types.SET_RESULTS, {
         payload: requisitionItem.data
       });
     },
 
     async [types.SAVE_VENDOR]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const vendor = await Vendors.saveVendor(item);
       commit(types.SET_RESULTS, {
         payload: vendor.data
@@ -372,7 +407,7 @@ export default new Vuex.Store({
     },
 
     async [types.DELETE_LOCATION]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const location = await Locations.deleteLocation(item.id);
       commit(types.SET_RESULTS, {
         payload: location.data
@@ -380,7 +415,7 @@ export default new Vuex.Store({
     },
 
     async [types.SAVE_UNIT]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const unit = await Units.saveUnit(item);
       commit(types.SET_RESULTS, {
         payload: unit.data
@@ -388,7 +423,7 @@ export default new Vuex.Store({
     },
 
     async [types.DELETE_UNIT]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const unit = await Units.deleteUnit(item.id);
       commit(types.SET_RESULTS, {
         payload: unit.data
@@ -396,7 +431,7 @@ export default new Vuex.Store({
     },
 
     async [types.DELETE_VENDOR]({ commit }, item) {
-      this.dispatch("LOADING")
+      this.dispatch("LOADING");
       const vendor = await Vendors.deleteVendor(item.id);
       commit(types.SET_RESULTS, {
         payload: vendor.data
@@ -411,7 +446,7 @@ export default new Vuex.Store({
 
     [types.ASSIGN_MAIN_OPTION]: (state, { payload }) => {
       state.mainOption = payload;
-      state.mainOptionChanged = !state.mainOptionChanged
+      state.mainOptionChanged = !state.mainOptionChanged;
     },
 
     [types.SET_USER]: (state, { payload }) => {
@@ -430,9 +465,9 @@ export default new Vuex.Store({
     [types.SET_ORGANIZATIONS]: (state, { payload }) => {
       state.organizations = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor
+          item._rowVariant = selectedRecordColor;
         }
       });
       state.activeOrganizations = payload.rows.filter(item => {
@@ -443,9 +478,9 @@ export default new Vuex.Store({
     [types.SET_LOCATIONS]: (state, { payload }) => {
       state.locations = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor
+          item._rowVariant = selectedRecordColor;
         }
       });
       state.activeLocations = payload.rows.filter(item => {
@@ -456,9 +491,9 @@ export default new Vuex.Store({
     [types.SET_DEPARTMENTS]: (state, { payload }) => {
       state.departments = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor
+          item._rowVariant = selectedRecordColor;
         }
       });
       state.activeDepartments = payload.rows.filter(item => {
@@ -469,18 +504,18 @@ export default new Vuex.Store({
     [types.SET_PROFILES]: (state, { payload }) => {
       state.profiles = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor
+          item._rowVariant = selectedRecordColor;
         }
       });
     },
     [types.SET_REQUISITIONS]: (state, { payload }) => {
       state.requisitions = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor
+          item._rowVariant = selectedRecordColor;
         }
         /*
         item._cellVariants = {
@@ -497,9 +532,9 @@ export default new Vuex.Store({
     [types.SET_PROJECTS]: (state, { payload }) => {
       state.projects = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor
+          item._rowVariant = selectedRecordColor;
         }
       });
       state.activeProjects = payload.rows.filter(item => {
@@ -510,9 +545,9 @@ export default new Vuex.Store({
     [types.SET_PERMISSIONS]: (state, { payload }) => {
       state.permissions = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor
+          item._rowVariant = selectedRecordColor;
         }
       });
       state.activePermissions = payload.rows.filter(item => {
@@ -520,12 +555,35 @@ export default new Vuex.Store({
       });
     },
 
+    [types.SET_USER_PERMISSIONS]: (state, { payload }) => {
+      state.userPermissions = [];
+      state.notUserPermissions = [];
+      const perm = state.activePermissions;
+      const assi = payload.rows;
+      for (let i = 0; i < perm.length; i++) {
+        const item = perm[i];
+        let found = false;
+        for (let n = 0; n < assi.length; n++) {
+          const item2 = assi[n];
+          if (item2.permission_id === item.id) {
+            item.id = item2.id;
+            found = true;
+          }
+        }
+        if (found) {
+          state.userPermissions.push(item);
+        } else {
+          state.notUserPermissions.push(item);
+        }
+      }
+    },
+
     [types.SET_UNITS]: (state, { payload }) => {
       state.units = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor
+          item._rowVariant = selectedRecordColor;
         }
       });
       state.activeUnits = payload.rows.filter(item => {
@@ -536,9 +594,9 @@ export default new Vuex.Store({
     [types.SET_VENDORS]: (state, { payload }) => {
       state.vendors = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor
+          item._rowVariant = selectedRecordColor;
         }
       });
       state.activeVendors = payload.rows.filter(item => {
@@ -557,10 +615,10 @@ export default new Vuex.Store({
     [types.SET_USERS]: (state, { payload }) => {
       state.users = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : ''
+        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
         // item._rowVariant = item.status_id === 2 ? inactiveColor : ''
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor
+          item._rowVariant = selectedRecordColor;
         }
       });
     },

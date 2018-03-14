@@ -50,7 +50,7 @@
       <b-collapse is-nav id="nav_collapse_sub">
         <template v-if="isLogged">
           <b-navbar-nav>
-            
+
             <!-- admin -->
             <b-nav-item class="mx-4" v-if="groupIs('admin')" v-bind:active="optionIs('/organizations')" href="#/organizations">
               <i class="fas fa-building"></i> Companies</b-nav-item>
@@ -60,7 +60,7 @@
               <i class="fas fa-thumbs-up"></i> Workflow</b-nav-item>
             <b-nav-item class="mx-4" v-if="groupIs('admin')" v-bind:active="optionIs('/permissions')" href="#/permissions">
               <i class="fas fa-key"></i> Permissions</b-nav-item>
-            
+
             <!-- master -->
             <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/departments')" href="#/departments">
               <i class="fas fa-users"></i> Departments</b-nav-item>
@@ -72,7 +72,7 @@
               <i class="fas fa-handshake"></i> Vendors</b-nav-item>
             <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/units')" href="#/units">
               <i class="fas fa-boxes"></i> Units of measure</b-nav-item>
-            
+
             <!-- activities -->
             <b-nav-item class="mx-4" v-if="groupIs('activities')" v-bind:active="optionIs('/requisitions')" href="#/requisitions">
               <i class="fas fa-shopping-cart"></i> Purchase Requisitions</b-nav-item>

@@ -469,6 +469,7 @@ export default {
 .requisition {
   background-color: white;
   padding: 60px;
+  padding-top: 20px;
   margin-top: 18px;
 }
 #addForm {
