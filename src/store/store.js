@@ -582,6 +582,7 @@ export default new Vuex.Store({
           if (item2.permission_id === item.id) {
             item.id = item2.id;
             found = true;
+            break;
           }
         }
         if (found) {
