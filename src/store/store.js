@@ -16,14 +16,7 @@ import UserPermissions from "./../services/users_permissions";
 import Vendors from "./../services/vendors";
 
 import * as types from "../store/mutation-types";
-
-// const activeColor = "success";
-const inactiveColor = "inactive";
-const selectedRecordColor = "selected";
-const activeStatus = 1;
-const defaultFontSize = 14; // github default
-const maxFontSize = 20;
-const minFontSize = 10;
+import * as constants from "./constants";
 
 Vue.use(Vuex);
 
@@ -58,7 +51,7 @@ const state = {
   mainOptionChanged: false,
   globalAdmin: false,
   admin: false,
-  fontSize: defaultFontSize,
+  fontSize: constants.defaultFontSize,
   loading: false
 };
 
@@ -72,10 +65,10 @@ export default new Vuex.Store({
       commit(types.SET_LOADING, false);
     },
     [types.CHANGE_FONT_SIZE]({ commit }, incrDecr) {
-      if (state.fontSize > maxFontSize && incrDecr > 0) {
+      if (state.fontSize > constants.maxFontSize && incrDecr > 0) {
         incrDecr = 0;
       } else {
-        if (state.fontSize < minFontSize && incrDecr < 0) {
+        if (state.fontSize < constants.minFontSize && incrDecr < 0) {
           incrDecr = 0;
         }
       }
@@ -465,62 +458,77 @@ export default new Vuex.Store({
     [types.SET_ORGANIZATIONS]: (state, { payload }) => {
       state.organizations = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor;
+          item._rowVariant = constants.selectedRecordColor;
         }
       });
       state.activeOrganizations = payload.rows.filter(item => {
-        return item.status_id === activeStatus;
+        return item.status_id === constants.activeStatus;
       });
     },
 
     [types.SET_LOCATIONS]: (state, { payload }) => {
       state.locations = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor;
+          item._rowVariant = constants.selectedRecordColor;
         }
       });
       state.activeLocations = payload.rows.filter(item => {
-        return item.status_id === activeStatus;
+        return item.status_id === constants.activeStatus;
       });
     },
 
     [types.SET_DEPARTMENTS]: (state, { payload }) => {
       state.departments = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor;
+          item._rowVariant = constants.selectedRecordColor;
         }
       });
       state.activeDepartments = payload.rows.filter(item => {
-        return item.status_id === activeStatus;
+        return item.status_id === constants.activeStatus;
       });
     },
 
     [types.SET_PROFILES]: (state, { payload }) => {
       state.profiles = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor;
+          item._rowVariant = constants.selectedRecordColor;
         }
       });
     },
     [types.SET_REQUISITIONS]: (state, { payload }) => {
       state.requisitions = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor;
+          item._rowVariant = constants.selectedRecordColor;
         }
         /*
         item._cellVariants = {
           "status.name":
-            item.status_id !== activeStatus ? inactiveColor : activeColor
+            item.status_id !== constants.activeStatus ? constants.inactiveColor : activeColor
         };
         */
       });
@@ -532,26 +540,32 @@ export default new Vuex.Store({
     [types.SET_PROJECTS]: (state, { payload }) => {
       state.projects = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor;
+          item._rowVariant = constants.selectedRecordColor;
         }
       });
       state.activeProjects = payload.rows.filter(item => {
-        return item.status_id === activeStatus;
+        return item.status_id === constants.activeStatus;
       });
     },
 
     [types.SET_PERMISSIONS]: (state, { payload }) => {
       state.permissions = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor;
+          item._rowVariant = constants.selectedRecordColor;
         }
       });
       state.activePermissions = payload.rows.filter(item => {
-        return item.status_id === activeStatus;
+        return item.status_id === constants.activeStatus;
       });
     },
 
@@ -581,26 +595,32 @@ export default new Vuex.Store({
     [types.SET_UNITS]: (state, { payload }) => {
       state.units = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor;
+          item._rowVariant = constants.selectedRecordColor;
         }
       });
       state.activeUnits = payload.rows.filter(item => {
-        return item.status_id === activeStatus;
+        return item.status_id === constants.activeStatus;
       });
     },
 
     [types.SET_VENDORS]: (state, { payload }) => {
       state.vendors = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor;
+          item._rowVariant = constants.selectedRecordColor;
         }
       });
       state.activeVendors = payload.rows.filter(item => {
-        return item.status_id === activeStatus;
+        return item.status_id === constants.activeStatus;
       });
     },
 
@@ -615,10 +635,13 @@ export default new Vuex.Store({
     [types.SET_USERS]: (state, { payload }) => {
       state.users = payload;
       payload.rows.map(item => {
-        item._rowVariant = item.status_id !== activeStatus ? inactiveColor : "";
-        // item._rowVariant = item.status_id === 2 ? inactiveColor : ''
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
+        // item._rowVariant = item.status_id === 2 ? constants.inactiveColor : ''
         if (item.id === state.record.id) {
-          item._rowVariant = selectedRecordColor;
+          item._rowVariant = constants.selectedRecordColor;
         }
       });
     },
