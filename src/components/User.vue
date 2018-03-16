@@ -251,7 +251,6 @@ export default {
       Store.dispatch("SAVE_USER_PERMISSION", payload);
     },
     removePermission(item) {
-      console.log("item", item);
       this.onPermissions = true;
       Store.dispatch("DELETE_USER_PERMISSION", item);
     },
