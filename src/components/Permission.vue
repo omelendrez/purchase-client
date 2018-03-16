@@ -20,7 +20,7 @@
       </b-form-group>
 
       <b-form-group horizontal label="Order" label-for="order">
-        <b-form-input id="order" type="numeric" v-model.trim="form.order" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+        <b-form-input id="order" type="number" v-model.trim="form.order" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
       </b-form-group>
 
       <Buttons/>
@@ -103,6 +103,7 @@ export default {
       this.form.code = this.item.code;
       this.form.name = this.item.name;
       this.form.description = this.item.description;
+      this.form.order = this.item.order;
     }
   }
 };

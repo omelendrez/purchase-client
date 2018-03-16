@@ -139,6 +139,7 @@ export default {
     },
     setMain(option) {
       Store.dispatch("SET_MAIN_OPTION", option);
+      this.$router.push({ name: "Empty" });
     },
     groupIs(option) {
       return this.mainOption === option;
