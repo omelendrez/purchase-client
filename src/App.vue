@@ -34,7 +34,7 @@ body {
   background-color: #f5f3ee;
 }
 table.b-table.b-table-stacked > tbody > tr > [data-label] {
-  grid-template-columns: 10% auto;
+  grid-template-columns: 10% auto !important;
 }
 
 </style>
