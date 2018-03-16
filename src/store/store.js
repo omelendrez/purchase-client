@@ -579,7 +579,12 @@ export default new Vuex.Store({
         const assItem = ass.find(curItem => {
           return curItem.permission_id === actItem.id;
         });
-        const newItem = actItem;
+        const newItem = {
+          id: actItem.id,
+          code: actItem.code,
+          name: actItem.name,
+          description: actItem.description
+        };
         if (assItem) {
           newItem.id = assItem.id;
           userPermissions.push(newItem);

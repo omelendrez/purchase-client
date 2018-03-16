@@ -131,7 +131,6 @@ export default {
       }
       if (this.onPermissions) {
         this.onPermissions = false;
-        console.log(this.item)
         Store.dispatch("LOAD_USER_PERMISSIONS", this.item);
       } else {
         this.$router.push({ name: "Users" });
@@ -252,7 +251,6 @@ export default {
       Store.dispatch("SAVE_USER_PERMISSION", payload);
     },
     removePermission(item) {
-      console.log("item", item);
       this.onPermissions = true;
       Store.dispatch("DELETE_USER_PERMISSION", item);
     },
