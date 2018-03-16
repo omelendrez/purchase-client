@@ -46,9 +46,9 @@
           </b-form>
         </b-tab>
         <b-tab title="Permisions">
-          <b-table stacked :items="userPermissions" :fields="fields" head-variant="light" caption-top>
+          <b-table stacked outlined :items="userPermissions" :show-empty="true" :fields="fields" caption-top>
             <template slot="table-caption">
-              <h3>
+              <h3 class="p-2">
                 Currently assigned permissions
               </h3>
             </template>
@@ -56,9 +56,9 @@
               <b-btn size="sm" variant="danger" @click.stop="removePermission(row.item)">Remove permission</b-btn>
             </template>
           </b-table>
-          <b-table stacked :items="notUserPermissions" :fields="fields" head-variant="light" caption-top>
+          <b-table stacked outlined :items="notUserPermissions" :show-empty="true" :fields="fields" caption-top>
             <template slot="table-caption">
-              <h3>
+              <h3 class="p-2">
                 Available permissions
               </h3>
             </template>
@@ -101,9 +101,6 @@ export default {
       locationOptions: [],
       departmentOptions: [],
       fields: [
-        {
-          key: "id"
-        },
         {
           key: "code"
         },
