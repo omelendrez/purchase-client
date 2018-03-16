@@ -3,7 +3,7 @@
 
     <b-navbar toggleable="md" type="dark" variant="dark">
 
-      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+      <b-navbar-toggle target="nav_collapse_main"></b-navbar-toggle>
 
       <b-navbar-brand @click.stop="setMain('home')" href="#/">
         <i class="fas fa-home"></i>
@@ -46,6 +46,8 @@
     </b-navbar>
 
     <b-navbar toggleable="md" type="light" variant="faded">
+
+      <b-navbar-toggle target="nav_collapse_sub"></b-navbar-toggle>
 
       <b-collapse is-nav id="nav_collapse_sub">
         <template v-if="isLogged">
