@@ -5,24 +5,22 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand @click.stop="setMainOption('home')" href="#/">
+      <b-navbar-brand @click.stop="setMain('home')" href="#/">
         <i class="fas fa-home"></i>
       </b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse_main">
         <template v-if="isLogged">
 
-          <b-navbar-nav class="admin">
-            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('admin')" @click.stop="setMainOption('admin')">
-              Admin</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('global')" @click.stop="setMainOption('global')">
-              Global tables</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('master')" @click.stop="setMainOption('master')">
+          <b-navbar-nav>
+            <b-nav-item class="mx-4" v-bind:active="groupIs('admin')" @click.stop="setMain('admin')">
+              Admin tables</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="groupIs('master')" @click.stop="setMain('master')">
               Master tables</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('activities')" @click.stop="setMainOption('activities')">
-              Activities</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="mainOptionIs('reports')" @click.stop="setMainOption('reports')">
-              Reporting</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="groupIs('activities')" @click.stop="setMain('activities')">
+              Daily activities</b-nav-item>
+            <b-nav-item class="mx-4" v-bind:active="groupIs('reports')" @click.stop="setMain('reports')">
+              Reports</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
@@ -51,33 +49,40 @@
 
       <b-collapse is-nav id="nav_collapse_sub">
         <template v-if="isLogged">
-          <b-navbar-nav class="admin">
-            <b-nav-item class="mx-4" v-if="mainOptionIs('admin')" v-bind:active="menuOptionIs('/organizations')" href="#/organizations">
+          <b-navbar-nav>
+
+            <!-- admin -->
+            <b-nav-item class="mx-4" v-if="groupIs('admin')" v-bind:active="optionIs('/organizations')" href="#/organizations">
               <i class="fas fa-building"></i> Companies</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('admin')" v-bind:active="menuOptionIs('/users')" href="#/users">
+            <b-nav-item class="mx-4" v-if="groupIs('admin')" v-bind:active="optionIs('/users')" href="#/users">
               <i class="fas fa-user"></i> Users</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('admin')" v-bind:active="menuOptionIs('/workflow')" href="#/workflow">
+            <b-nav-item class="mx-4" v-if="groupIs('admin')" v-bind:active="optionIs('/workflow')" href="#/workflow">
               <i class="fas fa-thumbs-up"></i> Workflow</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('global')" v-bind:active="menuOptionIs('/permissions')" href="#/permissions">
+            <b-nav-item class="mx-4" v-if="groupIs('admin')" v-bind:active="optionIs('/permissions')" href="#/permissions">
               <i class="fas fa-key"></i> Permissions</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('global')" v-bind:active="menuOptionIs('/units')" href="#/units">
-              <i class="fas fa-boxes"></i> Units of measure</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('master')" v-bind:active="menuOptionIs('/departments')" href="#/departments">
+
+            <!-- master -->
+            <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/departments')" href="#/departments">
               <i class="fas fa-users"></i> Departments</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('master')" v-bind:active="menuOptionIs('/locations')" href="#/locations">
+            <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/locations')" href="#/locations">
               <i class="fas fa-location-arrow"></i> Locations</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('master')" v-bind:active="menuOptionIs('/projects')" href="#/projects">
+            <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/projects')" href="#/projects">
               <i class="fas fa-industry"></i> Projects</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('master')" v-bind:active="menuOptionIs('/vendors')" href="#/vendors">
+            <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/vendors')" href="#/vendors">
               <i class="fas fa-handshake"></i> Vendors</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/requisitions')" href="#/requisitions">
+            <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/units')" href="#/units">
+              <i class="fas fa-boxes"></i> Units of measure</b-nav-item>
+
+            <!-- activities -->
+            <b-nav-item class="mx-4" v-if="groupIs('activities')" v-bind:active="optionIs('/requisitions')" href="#/requisitions">
               <i class="fas fa-shopping-cart"></i> Purchase Requisitions</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/purchase_orders')" href="#/purchase_orders">
+            <b-nav-item class="mx-4" v-if="groupIs('activities')" v-bind:active="optionIs('/purchase_orders')" href="#/purchase_orders">
               <i class="fas fa-shopping-cart"></i> Purchase Orders</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/approvals')" href="#/approvals">
+            <b-nav-item class="mx-4" v-if="groupIs('activities')" v-bind:active="optionIs('/approvals')" href="#/approvals">
               <i class="fas fa-thumbs-up"></i> Approvals</b-nav-item>
-            <b-nav-item class="mx-4" v-if="mainOptionIs('activities')" v-bind:active="menuOptionIs('/payment_requests')" href="#/payment_requests">
+            <b-nav-item class="mx-4" v-if="groupIs('activities')" v-bind:active="optionIs('/payment_requests')" href="#/payment_requests">
               <i class="fas fa-money-bill-alt"></i> Payment Requests</b-nav-item>
+
           </b-navbar-nav>
         </template>
 
@@ -130,13 +135,13 @@ export default {
     changeFontSize(incrDecr) {
       Store.dispatch("CHANGE_FONT_SIZE", incrDecr);
     },
-    setMainOption(option) {
+    setMain(option) {
       Store.dispatch("SET_MAIN_OPTION", option);
     },
-    mainOptionIs(option) {
+    groupIs(option) {
       return this.mainOption === option;
     },
-    menuOptionIs(option) {
+    optionIs(option) {
       return this.menuOption === option;
     }
   }

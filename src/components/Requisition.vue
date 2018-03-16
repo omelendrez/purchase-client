@@ -53,7 +53,7 @@ eq<template>
               <b-button @click="addItem" variant="primary" title="Add">Add item</b-button>
             </div>
 
-            <b-table small hover outlined :items="itemRows" :fields="fields" head-variant="light">
+            <b-table small hover outlined :items="itemRows" :fields="fields" :show-empty="true" head-variant="light">
 
               <template slot="description" slot-scope="row">
                 <div v-if="!row.item.editing">
@@ -100,20 +100,20 @@ eq<template>
         </b-tab>
 
         <b-tab title="Workflow">
-          <b-container class="action-card">
+          <b-card  class="action-card">
             <div class="col-md-4 pb-2">
-              <b-button class="submit-pr" variant="primary">Submit for approval</b-button>
+              <b-button class="submit-pr">Submit for approval</b-button>
             </div>
             <div class="col-md-4 pb-2">
-              <b-button class="hold-pr" variant="info">Put on-hold</b-button>
+              <b-button class="hold-pr">Put on-hold</b-button>
             </div>
             <div class="col-md-4 pb-2">
-              <b-button class="cancel-pr" variant="danger">Cancel PR</b-button>
+              <b-button class="cancel-pr">Cancel PR</b-button>
             </div>
             <b-form @reset="closeTabIndex">
               <ItemsButtons />
             </b-form>
-          </b-container>
+          </b-card>
         </b-tab>
 
       </b-tabs>
@@ -469,6 +469,7 @@ export default {
 .requisition {
   background-color: white;
   padding: 60px;
+  padding-top: 20px;
   margin-top: 18px;
 }
 #addForm {

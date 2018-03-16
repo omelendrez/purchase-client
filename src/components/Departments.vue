@@ -10,7 +10,7 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table small hover outlined :items="departments.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" head-variant="light">
+    <b-table small hover outlined :items="departments.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" :show-empty="true" head-variant="light">
       <template slot="actions" slot-scope="cell">
         <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)" v-bind:style="{ fontSize: fontSize + 'px' }">Modify</b-btn>
         <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)" v-bind:style="{ fontSize: fontSize + 'px' }">Inactivate</b-btn>
@@ -100,6 +100,7 @@ export default {
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
     Store.dispatch("LOAD_DEPARTMENTS");
+    Store.dispatch("LOAD_ORGANIZATIONS");
 
     if (Store.state.globalAdmin) {
       this.fields.unshift(org);

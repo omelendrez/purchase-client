@@ -5,41 +5,73 @@
       <i class="fas fa-user"></i>
       User
     </h3>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="form.show" id="addForm">
+    <b-card no-body>
+      <b-tabs card v-model="tabIndex">
+        <b-tab title="Profile">
 
-      <b-form-group horizontal label="Company" label-for="organization_id">
-        <b-form-select v-model="form.organization_id" :options="organizations" @change="updateChildrenTables" required v-bind:style="{ fontSize: fontSize + 'px' }" />
-      </b-form-group>
+          <b-form @submit="onSubmit" @reset="onReset" v-if="showForm" id="addForm">
 
-      <b-form-group horizontal label="User name" label-for="user_name">
-        <b-form-input id="user_name" v-model.trim="form.user_name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
-      </b-form-group>
+            <b-form-group horizontal label="Company" label-for="organization_id">
+              <b-form-select v-model="form.organization_id" :options="organizations" @change="updateChildrenTables" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+            </b-form-group>
 
-      <b-form-group horizontal label="Full name" label-for="full_name">
-        <b-form-input id="full_name" v-model.trim="form.full_name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
-      </b-form-group>
+            <b-form-group horizontal label="User name" label-for="user_name">
+              <b-form-input id="user_name" v-model.trim="form.user_name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+            </b-form-group>
 
-      <b-form-group horizontal label="Email address" label-for="email">
-        <b-form-input id="email" type="email" v-model.trim="form.email" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
-      </b-form-group>
+            <b-form-group horizontal label="Full name" label-for="full_name">
+              <b-form-input id="full_name" v-model.trim="form.full_name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+            </b-form-group>
 
-      <b-form-group horizontal label="Profile" label-for="profile_id">
-        <b-form-select v-model="form.profile_id" :options="profiles" required v-bind:style="{ fontSize: fontSize + 'px' }" />
-      </b-form-group>
+            <b-form-group horizontal label="Email address" label-for="email">
+              <b-form-input id="email" type="email" v-model.trim="form.email" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+            </b-form-group>
 
-      <b-form-group horizontal label="Department" label-for="department_id">
-        <b-form-select v-model="form.department_id" :options="departmentOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
-      </b-form-group>
+            <b-form-group horizontal label="Profile" label-for="profile_id">
+              <b-form-select v-model="form.profile_id" :options="profiles" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+            </b-form-group>
 
-      <b-form-group horizontal label="Location" label-for="location_id">
-        <b-form-select v-model="form.location_id" :options="locationOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
-      </b-form-group>
+            <b-form-group horizontal label="Department" label-for="department_id">
+              <b-form-select v-model="form.department_id" :options="departmentOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+            </b-form-group>
 
-      <Buttons />
+            <b-form-group horizontal label="Location" label-for="location_id">
+              <b-form-select v-model="form.location_id" :options="locationOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+            </b-form-group>
 
-      <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
+            <Buttons />
 
-    </b-form>
+            <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
+
+          </b-form>
+        </b-tab>
+        <b-tab title="Permisions">
+          <b-table stacked outlined :items="userPermissions" :show-empty="true" :fields="fields" caption-top>
+            <template slot="table-caption">
+              <h3 class="p-2">
+                Currently assigned permissions
+              </h3>
+            </template>
+            <template slot="actions" slot-scope="row">
+              <b-btn size="sm" variant="danger" @click.stop="removePermission(row.item)">Remove permission</b-btn>
+            </template>
+          </b-table>
+          <b-table stacked outlined :items="notUserPermissions" :show-empty="true" :fields="fields" caption-top>
+            <template slot="table-caption">
+              <h3 class="p-2">
+                Available permissions
+              </h3>
+            </template>
+
+            <template slot="actions" slot-scope="row">
+              <b-btn size="sm" variant="success" @click.stop="assignPermission(row.item)">Assign permission</b-btn>
+            </template>
+
+          </b-table>
+        </b-tab>
+      </b-tabs>
+    </b-card>
+
   </b-container>
 
 </template>
@@ -60,13 +92,30 @@ export default {
         profile_id: 0,
         department_id: 0,
         organization_id: 0,
-        location_id: 0,
-        show: true
+        location_id: 0
       },
+      tabIndex: 0,
+      showForm: true,
       errorShow: false,
       errorMessage: "",
       locationOptions: [],
-      departmentOptions: []
+      departmentOptions: [],
+      fields: [
+        {
+          key: "code"
+        },
+        {
+          key: "name"
+        },
+        {
+          key: "description"
+        },
+        {
+          key: "actions",
+          label: " "
+        }
+      ],
+      onPermissions: false
     };
   },
   components: {
@@ -80,7 +129,12 @@ export default {
         this.errorShow = results.error;
         return;
       }
-      this.$router.push({ name: "Users" });
+      if (this.onPermissions) {
+        this.onPermissions = false;
+        Store.dispatch("LOAD_USER_PERMISSIONS", this.item);
+      } else {
+        this.$router.push({ name: "Users" });
+      }
     }
   },
   computed: {
@@ -160,6 +214,15 @@ export default {
       }
       return options;
     },
+    userPermissions() {
+      return Store.state.userPermissions;
+    },
+    notUserPermissions() {
+      return Store.state.notUserPermissions;
+    },
+    permissions() {
+      return Store.state.activePermissions;
+    },
     item() {
       return Store.state.record;
     },
@@ -179,6 +242,19 @@ export default {
     }
   },
   methods: {
+    assignPermission(item) {
+      this.onPermissions = true;
+      const payload = {
+        user_id: this.item.id,
+        permission_id: item.id
+      };
+      Store.dispatch("SAVE_USER_PERMISSION", payload);
+    },
+    removePermission(item) {
+      console.log("item", item);
+      this.onPermissions = true;
+      Store.dispatch("DELETE_USER_PERMISSION", item);
+    },
     onSubmit(evt) {
       evt.preventDefault();
       Store.dispatch("SAVE_USER", this.form);
@@ -194,7 +270,7 @@ export default {
       this.form.profile_id = 0;
       this.form.department_id = 0;
       /* Trick to reset/clear native browser form validation state */
-      this.form.show = false;
+      this.showForm = false;
       this.$nextTick(() => {
         this.$router.push({ name: "Users" });
       });
@@ -236,8 +312,10 @@ export default {
     Store.dispatch("LOAD_LOCATIONS");
     Store.dispatch("LOAD_DEPARTMENTS");
     Store.dispatch("LOAD_PROFILES");
+    Store.dispatch("LOAD_PERMISSIONS");
     this.$nextTick(() => {
       if (this.item) {
+        Store.dispatch("LOAD_USER_PERMISSIONS", this.item);
         this.form.id = this.item.id;
         this.form.user_name = this.item.user_name;
         this.form.full_name = this.item.full_name;
@@ -267,6 +345,7 @@ export default {
 .user {
   background-color: white;
   padding: 60px;
+  padding-top: 20px;
   margin-top: 18px;
 }
 #addForm {
