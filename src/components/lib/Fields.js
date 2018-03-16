@@ -96,6 +96,10 @@ const permissions = [
   },
   {
     key: "description"
+  },
+  {
+    key: "order",
+    class: "text-center"
   }
 ];
 

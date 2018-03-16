@@ -19,6 +19,10 @@
         </b-form-textarea>
       </b-form-group>
 
+      <b-form-group horizontal label="Order" label-for="order">
+        <b-form-input id="order" type="numeric" v-model.trim="form.order" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+      </b-form-group>
+
       <Buttons/>
 
       <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
@@ -40,6 +44,7 @@ export default {
         code: "",
         name: "",
         description: "",
+        order: 0,
         id: 0
       },
       errorShow: false,
