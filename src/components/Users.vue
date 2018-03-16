@@ -143,6 +143,11 @@ export default {
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.path);
     Store.dispatch("LOAD_USERS");
+    Store.dispatch("LOAD_ORGANIZATIONS");
+    Store.dispatch("LOAD_LOCATIONS");
+    Store.dispatch("LOAD_DEPARTMENTS");
+    Store.dispatch("LOAD_PROFILES");
+    Store.dispatch("LOAD_PERMISSIONS");
 
     if (Store.state.globalAdmin) {
       this.fields.unshift(org);

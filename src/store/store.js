@@ -585,6 +585,7 @@ export default new Vuex.Store({
             break;
           }
         }
+        item._rowVariant = ""
         if (found) {
           state.userPermissions.push(item);
         } else {
