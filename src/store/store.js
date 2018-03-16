@@ -570,27 +570,25 @@ export default new Vuex.Store({
     },
 
     [types.SET_USER_PERMISSIONS]: (state, { payload }) => {
-      state.userPermissions = [];
-      state.notUserPermissions = [];
-      const perm = state.activePermissions;
-      const assi = payload.rows;
-      for (let i = 0; i < perm.length; i++) {
-        const item = perm[i];
-        let found = false;
-        for (let n = 0; n < assi.length; n++) {
-          const item2 = assi[n];
-          if (item2.permission_id === item.id) {
-            item.id = item2.id;
-            found = true;
-            break;
-          }
-        }
-        if (found) {
-          state.userPermissions.push(item);
+      const userPermissions = [];
+      const notUserPermissions = [];
+      const act = state.activePermissions;
+      const ass = payload.rows;
+      for (let i = 0; i < act.length; i++) {
+        const actItem = act[i];
+        const assItem = ass.find(curItem => {
+          return curItem.permission_id === actItem.id;
+        });
+        const newItem = actItem;
+        if (assItem) {
+          newItem.id = assItem.id;
+          userPermissions.push(newItem);
         } else {
-          state.notUserPermissions.push(item);
+          notUserPermissions.push(newItem);
         }
       }
+      state.userPermissions = userPermissions;
+      state.notUserPermissions = notUserPermissions;
     },
 
     [types.SET_UNITS]: (state, { payload }) => {

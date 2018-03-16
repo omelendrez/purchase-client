@@ -134,6 +134,7 @@ export default {
       }
       if (this.onPermissions) {
         this.onPermissions = false;
+        console.log(this.item)
         Store.dispatch("LOAD_USER_PERMISSIONS", this.item);
       } else {
         this.$router.push({ name: "Users" });
