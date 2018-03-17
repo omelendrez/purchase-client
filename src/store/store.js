@@ -472,7 +472,7 @@ export default new Vuex.Store({
               state[key] = []
             }
             if (typeof state[key] === "object" && state[key] !== null) {
-              state[key] = {}
+              state[key] = []
             }
           }
         }
