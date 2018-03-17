@@ -76,7 +76,7 @@
               <i class="fas fa-boxes"></i> Units of measure</b-nav-item>
 
             <!-- activities -->
-            <b-nav-item class="mx-4" v-if="canAccessOption('activities','PRI-PRA')" v-bind:active="optionIsSelected('/requisitions')" href="#/requisitions">
+            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PRI-PRA')" v-bind:active="optionIsSelected('/requisitions')" href="#/requisitions">
               <i class="fas fa-shopping-cart"></i> Purchase Requisitions</b-nav-item>
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-POI-POA')" v-bind:active="optionIsSelected('/purchase_orders')" href="#/purchase_orders">
               <i class="fas fa-shopping-cart"></i> Purchase Orders</b-nav-item>

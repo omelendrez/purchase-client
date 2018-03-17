@@ -220,9 +220,6 @@ export default {
     notUserPermissions() {
       return Store.state.notUserPermissions;
     },
-    permissions() {
-      return Store.state.activePermissions;
-    },
     item() {
       return Store.state.record;
     },
