@@ -3,6 +3,7 @@ import Router from "vue-router";
 
 import Header from "@/components/lib/Header";
 import Home from "@/components/Home";
+import Empty from "@/components/lib/Empty"
 
 import Login from "@/components/Login";
 import ChangePassword from "@/components/ChangePassword";
@@ -42,6 +43,11 @@ export default new Router({
       path: "/",
       name: "Home",
       component: Home
+    },
+    {
+      path: "/main",
+      name: "Empty",
+      component: Empty
     },
     {
       path: "/login",

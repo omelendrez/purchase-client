@@ -3,7 +3,7 @@
 
     <b-navbar toggleable="md" type="dark" variant="dark">
 
-      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+      <b-navbar-toggle target="nav_collapse_main"></b-navbar-toggle>
 
       <b-navbar-brand @click.stop="setMain('home')" href="#/">
         <i class="fas fa-home"></i>
@@ -13,13 +13,13 @@
         <template v-if="isLogged">
 
           <b-navbar-nav>
-            <b-nav-item class="mx-4" v-bind:active="groupIs('admin')" @click.stop="setMain('admin')">
+            <b-nav-item class="mx-4" v-if="canSeeHeader('admin','ADM')" v-bind:active="groupIsSelected('admin','ADM')" @click.stop="setMain('admin')">
               Admin tables</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="groupIs('master')" @click.stop="setMain('master')">
+            <b-nav-item class="mx-4" v-if="canSeeHeader('master','ADM')" v-bind:active="groupIsSelected('master','ADM')" @click.stop="setMain('master')">
               Master tables</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="groupIs('activities')" @click.stop="setMain('activities')">
+            <b-nav-item class="mx-4" v-if="canSeeHeader('activities','ADM-PRI-PRA-POI-POA-RRI-RFPI')" v-bind:active="groupIsSelected('activities','PRI-PRA-POI-POA-RRI-RFPI')" @click.stop="setMain('activities')">
               Daily activities</b-nav-item>
-            <b-nav-item class="mx-4" v-bind:active="groupIs('reports')" @click.stop="setMain('reports')">
+            <b-nav-item class="mx-4" v-if="canSeeHeader('reports','ADM')" v-bind:active="groupIsSelected('reports','ADM')" @click.stop="setMain('reports')">
               Reports</b-nav-item>
           </b-navbar-nav>
 
@@ -47,41 +47,45 @@
 
     <b-navbar toggleable="md" type="light" variant="faded">
 
+      <b-navbar-toggle target="nav_collapse_sub"></b-navbar-toggle>
+
       <b-collapse is-nav id="nav_collapse_sub">
         <template v-if="isLogged">
           <b-navbar-nav>
 
             <!-- admin -->
-            <b-nav-item class="mx-4" v-if="groupIs('admin')" v-bind:active="optionIs('/organizations')" href="#/organizations">
+            <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('/organizations')" href="#/organizations">
               <i class="fas fa-building"></i> Companies</b-nav-item>
-            <b-nav-item class="mx-4" v-if="groupIs('admin')" v-bind:active="optionIs('/users')" href="#/users">
+            <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('/users')" href="#/users">
               <i class="fas fa-user"></i> Users</b-nav-item>
-            <b-nav-item class="mx-4" v-if="groupIs('admin')" v-bind:active="optionIs('/workflow')" href="#/workflow">
+            <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('/workflow')" href="#/workflow">
               <i class="fas fa-thumbs-up"></i> Workflow</b-nav-item>
-            <b-nav-item class="mx-4" v-if="groupIs('admin')" v-bind:active="optionIs('/permissions')" href="#/permissions">
+            <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('/permissions')" href="#/permissions">
               <i class="fas fa-key"></i> Permissions</b-nav-item>
 
             <!-- master -->
-            <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/departments')" href="#/departments">
+            <b-nav-item class="mx-4" v-if="canAccessOption('master','ADM')" v-bind:active="optionIsSelected('/departments')" href="#/departments">
               <i class="fas fa-users"></i> Departments</b-nav-item>
-            <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/locations')" href="#/locations">
+            <b-nav-item class="mx-4" v-if="canAccessOption('master','ADM')" v-bind:active="optionIsSelected('/locations')" href="#/locations">
               <i class="fas fa-location-arrow"></i> Locations</b-nav-item>
-            <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/projects')" href="#/projects">
+            <b-nav-item class="mx-4" v-if="canAccessOption('master','ADM')" v-bind:active="optionIsSelected('/projects')" href="#/projects">
               <i class="fas fa-industry"></i> Projects</b-nav-item>
-            <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/vendors')" href="#/vendors">
+            <b-nav-item class="mx-4" v-if="canAccessOption('master','ADM')" v-bind:active="optionIsSelected('/vendors')" href="#/vendors">
               <i class="fas fa-handshake"></i> Vendors</b-nav-item>
-            <b-nav-item class="mx-4" v-if="groupIs('master')" v-bind:active="optionIs('/units')" href="#/units">
+            <b-nav-item class="mx-4" v-if="canAccessOption('master','ADM')" v-bind:active="optionIsSelected('/units')" href="#/units">
               <i class="fas fa-boxes"></i> Units of measure</b-nav-item>
 
             <!-- activities -->
-            <b-nav-item class="mx-4" v-if="groupIs('activities')" v-bind:active="optionIs('/requisitions')" href="#/requisitions">
+            <b-nav-item class="mx-4" v-if="canAccessOption('activities','PRI-PRA')" v-bind:active="optionIsSelected('/requisitions')" href="#/requisitions">
               <i class="fas fa-shopping-cart"></i> Purchase Requisitions</b-nav-item>
-            <b-nav-item class="mx-4" v-if="groupIs('activities')" v-bind:active="optionIs('/purchase_orders')" href="#/purchase_orders">
+            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-POI-POA')" v-bind:active="optionIsSelected('/purchase_orders')" href="#/purchase_orders">
               <i class="fas fa-shopping-cart"></i> Purchase Orders</b-nav-item>
-            <b-nav-item class="mx-4" v-if="groupIs('activities')" v-bind:active="optionIs('/approvals')" href="#/approvals">
+            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PRA-POA')" v-bind:active="optionIsSelected('/approvals')" href="#/approvals">
               <i class="fas fa-thumbs-up"></i> Approvals</b-nav-item>
-            <b-nav-item class="mx-4" v-if="groupIs('activities')" v-bind:active="optionIs('/payment_requests')" href="#/payment_requests">
-              <i class="fas fa-money-bill-alt"></i> Payment Requests</b-nav-item>
+            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PFRI')" v-bind:active="optionIsSelected('/payment_requests')" href="#/payment_requests">
+              <i class="far fa-money-bill-alt"></i> Payment Requests</b-nav-item>
+            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-RRI')" v-bind:active="optionIsSelected('/receive_reports')" href="#/receive_reports">
+              <i class="fas fa-clipboard-check"></i> Receiving Reports</b-nav-item>
 
           </b-navbar-nav>
         </template>
@@ -115,20 +119,26 @@ export default {
     isLoading() {
       return Store.state.loading;
     },
+    user() {
+      return Store.state.user;
+    },
     isLogged() {
-      return Store.state.user.id;
+      return this.user.id;
     },
     isAdmin() {
-      return Store.state.user.profile_id === 1;
+      return this.user.profile_id === 1;
+    },
+    isGlobalAdmin() {
+      return Store.state.globalAdmin;
+    },
+    userFullName() {
+      return this.user.full_name;
     },
     mainOption() {
       return Store.state.mainOption;
     },
     menuOption() {
       return Store.state.option;
-    },
-    userFullName() {
-      return Store.state.user.full_name;
     }
   },
   methods: {
@@ -137,11 +147,26 @@ export default {
     },
     setMain(option) {
       Store.dispatch("SET_MAIN_OPTION", option);
+      this.$router.push({ name: "Empty" });
     },
-    groupIs(option) {
+    canSeeHeader(option, permissions) {
+      return (
+        this.user.permissions.find(perm => {
+          return permissions.indexOf(perm) > -1;
+        }) ||
+        (this.isGlobalAdmin && permissions.indexOf("ADM") > -1)
+      );
+    },
+    canAccessOption(option, permissions) {
+      return this.user.permissions.find(perm => {
+        return permissions.indexOf(perm) > -1 && this.mainOption === option;
+      });
+    },
+    groupIsSelected(option, permissions) {
       return this.mainOption === option;
     },
-    optionIs(option) {
+    optionIsSelected(option) {
+      // console.log("option", option);
       return this.menuOption === option;
     }
   }

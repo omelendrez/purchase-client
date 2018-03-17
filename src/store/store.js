@@ -443,16 +443,40 @@ export default new Vuex.Store({
     },
 
     [types.SET_USER]: (state, { payload }) => {
+      const perm = payload.users_permissions;
+      const permissions = []
+      if (perm) {
+        for (let i = 0; i < perm.length; i++) {
+          const item = perm[i];
+          permissions.push(item.permission.code)
+        }
+      }
       const user = {};
       for (const prop in payload) {
-        if (prop !== "password") {
+        if (prop !== "password" && prop !== "users_permissions") {
           user[prop] = payload[prop];
         }
       }
+      user.permissions = permissions
       state.user = user;
       state.globalAdmin =
         state.user.organization_id === 1 && state.user.profile_id === 1;
       state.admin = state.user.profile_id === 1;
+      if (state.globalAdmin) {
+        permissions.push("ADM");
+      }
+      if (!state.user.id) {
+        for (const key in state) {
+          if (key !== "user") {
+            if (Array.isArray(state[key])) {
+              state[key] = []
+            }
+            if (typeof state[key] === "object" && state[key] !== null) {
+              state[key] = {}
+            }
+          }
+        }
+      }
     },
 
     [types.SET_ORGANIZATIONS]: (state, { payload }) => {
