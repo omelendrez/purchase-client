@@ -462,6 +462,21 @@ export default new Vuex.Store({
       state.globalAdmin =
         state.user.organization_id === 1 && state.user.profile_id === 1;
       state.admin = state.user.profile_id === 1;
+      if (state.globalAdmin) {
+        permissions.push("ADM");
+      }
+      if (!state.user.id) {
+        for (const key in state) {
+          if (key !== "user") {
+            if (Array.isArray(state[key])) {
+              state[key] = []
+            }
+            if (typeof state[key] === "object" && state[key] !== null) {
+              state[key] = {}
+            }
+          }
+        }
+      }
     },
 
     [types.SET_ORGANIZATIONS]: (state, { payload }) => {
