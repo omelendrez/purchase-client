@@ -3,7 +3,7 @@ eq<template>
   <b-container class="requisition">
     <h3 class="text-center">
       <i class="fas fa-shopping-cart"></i>
-      Purchase Requisition
+      Purchase Requisition {{ this.form.number}}
     </h3>
     <b-card no-body>
       <b-tabs card v-model="tabIndex">

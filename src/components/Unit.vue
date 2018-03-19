@@ -2,7 +2,7 @@
   <b-container class="unit">
     <h3 class="text-center">
       <i class="fas fa-boxes"></i>
-      Unit
+      Unit {{ this.form.name}}
     </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 

@@ -3,7 +3,7 @@
   <b-container class="vendor">
     <h3 class="text-center">
       <i class="fas fa-handshake"></i>
-      Vendor
+      Vendor {{ this.form.name}}
     </h3>
 
     <b-form @submit="onSubmit" @reset="onReset" v-if="form.show" id="addForm">

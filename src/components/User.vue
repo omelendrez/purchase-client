@@ -3,7 +3,7 @@
   <b-container class="user">
     <h3 class="text-center">
       <i class="fas fa-user"></i>
-      User
+      User {{ this.form.user_name}}
     </h3>
     <b-card no-body>
       <b-tabs card v-model="tabIndex">
