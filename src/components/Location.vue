@@ -3,7 +3,7 @@
   <b-container class="branch">
     <h3 class="text-center">
       <i class="fas fa-location-arrow"></i>
-      Location
+      Location {{ this.form.name}}
     </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 

@@ -3,7 +3,7 @@
   <b-container class="user">
     <h3 class="text-center">
       <i class="fas fa-user"></i>
-      User
+      User {{ this.form.user_name}}
     </h3>
     <b-card no-body>
       <b-tabs card v-model="tabIndex">
@@ -132,8 +132,6 @@ export default {
       if (this.onPermissions) {
         this.onPermissions = false;
         Store.dispatch("LOAD_USER_PERMISSIONS", this.item);
-      } else {
-        this.$router.push({ name: "Users" });
       }
     }
   },
@@ -219,9 +217,6 @@ export default {
     },
     notUserPermissions() {
       return Store.state.notUserPermissions;
-    },
-    permissions() {
-      return Store.state.activePermissions;
     },
     item() {
       return Store.state.record;
