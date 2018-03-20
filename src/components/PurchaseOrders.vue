@@ -1,5 +1,5 @@
 <template>
-  <b-container class="requisitions" fluid>
+  <b-container class="purchase_orders" fluid>
 
     <Add />
 
@@ -10,7 +10,7 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table small hover outlined :items="requisitions.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" :show-empty="true" head-variant="light">
+    <b-table small hover outlined :items="purchaseOrders.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" :show-empty="true" head-variant="light">
       <template slot="actions" slot-scope="row">
         <b-btn size="sm" variant="outline-dark" @click.stop="row.toggleDetails" v-bind:style="{ fontSize: fontSize + 'px' }">{{ row.detailsShowing ? 'Hide' : 'Show'}}</b-btn>
         <b-btn size="sm" variant="info" @click.stop="editItem(row.item)" v-bind:style="{ fontSize: fontSize + 'px' }">Modify</b-btn>
@@ -51,18 +51,18 @@
           </b-row>
           <b-row>
             <b-col class="text-sm-right">
-              <b>Department:</b>
+              <b>Instructions:</b>
             </b-col>
             <b-col cols="8">
-              {{ row.item["department.name"] }}
+              {{ row.item["instructions"] }}
             </b-col>
           </b-row>
           <b-row>
             <b-col class="text-sm-right">
-              <b>Project:</b>
+              <b>Payment terms:</b>
             </b-col>
             <b-col cols="8">
-              {{ row.item["project.name"] }}
+              {{ row.item["payment_terms"] }}
             </b-col>
           </b-row>
           <b-row>
@@ -75,29 +75,21 @@
           </b-row>
           <b-row>
             <b-col class="text-sm-right">
-              <b>Expected delivery date:</b>
+              <b>Delivery scheduled:</b>
             </b-col>
             <b-col cols="8">
               {{ row.item["expected_delivery"] }}
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col class="text-sm-right">
-              <b>Remarks/purpose:</b>
-            </b-col>
-            <b-col cols="8">
-              {{ row.item["remarks"] }}
             </b-col>
           </b-row>
         </b-card>
       </template>
 
       <template slot="table-caption">
-        {{requisitions.count}} registros
+        {{purchaseOrders.count}} registros
       </template>
     </b-table>
 
-    <b-pagination :total-rows="requisitions.count" :per-page="perPage" v-model="currentPage" variant="info" />
+    <b-pagination :total-rows="purchaseOrders.count" :per-page="perPage" v-model="currentPage" variant="info" />
 
     <b-modal id="modal-center" title="Inactivate" v-model="deleteShow" @ok="handleOk" ok-title="Yes. Inactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
       <p class="my-4">Are you sure you want to inactivate
@@ -109,13 +101,13 @@
 <script>
 import Store from "../store/store";
 import Add from "./lib/Add";
-const fields = require("./lib/Fields").requisitions;
+const fields = require("./lib/Fields").purchaseOrders;
 const commonFields = require("./lib/Fields").commonFields;
 const actions = require("./lib/Fields").actions;
 const org = require("./lib/Fields").org;
 
 export default {
-  name: "Requisitions",
+  name: "PurchaseOrders",
   data() {
     return {
       perPage: 10,
@@ -131,7 +123,7 @@ export default {
   methods: {
     editItem(item) {
       Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "Requisition" });
+      this.$router.push({ name: "PurchaseOrder" });
     },
     deleteItem(item, type) {
       this.selectedItem = item;
@@ -142,7 +134,7 @@ export default {
       }
     },
     handleOk() {
-      Store.dispatch("DELETE_REQUISITION", this.selectedItem);
+      Store.dispatch("DELETE_PURCHASE_ORDER", this.selectedItem);
     }
   },
   watch: {
@@ -151,7 +143,7 @@ export default {
       if (results.error) {
         return;
       }
-      Store.dispatch("LOAD_REQUISITIONS");
+      Store.dispatch("LOAD_PURCHASE_ORDERS");
     }
   },
   computed: {
@@ -164,8 +156,8 @@ export default {
     isLogged() {
       return Store.state.user.id;
     },
-    requisitions() {
-      return Store.state.requisitions;
+    purchaseOrders() {
+      return Store.state.purchaseOrders;
     }
   },
   created() {
@@ -174,10 +166,9 @@ export default {
       return;
     }
     Store.dispatch("SET_MENU_OPTION", this.$route.name);
-    Store.dispatch("LOAD_PROJECTS");
     Store.dispatch("LOAD_LOCATIONS");
-    Store.dispatch("LOAD_DEPARTMENTS");
-    Store.dispatch("LOAD_REQUISITIONS");
+    Store.dispatch("LOAD_VENDORS");
+    Store.dispatch("LOAD_PURCHASE_ORDERS");
     if (Store.state.globalAdmin) {
       this.fields.unshift(org);
     }
@@ -192,7 +183,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.requisitions {
+.purchase_orders {
   background-color: white;
   padding-bottom: 20px;
   padding-top: 20px;

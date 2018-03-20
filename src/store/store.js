@@ -9,6 +9,8 @@ import Projects from "./../services/projects";
 import Permissions from "./../services/permissions";
 import Requisitions from "./../services/requisitions";
 import RequisitionItems from "./../services/requisition_items";
+import PurchaseOrders from "./../services/purchase_orders";
+import PurchaseOrderItems from "./../services/purchase_order_items";
 import Status from "./../services/status";
 import Units from "./../services/units";
 import Users from "./../services/users";
@@ -36,6 +38,8 @@ const state = {
   profiles: [],
   requisitions: [],
   requisitionItems: [],
+  purchaseOrders: [],
+  purchaseOrderItems: [],
   vendors: [],
   status: [],
   units: [],
@@ -337,6 +341,7 @@ export default new Vuex.Store({
       });
     },
 
+    // REQUISITIONS
     async [types.LOAD_REQUISITIONS]({ commit }) {
       this.dispatch("LOADING");
       const requisitions = await Requisitions.fetchRequisitions(
@@ -375,9 +380,9 @@ export default new Vuex.Store({
 
     async [types.SAVE_REQUISITION_ITEM]({ commit }, item) {
       this.dispatch("LOADING");
-      const requisition = await RequisitionItems.saveRequisitionItem(item);
+      const requisitionItem = await RequisitionItems.saveRequisitionItem(item);
       commit(types.SET_RESULTS, {
-        payload: requisition.data
+        payload: requisitionItem.data
       });
     },
 
@@ -388,6 +393,64 @@ export default new Vuex.Store({
       );
       commit(types.SET_RESULTS, {
         payload: requisitionItem.data
+      });
+    },
+
+    // PURCHASE ORDERS
+
+    async [types.LOAD_PURCHASE_ORDERS]({ commit }) {
+      this.dispatch("LOADING");
+      const purchaseOrders = await PurchaseOrders.fetchPurchaseOrders(
+        state.user.organization_id
+      );
+      commit(types.SET_PURCHASE_ORDERS, {
+        payload: purchaseOrders.data
+      });
+    },
+
+    async [types.LOAD_PURCHASE_ORDER_ITEMS]({ commit }, item) {
+      this.dispatch("LOADING");
+      const purchaseOrderItems = await PurchaseOrderItems.fetchPurchaseOrderItems(
+        item
+      );
+      commit(types.SET_PURCHASE_ORDER_ITEMS, {
+        payload: purchaseOrderItems.data
+      });
+    },
+
+    async [types.SAVE_PURCHASE_ORDER]({ commit }, item) {
+      this.dispatch("LOADING");
+      const purchaseOrder = await PurchaseOrders.savePurchaseOrder(item);
+      commit(types.SET_RESULTS, {
+        payload: purchaseOrder.data
+      });
+    },
+
+    async [types.DELETE_PURCHASE_ORDER]({ commit }, item) {
+      this.dispatch("LOADING");
+      const purchaseOrder = await PurchaseOrders.deletePurchaseOrder(item.id);
+      commit(types.SET_RESULTS, {
+        payload: purchaseOrder.data
+      });
+    },
+
+    async [types.SAVE_PURCHASE_ORDER_ITEM]({ commit }, item) {
+      this.dispatch("LOADING");
+      const purchaseOrderItem = await PurchaseOrderItems.savePurchaseOrderItem(
+        item
+      );
+      commit(types.SET_RESULTS, {
+        payload: purchaseOrderItem.data
+      });
+    },
+
+    async [types.DELETE_PURCHASE_ORDER_ITEM]({ commit }, item) {
+      this.dispatch("LOADING");
+      const purchaseOrderItem = await PurchaseOrderItems.deletePurchaseOrderItem(
+        item.id
+      );
+      commit(types.SET_RESULTS, {
+        payload: purchaseOrderItem.data
       });
     },
 
@@ -444,11 +507,11 @@ export default new Vuex.Store({
 
     [types.SET_USER]: (state, { payload }) => {
       const perm = payload.users_permissions;
-      const permissions = []
+      const permissions = [];
       if (perm) {
         for (let i = 0; i < perm.length; i++) {
           const item = perm[i];
-          permissions.push(item.permission.code)
+          permissions.push(item.permission.code);
         }
       }
       const user = {};
@@ -457,7 +520,7 @@ export default new Vuex.Store({
           user[prop] = payload[prop];
         }
       }
-      user.permissions = permissions
+      user.permissions = permissions;
       state.user = user;
       state.globalAdmin =
         state.user.organization_id === 1 && state.user.profile_id === 1;
@@ -469,10 +532,10 @@ export default new Vuex.Store({
         for (const key in state) {
           if (key !== "user") {
             if (Array.isArray(state[key])) {
-              state[key] = []
+              state[key] = [];
             }
             if (typeof state[key] === "object" && state[key] !== null) {
-              state[key] = []
+              state[key] = [];
             }
           }
         }
@@ -559,6 +622,28 @@ export default new Vuex.Store({
     },
     [types.SET_REQUISITION_ITEMS]: (state, { payload }) => {
       state.requisitionItems = payload;
+    },
+
+    [types.SET_PURCHASE_ORDERS]: (state, { payload }) => {
+      state.purchaseOrders = payload;
+      payload.rows.map(item => {
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
+        if (item.id === state.record.id) {
+          item._rowVariant = constants.selectedRecordColor;
+        }
+        /*
+        item._cellVariants = {
+          "status.name":
+            item.status_id !== constants.activeStatus ? constants.inactiveColor : activeColor
+        };
+        */
+      });
+    },
+    [types.SET_PURCHASE_ORDER_ITEMS]: (state, { payload }) => {
+      state.purchaseOrderItems = payload;
     },
 
     [types.SET_PROJECTS]: (state, { payload }) => {

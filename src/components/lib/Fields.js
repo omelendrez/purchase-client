@@ -146,8 +146,52 @@ const requisitionItems = [
     key: "unit.name",
     class: "text-center"
   }
+];
 
-]
+const purchaseOrders = [
+  {
+    key: "number",
+    class: "text-center",
+    sortable: true
+  },
+  {
+    key: "date",
+    class: "text-center text-nowrap"
+  },
+  {
+    key: "user.full_name",
+    label: "Requester",
+    sortable: true
+  },
+  {
+    key: "expected_delivery",
+    class: "text-center text-nowrap"
+  }
+];
+
+const purchaseOrderItems = [
+  {
+    key: "description"
+  },
+  {
+    key: "unit.name",
+    label: "UoM",
+    class: "text-center"
+  },
+  {
+    key: "quantity",
+    label: "Qty",
+    class: "text-center"
+  },
+  {
+    key: "unit_price",
+    class: "text-right"
+  },
+  {
+    key: "total_amount",
+    class: "text-right"
+  }
+];
 
 const units = [
   {
@@ -198,6 +242,8 @@ module.exports = {
   permissions,
   requisitions,
   requisitionItems,
+  purchaseOrders,
+  purchaseOrderItems,
   organizations,
   vendors,
   units

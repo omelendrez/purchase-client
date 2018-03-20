@@ -26,6 +26,9 @@ import Permission from "@/components/Permission";
 import Requisitions from "@/components/Requisitions";
 import Requisition from "@/components/Requisition";
 
+import PurchaseOrders from "@/components/PurchaseOrders";
+import PurchaseOrder from "@/components/PurchaseOrder";
+
 import Units from "@/components/Units";
 import Unit from "@/components/Unit";
 
@@ -113,6 +116,16 @@ export default new Router({
       path: "/requisition",
       name: "Requisition",
       component: Requisition
+    },
+    {
+      path: "/purchase_orders",
+      name: "PurchaseOrders",
+      component: PurchaseOrders
+    },
+    {
+      path: "/purchase_order",
+      name: "PurchaseOrder",
+      component: PurchaseOrder
     },
     {
       path: "/units",
