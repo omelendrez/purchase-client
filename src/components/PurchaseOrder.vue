@@ -1,9 +1,9 @@
-eq<template>
+<template>
 
-  <b-container class="requisition">
+  <b-container class="purchase_order">
     <h3 class="text-center">
       <i class="fas fa-shopping-cart"></i>
-      Purchase Requisition {{ this.form.number}}
+      Purchase Order {{ this.form.number}}
     </h3>
     <b-card no-body>
       <b-tabs card v-model="tabIndex">
@@ -14,20 +14,16 @@ eq<template>
               <b-form-input id="number" v-model="form.number" readonly v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
             </b-form-group>
 
+            <b-form-group horizontal label="Vendor" label-for="vendor_id">
+              <b-form-select v-model="form.vendor_id" :options="vendorOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+            </b-form-group>
+
             <b-form-group horizontal label="Date" label-for="date">
               <b-form-input id="date" type="date" v-model.trim="form.date" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Requester" label-for="full_name">
               <b-form-input id="full_name" v-model="form.full_name" readonly v-bind:style="{ fontSize: fontSize + 'px' }" />
-            </b-form-group>
-
-            <b-form-group horizontal label="Department" label-for="department_id">
-              <b-form-select v-model="form.department_id" :options="departmentOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
-            </b-form-group>
-
-            <b-form-group horizontal label="Project" label-for="project_id">
-              <b-form-select v-model="form.project_id" :options="projectOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
             </b-form-group>
 
             <b-form-group horizontal label="Delivery location" label-for="location_id">
@@ -38,11 +34,15 @@ eq<template>
               <b-form-input id="expected_delivery" type="date" v-model.trim="form.expected_delivery" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
             </b-form-group>
 
-            <b-form-group horizontal label="Remarks" label-for="remarks">
-              <b-form-textarea id="remarks" v-model="form.remarks" rows="2" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
+            <b-form-group horizontal label="Instructions" label-for="instructions">
+              <b-form-textarea id="instructions" v-model="form.instructions" rows="2" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
             </b-form-group>
 
-            <RequstButtons/>
+            <b-form-group horizontal label="Payment terms" label-for="payment_terms">
+              <b-form-textarea id="payment_terms" v-model="form.payment_terms" rows="2" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
+            </b-form-group>
+
+            <RequestButtons/>
 
           </b-form>
         </b-tab>
@@ -76,6 +76,17 @@ eq<template>
                 <b-form-select v-model="itemForm.unit_id" :options="units" v-else required/>
               </template>
 
+              <template slot="unit_price" slot-scope="row">
+                <div v-if="!row.item.editing">
+                  {{row.item["unit_price"]}}
+                </div>
+                <b-form-input v-else type="number" v-model="itemForm.unit_price" required></b-form-input>
+              </template>
+
+              <template slot="total_amount" slot-scope="row">
+                {{row.item["total_amount"]}}
+              </template>
+
               <template slot="actions" slot-scope="row">
                 <b-btn size="sm" variant="info" @click.stop="editItem(row.item, row.index, $event.target)" v-if="!row.item.editing" :disabled="isEditing">Edit</b-btn>
                 <b-btn size="sm" variant="success" @click.stop="saveItem(row.item, row.index, $event.target)" v-else>Save</b-btn>
@@ -100,15 +111,15 @@ eq<template>
         </b-tab>
 
         <b-tab title="Workflow">
-          <b-card  class="action-card">
+          <b-card class="action-card">
             <div class="col-md-4 pb-2">
-              <b-button class="submit-pr">Submit for approval</b-button>
+              <b-button class="submit-po">Submit for approval</b-button>
             </div>
             <div class="col-md-4 pb-2">
-              <b-button class="hold-pr">Put on-hold</b-button>
+              <b-button class="hold-po">Put on-hold</b-button>
             </div>
             <div class="col-md-4 pb-2">
-              <b-button class="cancel-pr">Cancel PR</b-button>
+              <b-button class="cancel-po">Cancel PO</b-button>
             </div>
             <b-form @reset="closeTabIndex">
               <ItemsButtons />
@@ -128,15 +139,15 @@ eq<template>
 
 <script>
 import Store from "../store/store";
-import RequstButtons from "./lib/RequestButtons";
+import RequestButtons from "./lib/RequestButtons";
 import ItemsButtons from "./lib/ItemsButtons";
 import Add from "./lib/Add";
 import { setTimeout } from "timers";
-const fields = require("./lib/Fields").requisitionItems;
+const fields = require("./lib/Fields").purchaseOrderItems;
 const actions = require("./lib/Fields").actions;
 
 export default {
-  name: "Requisition",
+  name: "PurchaseOrder",
   data() {
     return {
       tabIndex: 0,
@@ -144,21 +155,23 @@ export default {
       form: {
         id: 0,
         user_id: 0,
+        vendor_id: 0,
         full_name: "",
         number: "",
         date: "",
-        department_id: 0,
-        remarks: "",
-        project_id: 0,
+        instructions: "",
+        payment_terms: "",
         location_id: 0,
         organization_id: 0
       },
       itemForm: {
         id: 0,
         description: "",
-        requisition_id: 0,
+        purchase_order_id: 0,
         quantity: 0,
-        unit_id: 0
+        unit_id: 0,
+        unit_price: 0,
+        total_amount: 0
       },
       errorShow: false,
       errorMessage: "",
@@ -167,9 +180,7 @@ export default {
       deleteShow: false,
       selectedItem: [],
       deliveryLocationOptions: [],
-      departmentOptions: [],
-      projectOptions: [],
-      unitOptions: [],
+      vendorOptions: [],
       updatingItem: false,
       isEditing: false,
       itemRows: [],
@@ -177,7 +188,7 @@ export default {
     };
   },
   components: {
-    RequstButtons,
+    RequestButtons,
     ItemsButtons,
     Add
   },
@@ -198,18 +209,18 @@ export default {
           Store.dispatch("LOAD_UNITS");
           Store.dispatch("ADD_ITEM", results);
         }
-        Store.dispatch("LOAD_REQUISITION_ITEMS", this.form.id);
+        Store.dispatch("LOAD_PURCHASE_ORDER_ITEMS", this.form.id);
         setTimeout(() => {
           this.infoMessage = "";
           this.infoShow = false;
         }, 2000);
       }
     },
-    requisitionItems() {
-      if (!Store.state.requisitionItems.rows) {
+    purchaseOrderItems() {
+      if (!Store.state.purchaseOrderItems.rows) {
         return;
       }
-      const items = Store.state.requisitionItems.rows;
+      const items = Store.state.purchaseOrderItems.rows;
       const arr = [];
       for (let i = 0; i < items.length; i++) {
         let row = {
@@ -219,54 +230,36 @@ export default {
           description: items[i].description,
           quantity: items[i].quantity,
           id: items[i].id,
-          requisition_id: items[i].requisition_id
+          unit_price: items[i].unit_price.toLocaleString("en-US", {
+            minimumFractionDigits: 2
+          }),
+          total_amount: items[i].total_amount.toLocaleString("en-US", {
+            minimumFractionDigits: 2
+          }),
+          purchase_order_id: items[i].purchase_order_id
         };
         arr.push(row);
       }
       this.itemRows = arr;
+    },
+    activeLocations() {
+      this.refreshData(
+        Store.state.activeLocations,
+        this.deliveryLocationOptions,
+        this.form.organization_id
+      );
+    },
+    activeVendors() {
+      this.refreshData(
+        Store.state.activeVendors,
+        this.vendorOptions,
+        this.form.organization_id
+      );
     }
   },
   computed: {
     fontSize() {
       return Store.state.fontSize;
-    },
-    locations() {
-      const locations = Store.state.activeLocations;
-      if (!locations) {
-        return;
-      }
-      const options = [];
-      for (let i = 0; i < locations.length; i++) {
-        if (
-          locations[i].organization_id === Store.state.user.organization_id ||
-          Store.state.globalAdmin
-        ) {
-          options.push({
-            value: locations[i].id,
-            text: locations[i].name
-          });
-        }
-      }
-      return options;
-    },
-    departments() {
-      const departments = Store.state.activeDepartments;
-      if (!departments) {
-        return;
-      }
-      const options = [];
-      for (let i = 0; i < departments.length; i++) {
-        if (
-          departments[i].organization_id === Store.state.user.organization_id ||
-          Store.state.globalAdmin
-        ) {
-          options.push({
-            value: departments[i].id,
-            text: departments[i].name
-          });
-        }
-      }
-      return options;
     },
     units() {
       const units = Store.state.activeUnits;
@@ -282,27 +275,8 @@ export default {
       }
       return options;
     },
-    projects() {
-      const projects = Store.state.activeProjects;
-      if (!projects) {
-        return;
-      }
-      const options = [];
-      for (let i = 0; i < projects.length; i++) {
-        if (
-          projects[i].organization_id === Store.state.user.organization_id ||
-          Store.state.globalAdmin
-        ) {
-          options.push({
-            value: projects[i].id,
-            text: projects[i].name
-          });
-        }
-      }
-      return options;
-    },
-    requisitionItems() {
-      return Store.state.requisitionItems;
+    purchaseOrderItems() {
+      return Store.state.purchaseOrderItems;
     },
     results() {
       return Store.state.results;
@@ -318,6 +292,12 @@ export default {
     },
     fullName() {
       return Store.state.user.full_name;
+    },
+    activeLocations() {
+      return Store.state.activeLocations;
+    },
+    activeVendors() {
+      return Store.state.activeVendors;
     }
   },
   methods: {
@@ -325,8 +305,9 @@ export default {
       const item = {
         id: 0,
         unit_id: 0,
-        requisition_id: this.item.id,
+        purchase_order_id: this.item.id,
         quantity: 0,
+        unit_price: 0,
         description: "",
         editing: true,
         isNew: true
@@ -355,7 +336,7 @@ export default {
         this.errorShow = true;
         return;
       }
-      Store.dispatch("SAVE_REQUISITION_ITEM", this.itemForm);
+      Store.dispatch("SAVE_PURCHASE_ORDER_ITEM", this.itemForm);
     },
     editItem(item, index, target) {
       item.editing = true;
@@ -364,7 +345,7 @@ export default {
       this.itemForm.unit_id = item.unit_id;
       this.itemForm.description = item.description;
       this.itemForm.quantity = item.quantity;
-      this.itemForm.requisition_id = item.requisition_id;
+      this.itemForm.purchase_order_id = item.purchase_order_id;
     },
 
     deleteItem(item, type) {
@@ -377,7 +358,7 @@ export default {
     },
     handleOk() {
       this.updatingItem = true;
-      Store.dispatch("DELETE_REQUISITION_ITEM", this.selectedItem);
+      Store.dispatch("DELETE_PURCHASE_ORDER_ITEM", this.selectedItem);
     },
     cancelSave(item, index, target) {
       item.editing = false;
@@ -388,13 +369,13 @@ export default {
     },
     onSubmit(evt) {
       evt.preventDefault();
-      Store.dispatch("SAVE_REQUISITION", this.form);
+      Store.dispatch("SAVE_PURCHASE_ORDER", this.form);
     },
     onReset(evt) {
       evt.preventDefault();
       /* Trick to reset/clear native browser form validation state */
       this.$nextTick(() => {
-        this.$router.push({ name: "Requisitions" });
+        this.$router.push({ name: "PurchaseOrders" });
       });
     },
     closeTabIndex() {
@@ -419,11 +400,10 @@ export default {
       this.$router.push({ name: "Login" });
       return;
     }
-    Store.dispatch("LOAD_REQUISITION_ITEMS", this.item.id);
-    Store.dispatch("LOAD_PROJECTS");
+    Store.dispatch("LOAD_VENDORS");
     Store.dispatch("LOAD_LOCATIONS");
-    Store.dispatch("LOAD_DEPARTMENTS");
     Store.dispatch("LOAD_UNITS");
+    Store.dispatch("LOAD_PURCHASE_ORDER_ITEMS", this.item.id);
 
     this.form.user_id = this.isLogged;
     this.form.number = "AUTOMATIC";
@@ -437,28 +417,13 @@ export default {
       this.form.organization_id = this.item.organization_id;
       this.form.full_name = this.item["user.full_name"];
       this.form.number = this.item.number;
+      this.form.vendor_id = this.item.vendor_id;
       this.form.date = this.item._date;
       this.form.location_id = this.item.location_id;
-      this.form.department_id = this.item["user.department_id"];
-      this.form.project_id = this.item.project_id;
       this.form.expected_delivery = this.item._expected_delivery;
-      this.form.remarks = this.item.remarks;
+      this.form.instructions = this.item.instructions;
+      this.form.payment_terms = this.item.payment_terms;
     }
-    this.refreshData(
-      Store.state.activeLocations,
-      this.deliveryLocationOptions,
-      this.form.organization_id
-    );
-    this.refreshData(
-      Store.state.activeDepartments,
-      this.departmentOptions,
-      this.form.organization_id
-    );
-    this.refreshData(
-      Store.state.activeProjects,
-      this.projectOptions,
-      this.form.organization_id
-    );
     this.fields.push(...actions);
   }
 };
@@ -466,7 +431,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.requisition {
+.purchase_order {
   background-color: white;
   padding: 60px;
   padding-top: 20px;

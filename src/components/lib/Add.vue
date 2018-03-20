@@ -12,17 +12,8 @@ export default {
   name: "Add",
   methods: {
     addItem() {
-      Store.dispatch("ADD_ITEM", { id: 0, name: "" });
-      this.$router.push({ name: this.option });
-    }
-  },
-  computed: {
-    option() {
-      let option = Store.state.option.substring(1).slice(0, -1);
-      option = `${option.charAt(0).toUpperCase()}${option
-        .slice(1)
-        .toLowerCase()}`;
-      return option;
+      Store.dispatch("ADD_ITEM", { id: 0 });
+      this.$router.push({ name: Store.state.option.slice(0, -1) });
     }
   }
 };

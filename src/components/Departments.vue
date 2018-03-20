@@ -98,7 +98,7 @@ export default {
       this.$router.push({ name: "Login" });
       return;
     }
-    Store.dispatch("SET_MENU_OPTION", this.$route.path);
+    Store.dispatch("SET_MENU_OPTION", this.$route.name);
     Store.dispatch("LOAD_DEPARTMENTS");
     Store.dispatch("LOAD_ORGANIZATIONS");
 
