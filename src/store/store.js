@@ -16,6 +16,8 @@ import Units from "./../services/units";
 import Users from "./../services/users";
 import UserPermissions from "./../services/users_permissions";
 import Vendors from "./../services/vendors";
+import Workflows from "./../services/workflows";
+import WorkflowSteps from "./../services/workflow_steps";
 
 import * as types from "../store/mutation-types";
 import * as constants from "./constants";
@@ -30,6 +32,7 @@ const state = {
   activePermissions: [],
   activeUnits: [],
   activeVendors: [],
+  activeWorkflows: [],
   organizations: [],
   locations: [],
   departments: [],
@@ -41,6 +44,8 @@ const state = {
   purchaseOrders: [],
   purchaseOrderItems: [],
   vendors: [],
+  workflows: [],
+  workflowSteps: [],
   status: [],
   units: [],
   user: [],
@@ -454,6 +459,64 @@ export default new Vuex.Store({
       });
     },
 
+    // WORKFLOWS
+
+    async [types.LOAD_WORKFLOWS]({ commit }) {
+      this.dispatch("LOADING");
+      const workflows = await Workflows.fetchWorkflows(
+        state.user.organization_id
+      );
+      commit(types.SET_WORKFLOWS, {
+        payload: workflows.data
+      });
+    },
+
+    async [types.LOAD_WORKFLOW_STEPS]({ commit }, item) {
+      this.dispatch("LOADING");
+      const workflowSteps = await WorkflowSteps.fetchWorkflowSteps(
+        item
+      );
+      commit(types.SET_WORKFLOW_STEPS, {
+        payload: workflowSteps.data
+      });
+    },
+
+    async [types.SAVE_WORKFLOW]({ commit }, item) {
+      this.dispatch("LOADING");
+      const workflow = await Workflows.saveWorkflow(item);
+      commit(types.SET_RESULTS, {
+        payload: workflow.data
+      });
+    },
+
+    async [types.DELETE_WORKFLOW]({ commit }, item) {
+      this.dispatch("LOADING");
+      const workflow = await Workflows.deleteWorkflow(item.id);
+      commit(types.SET_RESULTS, {
+        payload: workflow.data
+      });
+    },
+
+    async [types.SAVE_WORKFLOW_STEP]({ commit }, item) {
+      this.dispatch("LOADING");
+      const workflowStep = await WorkflowSteps.saveWorkflowStep(
+        item
+      );
+      commit(types.SET_RESULTS, {
+        payload: workflowStep.data
+      });
+    },
+
+    async [types.DELETE_WORKFLOW_STEP]({ commit }, item) {
+      this.dispatch("LOADING");
+      const workflowStep = await WorkflowSteps.deleteWorkflowStep(
+        item.id
+      );
+      commit(types.SET_RESULTS, {
+        payload: workflowStep.data
+      });
+    },
+
     async [types.SAVE_VENDOR]({ commit }, item) {
       this.dispatch("LOADING");
       const vendor = await Vendors.saveVendor(item);
@@ -719,6 +782,26 @@ export default new Vuex.Store({
       state.activeUnits = payload.rows.filter(item => {
         return item.status_id === constants.activeStatus;
       });
+    },
+
+    [types.SET_WORKFLOWS]: (state, { payload }) => {
+      state.workflows = payload;
+      payload.rows.map(item => {
+        item._rowVariant =
+          item.status_id !== constants.activeStatus
+            ? constants.inactiveColor
+            : "";
+        if (item.id === state.record.id) {
+          item._rowVariant = constants.selectedRecordColor;
+        }
+      });
+      state.activeWorkflows = payload.rows.filter(item => {
+        return item.status_id === constants.activeStatus;
+      });
+    },
+
+    [types.SET_WORKFLOW_STEPS]: (state, { payload }) => {
+      state.workflowSteps = payload;
     },
 
     [types.SET_VENDORS]: (state, { payload }) => {

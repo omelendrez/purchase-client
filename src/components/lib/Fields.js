@@ -193,6 +193,40 @@ const purchaseOrderItems = [
   }
 ];
 
+const workflows = [
+  {
+    key: "name",
+    sortable: true
+  },
+  {
+    key: "description"
+  }
+];
+
+const workflowSteps = [
+  {
+    key: "description"
+  },
+  {
+    key: "unit.name",
+    label: "UoM",
+    class: "text-center"
+  },
+  {
+    key: "quantity",
+    label: "Qty",
+    class: "text-center"
+  },
+  {
+    key: "unit_price",
+    class: "text-right"
+  },
+  {
+    key: "total_amount",
+    class: "text-right"
+  }
+];
+
 const units = [
   {
     key: "code",
@@ -246,5 +280,7 @@ module.exports = {
   purchaseOrderItems,
   organizations,
   vendors,
+  workflows,
+  workflowSteps,
   units
 };
