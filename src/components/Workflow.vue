@@ -6,7 +6,7 @@
     </h3>
     <b-card no-body>
       <b-tabs card v-model="tabIndex">
-        <b-tab title="Workflow">
+        <b-tab title="Workflow" :title-link-class="['bg-primary', 'text-light', 'mx-2']">
 
           <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
@@ -26,29 +26,41 @@
 
           </b-form>
         </b-tab>
-        <b-tab title="PRI">
-          <h6>Purchase Request Issuers</h6>
-          <b-form-checkbox-group stacked v-model="selectedPRI" :options="PRI" />
+        <b-tab title="PRI" :title-link-class="['bg-success', 'text-light', 'mx-2']">
+          <h5>PRI - Purchase Request Issuers</h5>
+          <b-card>
+            <b-form-checkbox-group v-model="selectedPRI" :options="PRI" />
+          </b-card>
         </b-tab>
-        <b-tab title="PRA">
-          <h6>Purchase Request Approvers</h6>
-          <b-form-checkbox-group stacked v-model="selectedPRA" :options="PRA" />
+        <b-tab title="PRA" :title-link-class="['bg-success', 'text-light', 'mx-2']">
+          <h5>PRA - Purchase Request Approvers</h5>
+          <b-card>
+            <b-form-checkbox-group v-model="selectedPRA" :options="PRA" />
+          </b-card>
         </b-tab>
-        <b-tab title="POI">
-          <h6>Purchase Order Issuers</h6>
-          <b-form-checkbox-group stacked v-model="selectedPOI" :options="POI" />
+        <b-tab title="POI" :title-link-class="['bg-danger', 'text-light', 'mx-2']">
+          <h5>POI - Purchase Order Issuers</h5>
+          <b-card>
+            <b-form-checkbox-group v-model="selectedPOI" :options="POI" />
+          </b-card>
         </b-tab>
-        <b-tab title="POA">
-          <h6>Purchase Order Approvers</h6>
-          <b-form-checkbox-group stacked v-model="selectedPOA" :options="POA" />
+        <b-tab title="POA" :title-link-class="['bg-danger', 'text-light', 'mx-2']">
+          <h5>POA - Purchase Order Approvers</h5>
+          <b-card>
+            <b-form-checkbox-group v-model="selectedPOA" :options="POA" />
+          </b-card>
         </b-tab>
-        <b-tab title="RRI">
-          <h6>Receiving Report Issuers</h6>
-          <b-form-checkbox-group stacked v-model="selectedRRI" :options="RRI" />
+        <b-tab title="RRI" :title-link-class="['bg-info', 'text-light', 'mx-2']">
+          <h5>RRI - Receiving Report Issuers</h5>
+          <b-card>
+            <b-form-checkbox-group v-model="selectedRRI" :options="RRI" />
+          </b-card>
         </b-tab>
-        <b-tab title="RFPI">
-          <h6>Request For Payment Issuers</h6>
-          <b-form-checkbox-group stacked v-model="selectedRFPI" :options="RFPI" />
+        <b-tab title="RFPI" :title-link-class="['bg-warning', 'text-light', 'mx-2']">
+          <h5>RFPI - Request For Payment Issuers</h5>
+          <b-card>
+            <b-form-checkbox-group v-model="selectedRFPI" :options="RFPI" />
+          </b-card>
         </b-tab>
       </b-tabs>
       <b-container>
@@ -122,7 +134,7 @@ export default {
           const perm = perms[j].permission.code;
           this[perm].push({
             value: users[i].id,
-            text: users[i].full_name
+            text: `${users[i].full_name} (${users[i].email})`
           });
         }
       }
@@ -213,5 +225,4 @@ export default {
   max-width: 800px;
   padding-top: 40px;
 }
-
 </style>
