@@ -31,6 +31,7 @@ const state = {
   activeProjects: [],
   activePermissions: [],
   activeUnits: [],
+  activeUsers: [],
   activeVendors: [],
   activeWorkflows: [],
   organizations: [],
@@ -829,7 +830,9 @@ export default new Vuex.Store({
     },
 
     [types.SET_USERS]: (state, { payload }) => {
+      state.activeUsers = [];
       state.users = payload;
+      state.users.count = payload.rows.length
       payload.rows.map(item => {
         item._rowVariant =
           item.status_id !== constants.activeStatus
@@ -838,6 +841,9 @@ export default new Vuex.Store({
         // item._rowVariant = item.status_id === 2 ? constants.inactiveColor : ''
         if (item.id === state.record.id) {
           item._rowVariant = constants.selectedRecordColor;
+        }
+        if (item.status_id === constants.activeStatus) {
+          state.activeUsers.push(item)
         }
       });
     },

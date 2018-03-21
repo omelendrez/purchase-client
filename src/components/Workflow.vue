@@ -4,25 +4,59 @@
       <i class="fas fa-users"></i>
       Workflow {{ this.form.name}}
     </h3>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
+    <b-card no-body>
+      <b-tabs card v-model="tabIndex">
+        <b-tab title="Workflow">
 
-      <b-form-group horizontal label="Company" label-for="organization_id">
-        <b-form-select v-model="form.organization_id" :options="organizations" required v-bind:style="{ fontSize: fontSize + 'px' }" />
-      </b-form-group>
+          <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
-      <b-form-group horizontal label="Name" label-for="name">
-        <b-form-input id="name" v-model.trim="form.name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
-      </b-form-group>
+            <b-form-group horizontal label="Company" label-for="organization_id">
+              <b-form-select v-model="form.organization_id" :options="organizations" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+            </b-form-group>
 
-      <b-form-group horizontal label="Description" label-for="description">
-        <b-form-input id="description" v-model.trim="form.description" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
-      </b-form-group>
+            <b-form-group horizontal label="Name" label-for="name">
+              <b-form-input id="name" v-model.trim="form.name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+            </b-form-group>
 
-      <Buttons/>
+            <b-form-group horizontal label="Description" label-for="description">
+              <b-form-input id="description" v-model.trim="form.description" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+            </b-form-group>
 
-      <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
+            <Buttons/>
 
-    </b-form>
+          </b-form>
+        </b-tab>
+        <b-tab title="PRI">
+          <h6>Purchase Request Issuers</h6>
+          <b-form-checkbox-group stacked v-model="selectedPRI" :options="PRI" />
+        </b-tab>
+        <b-tab title="PRA">
+          <h6>Purchase Request Approvers</h6>
+          <b-form-checkbox-group stacked v-model="selectedPRA" :options="PRA" />
+        </b-tab>
+        <b-tab title="POI">
+          <h6>Purchase Order Issuers</h6>
+          <b-form-checkbox-group stacked v-model="selectedPOI" :options="POI" />
+        </b-tab>
+        <b-tab title="POA">
+          <h6>Purchase Order Approvers</h6>
+          <b-form-checkbox-group stacked v-model="selectedPOA" :options="POA" />
+        </b-tab>
+        <b-tab title="RRI">
+          <h6>Receiving Report Issuers</h6>
+          <b-form-checkbox-group stacked v-model="selectedRRI" :options="RRI" />
+        </b-tab>
+        <b-tab title="RFPI">
+          <h6>Request For Payment Issuers</h6>
+          <b-form-checkbox-group stacked v-model="selectedRFPI" :options="RFPI" />
+        </b-tab>
+      </b-tabs>
+      <b-container>
+        <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
+        <b-alert variant="success" :show="infoShow">{{ infoMessage }}</b-alert>
+      </b-container>
+
+    </b-card>
   </b-container>
 </template>
 
@@ -41,8 +75,23 @@ export default {
         description: "",
         organization_id: 0
       },
+      tabIndex: 0,
       errorShow: false,
-      errorMessage: ""
+      errorMessage: "",
+      infoShow: false,
+      infoMessage: "",
+      PRI: [],
+      PRA: [],
+      POI: [],
+      POA: [],
+      RRI: [],
+      RFPI: [],
+      selectedPRI: [],
+      selectedPRA: [],
+      selectedPOI: [],
+      selectedPOA: [],
+      selectedRRI: [],
+      selectedRFPI: []
     };
   },
   components: {
@@ -54,12 +103,35 @@ export default {
       if (results.error) {
         this.errorMessage = results.message;
         this.errorShow = results.error;
+      } else {
+        this.infoMessage = "Database updated successfully";
+        this.infoShow = true;
+      }
+    },
+    users() {
+      const self = this;
+      const users = Store.state.activeUsers.filter(user => {
+        return user.organization_id === self.form.organization_id;
+      });
+      if (!users) {
         return;
       }
-      this.$router.push({ name: "Workflows" });
+      for (let i = 0; i < users.length; i++) {
+        const perms = users[i].users_permissions;
+        for (let j = 0; j < perms.length; j++) {
+          const perm = perms[j].permission.code;
+          this[perm].push({
+            value: users[i].id,
+            text: users[i].full_name
+          });
+        }
+      }
     }
   },
   computed: {
+    users() {
+      return Store.state.activeUsers;
+    },
     fontSize() {
       return Store.state.fontSize;
     },
@@ -96,6 +168,9 @@ export default {
     }
   },
   methods: {
+    clickItem(a, b, c) {
+      console.log(a, b, c);
+    },
     onSubmit(evt) {
       evt.preventDefault();
       Store.dispatch("SAVE_WORKFLOW", this.form);
@@ -111,6 +186,7 @@ export default {
   },
   created() {
     Store.dispatch("LOAD_ORGANIZATIONS");
+    Store.dispatch("LOAD_USERS");
     if (!this.isLogged) {
       this.$router.push({ name: "Login" });
       return;
@@ -137,4 +213,5 @@ export default {
   max-width: 800px;
   padding-top: 40px;
 }
+
 </style>

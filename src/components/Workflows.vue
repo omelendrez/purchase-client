@@ -25,7 +25,7 @@
 
     <b-modal id="modal-center" title="Inactivate" v-model="deleteShow" @ok="handleOk" ok-title="Yes. Inactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
       <p class="my-4">Are you sure you want to inactivate
-        <strong>{{ selectedItem.user_name }} </strong>?</p>
+        <strong>{{ selectedItem.name }} </strong>?</p>
     </b-modal>
 
   </b-container>
