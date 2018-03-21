@@ -58,8 +58,8 @@
               <i class="fas fa-building"></i> Companies</b-nav-item>
             <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('Users')" href="#/users">
               <i class="fas fa-user"></i> Users</b-nav-item>
-            <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('Workflows')" href="#/workflow">
-              <i class="fas fa-thumbs-up"></i> Workflow</b-nav-item>
+            <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('Workflows')" href="#/workflows">
+              <i class="fas fa-thumbs-up"></i> Workflows</b-nav-item>
             <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('Permissions')" href="#/permissions">
               <i class="fas fa-key"></i> Permissions</b-nav-item>
 

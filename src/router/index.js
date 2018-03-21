@@ -38,6 +38,9 @@ import User from "@/components/User";
 import Vendors from "@/components/Vendors";
 import Vendor from "@/components/Vendor";
 
+import Workflows from "@/components/Workflows";
+import Workflow from "@/components/Workflow";
+
 Vue.use(Router);
 
 export default new Router({
@@ -166,6 +169,16 @@ export default new Router({
       path: "/vendor",
       name: "Vendor",
       component: Vendor
+    },
+    {
+      path: "/workflows",
+      name: "Workflows",
+      component: Workflows
+    },
+    {
+      path: "/workflow",
+      name: "Workflow",
+      component: Workflow
     }
 
   ]

@@ -37,4 +37,8 @@ table.b-table.b-table-stacked > tbody > tr > [data-label] {
   grid-template-columns: 10% auto !important;
 }
 
+div.custom-checkbox {
+  display: block;
+  margin-bottom: 6px;
+}
 </style>
