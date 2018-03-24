@@ -31,35 +31,41 @@
           <b-card>
             <b-form-checkbox-group v-model="selectedPRI" :options="PRI" />
           </b-card>
+          <WorkflowButtons v-bind:options="selectedPRI" v-bind:user-type=1 v-bind:workflow-id="this.form.id" />
         </b-tab>
         <b-tab title="PRA" :title-link-class="['bg-success', 'text-light', 'mx-2']">
           <h5>PRA - Purchase Request Approvers</h5>
           <b-card>
             <b-form-checkbox-group v-model="selectedPRA" :options="PRA" />
           </b-card>
+          <WorkflowButtons v-bind:options="selectedPRA" v-bind:user-type=2 v-bind:workflow-id="this.form.id" />
         </b-tab>
         <b-tab title="POI" :title-link-class="['bg-danger', 'text-light', 'mx-2']">
           <h5>POI - Purchase Order Issuers</h5>
           <b-card>
             <b-form-checkbox-group v-model="selectedPOI" :options="POI" />
           </b-card>
+          <WorkflowButtons v-bind:options="selectedPOI" v-bind:user-type=3 v-bind:workflow-id="this.form.id" />
         </b-tab>
         <b-tab title="POA" :title-link-class="['bg-danger', 'text-light', 'mx-2']">
           <h5>POA - Purchase Order Approvers</h5>
           <b-card>
             <b-form-checkbox-group v-model="selectedPOA" :options="POA" />
           </b-card>
+          <WorkflowButtons v-bind:options="selectedPOA" v-bind:user-type=4 v-bind:workflow-id="this.form.id" />
         </b-tab>
         <b-tab title="RRI" :title-link-class="['bg-info', 'text-light', 'mx-2']">
           <h5>RRI - Receiving Report Issuers</h5>
           <b-card>
             <b-form-checkbox-group v-model="selectedRRI" :options="RRI" />
           </b-card>
+          <WorkflowButtons v-bind:options="selectedRRI" v-bind:user-type=5 v-bind:workflow-id="this.form.id" />
         </b-tab>
         <b-tab title="RFPI" :title-link-class="['bg-warning', 'text-light', 'mx-2']">
           <h5>RFPI - Request For Payment Issuers</h5>
           <b-card>
             <b-form-checkbox-group v-model="selectedRFPI" :options="RFPI" />
+            <WorkflowButtons v-bind:options="selectedRFPI" v-bind:user-type=6 v-bind:workflow-id="this.form.id" />
           </b-card>
         </b-tab>
       </b-tabs>
@@ -75,6 +81,7 @@
 <script>
 import Store from "../store/store";
 import Buttons from "./lib/Buttons";
+import WorkflowButtons from "./lib/WorkflowButtons";
 
 export default {
   name: "Workflow",
@@ -107,9 +114,45 @@ export default {
     };
   },
   components: {
-    Buttons
+    Buttons,
+    WorkflowButtons
   },
   watch: {
+    workflowUsers() {
+      const wfUsers = Store.state.workflowUsers.rows;
+      if (!wfUsers) {
+        return;
+      }
+      for (let i = 0; i < wfUsers.length; i++) {
+        const item = wfUsers[i];
+        switch (item.user_type) {
+          case 1:
+            this.selectedPRI.push(item.user_id);
+            break;
+          case 2:
+            this.selectedPRA.push(item.user_id);
+            break;
+          case 3:
+            this.selectedPOI.push(item.user_id);
+            break;
+          case 4:
+            this.selectedPOA.push(item.user_id);
+            break;
+          case 5:
+            this.selectedRRI.push(item.user_id);
+            break;
+          case 6:
+            this.selectedRFPI.push(item.user_id);
+            break;
+        }
+      }
+    },
+    messages() {
+      this.errorMessage = "";
+      this.errorShow = false;
+      this.infoMessage = "";
+      this.infoShow = false;
+    },
     results() {
       const results = Store.state.results;
       if (results.error) {
@@ -119,6 +162,9 @@ export default {
         this.infoMessage = "Database updated successfully";
         this.infoShow = true;
       }
+      setTimeout(() => {
+        Store.dispatch("HIDE_MESSAGES");
+      }, 2000);
     },
     users() {
       const self = this;
@@ -141,6 +187,12 @@ export default {
     }
   },
   computed: {
+    workflowUsers() {
+      return Store.state.workflowUsers;
+    },
+    messages() {
+      return Store.state.messages;
+    },
     users() {
       return Store.state.activeUsers;
     },
@@ -180,9 +232,8 @@ export default {
     }
   },
   methods: {
-    clickItem(a, b, c) {
-      console.log(a, b, c);
-    },
+    saveSelected() {},
+    undoSelected() {},
     onSubmit(evt) {
       evt.preventDefault();
       Store.dispatch("SAVE_WORKFLOW", this.form);
@@ -205,6 +256,7 @@ export default {
     }
     if (this.item) {
       this.form.id = this.item.id;
+      Store.dispatch("LOAD_WORKFLOW_USERS", this.item.id);
       this.form.name = this.item.name;
       this.form.description = this.item.description;
       this.form.organization_id = this.item.organization_id;

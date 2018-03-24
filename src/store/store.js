@@ -17,7 +17,7 @@ import Users from "./../services/users";
 import UserPermissions from "./../services/users_permissions";
 import Vendors from "./../services/vendors";
 import Workflows from "./../services/workflows";
-import WorkflowSteps from "./../services/workflow_steps";
+import WorkflowUsers from "./../services/workflow_users";
 
 import * as types from "../store/mutation-types";
 import * as constants from "./constants";
@@ -37,6 +37,7 @@ const state = {
   organizations: [],
   locations: [],
   departments: [],
+  messages: false,
   projects: [],
   permissions: [],
   profiles: [],
@@ -46,7 +47,7 @@ const state = {
   purchaseOrderItems: [],
   vendors: [],
   workflows: [],
-  workflowSteps: [],
+  workflowUsers: [],
   status: [],
   units: [],
   user: [],
@@ -112,6 +113,12 @@ export default new Vuex.Store({
     [types.ADD_ITEM]({ commit }, item) {
       commit(types.SET_RECORD, {
         payload: item
+      });
+    },
+
+    [types.HIDE_MESSAGES]({ commit }) {
+      commit(types.OFF_MESSAGES, {
+        status: !state.messages
       });
     },
 
@@ -472,13 +479,13 @@ export default new Vuex.Store({
       });
     },
 
-    async [types.LOAD_WORKFLOW_STEPS]({ commit }, item) {
+    async [types.LOAD_WORKFLOW_USERS]({ commit }, item) {
       this.dispatch("LOADING");
-      const workflowSteps = await WorkflowSteps.fetchWorkflowSteps(
+      const workflowUsers = await WorkflowUsers.fetchWorkflowUsers(
         item
       );
-      commit(types.SET_WORKFLOW_STEPS, {
-        payload: workflowSteps.data
+      commit(types.SET_WORKFLOW_USERS, {
+        payload: workflowUsers.data
       });
     },
 
@@ -498,23 +505,21 @@ export default new Vuex.Store({
       });
     },
 
-    async [types.SAVE_WORKFLOW_STEP]({ commit }, item) {
+    async [types.SAVE_WORKFLOW_USER]({ commit }, item) {
       this.dispatch("LOADING");
-      const workflowStep = await WorkflowSteps.saveWorkflowStep(
+      const workflowUser = await WorkflowUsers.saveWorkflowUser(
         item
       );
       commit(types.SET_RESULTS, {
-        payload: workflowStep.data
+        payload: workflowUser.data
       });
     },
 
-    async [types.DELETE_WORKFLOW_STEP]({ commit }, item) {
+    async [types.DELETE_WORKFLOW_USER]({ commit }, payload) {
       this.dispatch("LOADING");
-      const workflowStep = await WorkflowSteps.deleteWorkflowStep(
-        item.id
-      );
+      const workflowUser = await WorkflowUsers.deleteWorkflowUser(payload);
       commit(types.SET_RESULTS, {
-        payload: workflowStep.data
+        payload: workflowUser.data
       });
     },
 
@@ -801,8 +806,8 @@ export default new Vuex.Store({
       });
     },
 
-    [types.SET_WORKFLOW_STEPS]: (state, { payload }) => {
-      state.workflowSteps = payload;
+    [types.SET_WORKFLOW_USERS]: (state, { payload }) => {
+      state.workflowUsers = payload;
     },
 
     [types.SET_VENDORS]: (state, { payload }) => {
@@ -862,6 +867,10 @@ export default new Vuex.Store({
 
     [types.SET_LOADING]: (state, status) => {
       state.loading = status;
+    },
+
+    [types.OFF_MESSAGES]: (state, status) => {
+      state.messages = status
     }
   }
 });
