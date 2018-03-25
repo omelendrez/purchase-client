@@ -111,20 +111,10 @@
         </b-tab>
 
         <b-tab title="Workflow">
-          <b-card class="action-card">
-            <div class="col-md-4 pb-2">
-              <b-button class="submit-po">Submit for approval</b-button>
-            </div>
-            <div class="col-md-4 pb-2">
-              <b-button class="hold-po">Put on-hold</b-button>
-            </div>
-            <div class="col-md-4 pb-2">
-              <b-button class="cancel-po">Cancel PO</b-button>
-            </div>
-            <b-form @reset="closeTabIndex">
-              <ItemsButtons />
-            </b-form>
-          </b-card>
+          <b-form @reset="closeTabIndex">
+            <ApprovalButtons v-bind:doc-type="this.docType" />
+            <ItemsButtons />
+          </b-form>
         </b-tab>
 
       </b-tabs>
@@ -141,6 +131,7 @@
 import Store from "../store/store";
 import RequestButtons from "./lib/RequestButtons";
 import ItemsButtons from "./lib/ItemsButtons";
+import ApprovalButtons from "./lib/ApprovalButtons";
 import Add from "./lib/Add";
 import { setTimeout } from "timers";
 const fields = require("./lib/Fields").purchaseOrderItems;
@@ -150,6 +141,7 @@ export default {
   name: "PurchaseOrder",
   data() {
     return {
+      docType: "PO",
       tabIndex: 0,
       showForm: true,
       form: {
@@ -190,7 +182,8 @@ export default {
   components: {
     RequestButtons,
     ItemsButtons,
-    Add
+    Add,
+    ApprovalButtons
   },
   watch: {
     results() {

@@ -42,7 +42,7 @@ eq<template>
               <b-form-textarea id="remarks" v-model="form.remarks" rows="2" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
             </b-form-group>
 
-            <RequstButtons/>
+            <RequestButtons/>
 
           </b-form>
         </b-tab>
@@ -100,20 +100,10 @@ eq<template>
         </b-tab>
 
         <b-tab title="Workflow">
-          <b-card  class="action-card">
-            <div class="col-md-4 pb-2">
-              <b-button class="submit-pr">Submit for approval</b-button>
-            </div>
-            <div class="col-md-4 pb-2">
-              <b-button class="hold-pr">Put on-hold</b-button>
-            </div>
-            <div class="col-md-4 pb-2">
-              <b-button class="cancel-pr">Cancel PR</b-button>
-            </div>
-            <b-form @reset="closeTabIndex">
-              <ItemsButtons />
-            </b-form>
-          </b-card>
+          <b-form @reset="closeTabIndex">
+            <ApprovalButtons v-bind:doc-type="this.docType" />
+            <ItemsButtons />
+          </b-form>
         </b-tab>
 
       </b-tabs>
@@ -128,8 +118,9 @@ eq<template>
 
 <script>
 import Store from "../store/store";
-import RequstButtons from "./lib/RequestButtons";
+import RequestButtons from "./lib/RequestButtons";
 import ItemsButtons from "./lib/ItemsButtons";
+import ApprovalButtons from "./lib/ApprovalButtons";
 import Add from "./lib/Add";
 import { setTimeout } from "timers";
 const fields = require("./lib/Fields").requisitionItems;
@@ -139,6 +130,7 @@ export default {
   name: "Requisition",
   data() {
     return {
+      docType: "PR",
       tabIndex: 0,
       showForm: true,
       form: {
@@ -177,9 +169,10 @@ export default {
     };
   },
   components: {
-    RequstButtons,
+    RequestButtons,
     ItemsButtons,
-    Add
+    Add,
+    ApprovalButtons
   },
   watch: {
     results() {
