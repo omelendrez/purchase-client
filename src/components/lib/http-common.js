@@ -4,7 +4,7 @@ import axios from 'axios'
 import Store from "../../store/store";
 
 const HTTP = axios.create({
-  baseURL: 'https://escng-purchase.herokuapp.com/',
+  baseURL: 'http://localhost:3020/',
   onDownloadProgress: function (progressEvent) {
     if (progressEvent.loaded === progressEvent.total) {
       Store.dispatch("LOADED")
