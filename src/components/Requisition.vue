@@ -143,7 +143,8 @@ export default {
         remarks: "",
         project_id: 0,
         location_id: 0,
-        organization_id: 0
+        organization_id: 0,
+        workflow_id: 0
       },
       itemForm: {
         id: 0,
@@ -413,6 +414,7 @@ export default {
       return;
     }
     Store.dispatch("LOAD_REQUISITION_ITEMS", this.item.id);
+    Store.dispatch("LOAD_WORKFLOWS");
     Store.dispatch("LOAD_PROJECTS");
     Store.dispatch("LOAD_LOCATIONS");
     Store.dispatch("LOAD_DEPARTMENTS");
@@ -436,6 +438,7 @@ export default {
       this.form.project_id = this.item.project_id;
       this.form.expected_delivery = this.item._expected_delivery;
       this.form.remarks = this.item.remarks;
+      Store.dispatch("LOAD_USER_WORKFLOWS", this.item["user.id"]);
     }
     this.refreshData(
       Store.state.activeLocations,

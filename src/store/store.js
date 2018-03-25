@@ -54,6 +54,7 @@ const state = {
   userPermissions: [],
   notUserPermissions: [],
   users: [],
+  userWorkflows: [],
   password: [],
   record: [],
   results: [],
@@ -489,6 +490,16 @@ export default new Vuex.Store({
       });
     },
 
+    async [types.LOAD_USER_WORKFLOWS]({ commit }, item) {
+      this.dispatch("LOADING");
+      const workflowUsers = await WorkflowUsers.fetchWorkflowsByUser(
+        item
+      );
+      commit(types.SET_USER_WORKFLOWS, {
+        payload: workflowUsers.data
+      });
+    },
+
     async [types.SAVE_WORKFLOW]({ commit }, item) {
       this.dispatch("LOADING");
       const workflow = await Workflows.saveWorkflow(item);
@@ -808,6 +819,10 @@ export default new Vuex.Store({
 
     [types.SET_WORKFLOW_USERS]: (state, { payload }) => {
       state.workflowUsers = payload;
+    },
+
+    [types.SET_USER_WORKFLOWS]: (state, { payload }) => {
+      state.userWorkflows = payload;
     },
 
     [types.SET_VENDORS]: (state, { payload }) => {
