@@ -64,6 +64,9 @@ export default {
     }
   },
   methods: {
+    clearRemarks() {
+      this.remarks = "";
+    },
     launch(e) {
       e.preventDefault();
       const data = {
@@ -74,6 +77,7 @@ export default {
         document_status: 1
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
+      this.clearRemarks();
     },
     cancel(e) {
       e.preventDefault();
@@ -85,6 +89,7 @@ export default {
         document_status: 2
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
+      this.clearRemarks();
     },
     putOnHold(e) {
       e.preventDefault();
@@ -96,6 +101,7 @@ export default {
         document_status: 3
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
+      this.clearRemarks();
     },
     requestChanges(e) {
       e.preventDefault();
@@ -107,6 +113,7 @@ export default {
         document_status: 4
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
+      this.clearRemarks();
     },
     reassign(e) {
       e.preventDefault();
@@ -118,6 +125,7 @@ export default {
         document_status: 5
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
+      this.clearRemarks();
     },
     approve(e) {
       e.preventDefault();
@@ -129,6 +137,7 @@ export default {
         document_status: 6
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
+      this.clearRemarks();
     }
   }
 };

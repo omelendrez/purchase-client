@@ -578,11 +578,7 @@ export default new Vuex.Store({
 
     async [types.SAVE_DOCUMENT_STATUS]({ commit }, item) {
       this.dispatch("LOADING");
-      const documentStatus = await DocumentStatus.setDocumentStatus(item);
-      const payload = {
-        document_type: item.document_type,
-        document_id: item.document_id
-      };
+      await DocumentStatus.setDocumentStatus(item);
       const documentStatusList = await DocumentStatus.fetchDocumentStatus(item);
       commit(types.SET_DOCUMENT_STATUS, {
         payload: documentStatusList.data
@@ -914,26 +910,7 @@ export default new Vuex.Store({
 
     [types.SET_DOCUMENT_STATUS]: (state, { payload }) => {
       payload.map(item => {
-        switch (item.document_status) {
-          case 1:
-            item.document_status_name = 'Launched workflow'
-            break;
-          case 2:
-            item.document_status_name = 'Cancelled request'
-            break;
-          case 3:
-            item.document_status_name = 'Put request on-hold'
-            break;
-          case 4:
-            item.document_status_name = 'Asked for document changes'
-            break;
-          case 5:
-            item.document_status_name = 'Re-assigned approval activities'
-            break;
-          case 6:
-            item.document_status_name = 'Approved request'
-            break;
-        }
+        item.document_status_name = constants.documentStatusNames.filter(name => item.document_status === name.key)
       })
       state.documentStatus = payload;
     }
