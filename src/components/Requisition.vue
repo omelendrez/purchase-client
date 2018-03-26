@@ -439,6 +439,11 @@ export default {
       this.form.expected_delivery = this.item._expected_delivery;
       this.form.remarks = this.item.remarks;
       Store.dispatch("LOAD_USER_WORKFLOWS", this.item["user.id"]);
+      const payload = {
+        document_type: 1,
+        document_id: this.item.id
+      };
+      Store.dispatch("LOAD_DOCUMENT_STATUS", payload);
     }
     this.refreshData(
       Store.state.activeLocations,

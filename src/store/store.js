@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import Organizations from "./../services/organizations";
 import Locations from "./../services/locations";
 import Departments from "./../services/departments";
+import DocumentStatus from "./../services/document_status";
 import Profiles from "./../services/profiles";
 import Projects from "./../services/projects";
 import Permissions from "./../services/permissions";
@@ -34,6 +35,7 @@ const state = {
   activeUsers: [],
   activeVendors: [],
   activeWorkflows: [],
+  documentStatus: [],
   organizations: [],
   locations: [],
   departments: [],
@@ -572,7 +574,24 @@ export default new Vuex.Store({
       commit(types.SET_RESULTS, {
         payload: vendor.data
       });
+    },
+
+    async [types.SAVE_DOCUMENT_STATUS]({ commit }, item) {
+      this.dispatch("LOADING");
+      const documentStatus = await DocumentStatus.setDocumentStatus(item);
+      commit(types.SET_RESULTS, {
+        payload: documentStatus.data
+      });
+    },
+
+    async [types.LOAD_DOCUMENT_STATUS]({ commit }, item) {
+      this.dispatch("LOADING");
+      const documentStatus = await DocumentStatus.fetchDocumentStatus(item);
+      commit(types.SET_DOCUMENT_STATUS, {
+        payload: documentStatus.data
+      });
     }
+
   },
 
   mutations: {
@@ -866,6 +885,10 @@ export default new Vuex.Store({
           state.activeUsers.push(item)
         }
       });
+    },
+
+    [types.SET_DOCUMENT_STATUS]: (state, { payload }) => {
+      state.documentStatus = payload;
     },
 
     [types.SET_RECORD]: (state, { payload }) => {
