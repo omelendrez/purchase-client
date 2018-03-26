@@ -115,8 +115,8 @@ eq<template>
 
       </b-tabs>
       <b-container>
-        <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
-        <b-alert variant="success" :show="infoShow">{{ infoMessage }}</b-alert>
+        <b-alert variant="danger" dismissible :show="errorShow">{{ errorMessage }}</b-alert>
+        <b-alert variant="success" dismissible :show="infoShow">{{ infoMessage }}</b-alert>
       </b-container>
     </b-card>
   </b-container>
