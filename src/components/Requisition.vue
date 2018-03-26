@@ -106,6 +106,13 @@ eq<template>
           </b-form>
         </b-tab>
 
+        <b-tab title="Status">
+          <b-form @reset="closeTabIndex">
+            <DocumentStatus />
+            <ItemsButtons />
+          </b-form>
+        </b-tab>
+
       </b-tabs>
       <b-container>
         <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
@@ -122,6 +129,7 @@ import RequestButtons from "./lib/RequestButtons";
 import ItemsButtons from "./lib/ItemsButtons";
 import ApprovalButtons from "./lib/ApprovalButtons";
 import Add from "./lib/Add";
+import DocumentStatus from "./lib/DocumentStatus";
 import { setTimeout } from "timers";
 const fields = require("./lib/Fields").requisitionItems;
 const actions = require("./lib/Fields").actions;
@@ -173,7 +181,8 @@ export default {
     RequestButtons,
     ItemsButtons,
     Add,
-    ApprovalButtons
+    ApprovalButtons,
+    DocumentStatus
   },
   watch: {
     results() {

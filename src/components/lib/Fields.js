@@ -265,12 +265,34 @@ const organizations = [
   }
 ];
 
+const documentStatus = [
+  {
+    key: "user.full_name",
+    label: "User",
+    class: "text-nowrap"
+  },
+  {
+    key: "document_status_name",
+    label: "status",
+    class: "text-nowrap"
+  },
+  {
+    label: "Executed",
+    key: "created_at",
+    class: "text-center text-nowrap"
+  },
+  {
+    key: "remarks"
+  }
+]
+
 module.exports = {
   commonFields,
   actions,
   org,
   users,
   departments,
+  documentStatus,
   locations,
   projects,
   permissions,

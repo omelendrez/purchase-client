@@ -6,8 +6,8 @@
         <b-form-select :options="workflows" v-model="workflow_id" required v-bind:style="{ fontSize: fontSize + 'px' }" />
       </b-form-group>
 
-      <b-form-group horizontal label="Coments" label-for="comments">
-        <b-form-textarea placeholder="You can add here a comment you would like the other actors of this request's approval process be aware of" rows=4 v-bind:style="{ fontSize: fontSize + 'px' }" />
+      <b-form-group horizontal label="Remarks" label-for="remarks">
+        <b-form-textarea id="remarks" placeholder="You can add here a remark you may want the other actors of this request's approval process be aware of" v-model="remarks" rows=4 v-bind:style="{ fontSize: fontSize + 'px' }" />
       </b-form-group>
 
       <b-button variant="primary" :disabled="workflow_id === 0" @click="launch">Launch workflow</b-button>
@@ -28,7 +28,8 @@ export default {
   name: "ApprovalButtons",
   data() {
     return {
-      workflow_id: 0
+      workflow_id: 0,
+      remarks: ""
     };
   },
   props: ["docType", "docId"],
@@ -69,6 +70,7 @@ export default {
         document_id: this.document.id,
         user_id: this.userId,
         document_type: this.docType === "PR" ? 1 : 2,
+        remarks: this.remarks,
         document_status: 1
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
@@ -79,6 +81,7 @@ export default {
         document_id: this.document.id,
         user_id: this.userId,
         document_type: this.docType === "PR" ? 1 : 2,
+        remarks: this.remarks,
         document_status: 2
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
@@ -89,6 +92,7 @@ export default {
         document_id: this.document.id,
         user_id: this.userId,
         document_type: this.docType === "PR" ? 1 : 2,
+        remarks: this.remarks,
         document_status: 3
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
@@ -99,6 +103,7 @@ export default {
         document_id: this.document.id,
         user_id: this.userId,
         document_type: this.docType === "PR" ? 1 : 2,
+        remarks: this.remarks,
         document_status: 4
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
@@ -109,6 +114,7 @@ export default {
         document_id: this.document.id,
         user_id: this.userId,
         document_type: this.docType === "PR" ? 1 : 2,
+        remarks: this.remarks,
         document_status: 5
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);
@@ -119,6 +125,7 @@ export default {
         document_id: this.document.id,
         user_id: this.userId,
         document_type: this.docType === "PR" ? 1 : 2,
+        remarks: this.remarks,
         document_status: 6
       };
       Store.dispatch("SAVE_DOCUMENT_STATUS", data);

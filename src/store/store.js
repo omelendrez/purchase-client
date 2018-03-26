@@ -887,10 +887,6 @@ export default new Vuex.Store({
       });
     },
 
-    [types.SET_DOCUMENT_STATUS]: (state, { payload }) => {
-      state.documentStatus = payload;
-    },
-
     [types.SET_RECORD]: (state, { payload }) => {
       state.record = payload;
     },
@@ -909,6 +905,32 @@ export default new Vuex.Store({
 
     [types.OFF_MESSAGES]: (state, status) => {
       state.messages = status
+    },
+
+    [types.SET_DOCUMENT_STATUS]: (state, { payload }) => {
+      payload.map(item => {
+        switch (item.document_status) {
+          case 1:
+            item.document_status_name = 'Launched workflow'
+            break;
+          case 2:
+            item.document_status_name = 'Cancelled request'
+            break;
+          case 3:
+            item.document_status_name = 'Put request on-hold'
+            break;
+          case 4:
+            item.document_status_name = 'Asked for document changes'
+            break;
+          case 5:
+            item.document_status_name = 'Re-assigned approval activities'
+            break;
+          case 6:
+            item.document_status_name = 'Approved request'
+            break;
+        }
+      })
+      state.documentStatus = payload;
     }
   }
 });
