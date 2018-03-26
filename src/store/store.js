@@ -579,8 +579,13 @@ export default new Vuex.Store({
     async [types.SAVE_DOCUMENT_STATUS]({ commit }, item) {
       this.dispatch("LOADING");
       const documentStatus = await DocumentStatus.setDocumentStatus(item);
-      commit(types.SET_RESULTS, {
-        payload: documentStatus.data
+      const payload = {
+        document_type: item.document_type,
+        document_id: item.document_id
+      };
+      const documentStatusList = await DocumentStatus.fetchDocumentStatus(item);
+      commit(types.SET_DOCUMENT_STATUS, {
+        payload: documentStatusList.data
       });
     },
 
