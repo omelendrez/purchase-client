@@ -10,12 +10,15 @@
         <b-form-textarea id="remarks" placeholder="You can add here a remark you may want the other actors of this request's approval process be aware of" v-model="remarks" rows=4 v-bind:style="{ fontSize: fontSize + 'px' }" />
       </b-form-group>
 
-      <b-button variant="primary" :disabled="workflow_id === 0" @click="launch">Launch workflow</b-button>
-      <b-button variant="danger" v-if="document.workflow_status===0" @click="cancel">Cancel</b-button>
-      <b-button variant="info" v-if="document.workflow_status===0" @click="putOnHold">Put onhold</b-button>
-      <b-button variant="info" v-if="document.workflow_status===1" @click="reassign">Re-assign</b-button>
-      <b-button variant="warning" v-if="document.workflow_status===1" @click="requestChanges">Request changes</b-button>
-      <b-button variant="success" v-if="document.workflow_status===1" @click="approve">Approve</b-button>
+      <div class="buttons">
+        <b-button variant="primary" v-if="document.workflow_status===0" :disabled="workflow_id === 0" @click="launch">Launch workflow</b-button>
+        <b-button variant="primary" v-if="document.workflow_status===4" @click="launch">Re-submit</b-button>
+        <b-button variant="danger" v-if="document.workflow_status===0" @click="cancel">Cancel</b-button>
+        <b-button variant="info" v-if="document.workflow_status===0" @click="putOnHold">Put onhold</b-button>
+        <b-button variant="info" v-if="document.workflow_status===1" @click="reassign">Re-assign</b-button>
+        <b-button variant="warning" v-if="document.workflow_status===1" @click="requestChanges">Request changes</b-button>
+        <b-button variant="success" v-if="document.workflow_status===1" @click="approve">Approve</b-button>
+      </div>
 
     </b-card>
   </div>

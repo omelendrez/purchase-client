@@ -15,7 +15,7 @@ eq<template>
             </b-form-group>
 
             <b-form-group horizontal label="Date" label-for="date">
-              <b-form-input id="date" type="date" v-model.trim="form.date" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="date" type="date" v-model.trim="form.date" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Requester" label-for="full_name">
@@ -23,23 +23,23 @@ eq<template>
             </b-form-group>
 
             <b-form-group horizontal label="Department" label-for="department_id">
-              <b-form-select v-model="form.department_id" :options="departmentOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.department_id" :options="departmentOptions" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }" />
             </b-form-group>
 
             <b-form-group horizontal label="Project" label-for="project_id">
-              <b-form-select v-model="form.project_id" :options="projectOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.project_id" :options="projectOptions" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }" />
             </b-form-group>
 
             <b-form-group horizontal label="Delivery location" label-for="location_id">
-              <b-form-select v-model="form.location_id" :options="deliveryLocationOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.location_id" :options="deliveryLocationOptions" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }" />
             </b-form-group>
 
             <b-form-group horizontal label="Expected Delivery" label-for="expected_delivery">
-              <b-form-input id="expected_delivery" type="date" v-model.trim="form.expected_delivery" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="expected_delivery" type="date" v-model.trim="form.expected_delivery" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Remarks" label-for="remarks">
-              <b-form-textarea id="remarks" v-model="form.remarks" rows="2" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
+              <b-form-textarea id="remarks" v-model="form.remarks" rows="2" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
             </b-form-group>
 
             <RequestButtons/>
@@ -50,7 +50,7 @@ eq<template>
         <b-tab title="Items">
           <b-container>
             <div class="add-button">
-              <b-button @click="addItem" variant="primary" title="Add">Add item</b-button>
+              <b-button @click="addItem" variant="primary" title="Add" v-if="this.isEditable">Add item</b-button>
             </div>
 
             <b-table small hover outlined :items="itemRows" :fields="fields" :show-empty="true" head-variant="light">
@@ -76,7 +76,7 @@ eq<template>
                 <b-form-select v-model="itemForm.unit_id" :options="units" v-else required/>
               </template>
 
-              <template slot="actions" slot-scope="row">
+              <template slot="actions" slot-scope="row" v-if="this.isEditable">
                 <b-btn size="sm" variant="info" @click.stop="editItem(row.item, row.index, $event.target)" v-if="!row.item.editing" :disabled="isEditing">Edit</b-btn>
                 <b-btn size="sm" variant="success" @click.stop="saveItem(row.item, row.index, $event.target)" v-else>Save</b-btn>
                 <b-btn size="sm" variant="danger" @click.stop="deleteItem(row.item, 1)" v-if="!row.item.editing" :disabled="isEditing">Delete</b-btn>
@@ -152,7 +152,8 @@ export default {
         project_id: 0,
         location_id: 0,
         organization_id: 0,
-        workflow_id: 0
+        workflow_id: 0,
+        workflow_status: 0
       },
       itemForm: {
         id: 0,
@@ -230,6 +231,9 @@ export default {
     }
   },
   computed: {
+    isEditable() {
+      return this.form.workflow_status === 0;
+    },
     fontSize() {
       return Store.state.fontSize;
     },
@@ -391,7 +395,13 @@ export default {
     },
     onSubmit(evt) {
       evt.preventDefault();
-      Store.dispatch("SAVE_REQUISITION", this.form);
+      if (this.isEditable) {
+        Store.dispatch("SAVE_REQUISITION", this.form);
+      } else {
+        this.errorMessage =
+          "You are not entitled to modify this document at its current status";
+        this.errorShow = true;
+      }
     },
     onReset(evt) {
       evt.preventDefault();
@@ -447,6 +457,7 @@ export default {
       this.form.project_id = this.item.project_id;
       this.form.expected_delivery = this.item._expected_delivery;
       this.form.remarks = this.item.remarks;
+      this.form.workflow_status = this.item.workflow_status;
       Store.dispatch("LOAD_USER_WORKFLOWS", this.item["user.id"]);
       const payload = {
         document_type: 1,

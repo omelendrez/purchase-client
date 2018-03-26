@@ -15,11 +15,11 @@
             </b-form-group>
 
             <b-form-group horizontal label="Vendor" label-for="vendor_id">
-              <b-form-select v-model="form.vendor_id" :options="vendorOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.vendor_id" :options="vendorOptions" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }" />
             </b-form-group>
 
             <b-form-group horizontal label="Date" label-for="date">
-              <b-form-input id="date" type="date" v-model.trim="form.date" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="date" type="date" v-model.trim="form.date" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Requester" label-for="full_name">
@@ -27,19 +27,19 @@
             </b-form-group>
 
             <b-form-group horizontal label="Delivery location" label-for="location_id">
-              <b-form-select v-model="form.location_id" :options="deliveryLocationOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.location_id" :options="deliveryLocationOptions" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }" />
             </b-form-group>
 
             <b-form-group horizontal label="Expected Delivery" label-for="expected_delivery">
-              <b-form-input id="expected_delivery" type="date" v-model.trim="form.expected_delivery" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="expected_delivery" type="date" v-model.trim="form.expected_delivery" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Instructions" label-for="instructions">
-              <b-form-textarea id="instructions" v-model="form.instructions" rows="2" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
+              <b-form-textarea id="instructions" v-model="form.instructions" rows="2" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
             </b-form-group>
 
             <b-form-group horizontal label="Payment terms" label-for="payment_terms">
-              <b-form-textarea id="payment_terms" v-model="form.payment_terms" rows="2" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
+              <b-form-textarea id="payment_terms" v-model="form.payment_terms" rows="2" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
             </b-form-group>
 
             <RequestButtons/>
@@ -50,7 +50,7 @@
         <b-tab title="Items">
           <b-container>
             <div class="add-button">
-              <b-button @click="addItem" variant="primary" title="Add">Add item</b-button>
+              <b-button @click="addItem" variant="primary" title="Add" v-if="this.isEditable">Add item</b-button>
             </div>
 
             <b-table small hover outlined :items="itemRows" :fields="fields" :show-empty="true" head-variant="light">
@@ -87,7 +87,7 @@
                 {{row.item["total_amount"]}}
               </template>
 
-              <template slot="actions" slot-scope="row">
+              <template slot="actions" slot-scope="row" v-if="this.isEditable">
                 <b-btn size="sm" variant="info" @click.stop="editItem(row.item, row.index, $event.target)" v-if="!row.item.editing" :disabled="isEditing">Edit</b-btn>
                 <b-btn size="sm" variant="success" @click.stop="saveItem(row.item, row.index, $event.target)" v-else>Save</b-btn>
                 <b-btn size="sm" variant="danger" @click.stop="deleteItem(row.item, 1)" v-if="!row.item.editing" :disabled="isEditing">Delete</b-btn>
@@ -260,6 +260,9 @@ export default {
     }
   },
   computed: {
+    isEditable() {
+      return this.form.workflow_status === 0;
+    },
     fontSize() {
       return Store.state.fontSize;
     },
@@ -371,7 +374,13 @@ export default {
     },
     onSubmit(evt) {
       evt.preventDefault();
-      Store.dispatch("SAVE_PURCHASE_ORDER", this.form);
+      if (this.isEditable) {
+        Store.dispatch("SAVE_PURCHASE_ORDER", this.form);
+      } else {
+        this.errorMessage =
+          "You are not entitled to modify this document at its current status";
+        this.errorShow = true;
+      }
     },
     onReset(evt) {
       evt.preventDefault();

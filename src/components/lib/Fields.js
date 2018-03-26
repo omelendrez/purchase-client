@@ -131,6 +131,11 @@ const requisitions = [
   {
     key: "expected_delivery",
     class: "text-center text-nowrap"
+  },
+  {
+    key: "workflow_status_name",
+    label: "Workflow Status",
+    class: "text-center"
   }
 ];
 
@@ -166,6 +171,11 @@ const purchaseOrders = [
   {
     key: "expected_delivery",
     class: "text-center text-nowrap"
+  },
+  {
+    key: "workflow_status_name",
+    label: "Workflow Status",
+    class: "text-center"
   }
 ];
 

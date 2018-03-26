@@ -7,27 +7,31 @@ export const maxFontSize = 20;
 export const minFontSize = 10;
 export const documentStatusNames = [
   {
+    key: 0,
+    text: 'Not started'
+  },
+  {
     key: 1,
-    text: 'Launched workflow'
+    text: 'Approval ongoing'
   },
   {
     key: 2,
-    text: 'Cancelled request'
+    text: 'Request cancelled'
   },
   {
     key: 3,
-    text: 'Put request on-hold'
+    text: 'Request on-hold'
   },
   {
     key: 4,
-    text: 'Asked for document changes'
+    text: 'Document changes requested'
   },
   {
     key: 5,
-    text: 'Re-assigned approval activities'
+    text: 'Re-assigned approver'
   },
   {
     key: 6,
-    text: 'Approved request'
+    text: 'Request approved'
   }
 ]

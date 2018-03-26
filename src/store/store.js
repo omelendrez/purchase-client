@@ -712,6 +712,7 @@ export default new Vuex.Store({
         if (item.id === state.record.id) {
           item._rowVariant = constants.selectedRecordColor;
         }
+        item.workflow_status_name = constants.documentStatusNames.filter(name => item.workflow_status === name.key)
         /*
         item._cellVariants = {
           "status.name":
@@ -734,6 +735,8 @@ export default new Vuex.Store({
         if (item.id === state.record.id) {
           item._rowVariant = constants.selectedRecordColor;
         }
+        item.workflow_status_name = constants.documentStatusNames.filter(name => item.workflow_status === name.key)
+
         /*
         item._cellVariants = {
           "status.name":
