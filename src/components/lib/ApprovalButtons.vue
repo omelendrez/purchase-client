@@ -11,7 +11,7 @@
       </b-form-group>
 
       <div class="buttons">
-        <b-button variant="primary" v-if="userIs(['PRI', 'POI'])" :disabled="workflow_id === 0" @click="launch">Launch workflow</b-button>
+        <b-button variant="primary" v-if="userIs(['PRI', 'POI'])" :disabled="status!==0 || workflow_id === 0" @click="launch">Launch workflow</b-button>
         <b-button variant="primary" v-if="userIs(['PRI', 'POI'])" :disabled="status!==3 && status!==4" @click="launch">Re-submit</b-button>
         <b-button variant="danger" v-if="userIs(['PRI', 'POI'])" :disabled="status!==0" @click="cancel">Cancel</b-button>
         <b-button variant="info" v-if="userIs(['PRI', 'POI'])" :disabled="status!==0" @click="putOnHold">Put onhold</b-button>
