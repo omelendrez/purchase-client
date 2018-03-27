@@ -11,13 +11,13 @@
       </b-form-group>
 
       <div class="buttons">
-        <b-button variant="primary" v-if="status===0" :disabled="workflow_id === 0" @click="launch">Launch workflow</b-button>
-        <b-button variant="primary" v-if="status===3 || status===4" @click="launch">Re-submit</b-button>
-        <b-button variant="danger" v-if="status===0" @click="cancel">Cancel</b-button>
-        <b-button variant="info" v-if="status===0" @click="putOnHold">Put onhold</b-button>
-        <b-button variant="success" v-if="status===1  || status===5" @click="approve">Approve</b-button>
-        <b-button variant="warning" v-if="status===1 || status===5" @click="requestChanges">Request changes</b-button>
-        <b-button variant="info" v-if="status===1  || status===5" @click="reassign">Re-assign</b-button>
+        <b-button variant="primary" v-if="userIs(['PRI', 'POI'])" :disabled="workflow_id === 0" @click="launch">Launch workflow</b-button>
+        <b-button variant="primary" v-if="userIs(['PRI', 'POI'])" :disabled="status!==3 && status!==4" @click="launch">Re-submit</b-button>
+        <b-button variant="danger" v-if="userIs(['PRI', 'POI'])" :disabled="status!==0" @click="cancel">Cancel</b-button>
+        <b-button variant="info" v-if="userIs(['PRI', 'POI'])" :disabled="status!==0" @click="putOnHold">Put onhold</b-button>
+        <b-button variant="success" v-if="userIs(['PRA', 'POA'])" :disabled="status!==1  && status!==5" @click="approve">Approve</b-button>
+        <b-button variant="warning" v-if="userIs(['PRA', 'POA'])" :disabled="status!==1  && status!==5" @click="requestChanges">Request changes</b-button>
+        <b-button variant="info" v-if="userIs(['PRA', 'POA'])" :disabled="status!==1  && status!==5" @click="reassign">Re-assign</b-button>
       </div>
 
       <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
@@ -41,6 +41,9 @@ export default {
   },
   props: ["docType", "docId"],
   computed: {
+    userPermissions() {
+      return Store.state.user.permissions;
+    },
     canEdit() {
       return this.status === 0 || this.status === 3 || this.status === 4;
     },
@@ -77,6 +80,18 @@ export default {
     }
   },
   methods: {
+    userIs(perms) {
+      const uPerms = this.userPermissions;
+      for (let i = 0; i < perms.length; i++) {
+        const perm = perms[i];
+        for (let j = 0; j < uPerms.length; j++) {
+          const uPerm = uPerms[j];
+          if (uPerm === perm && perm.substring(0, 2) === this.docType) {
+            return true;
+          }
+        }
+      }
+    },
     clearRemarks() {
       this.remarks = "";
     },
@@ -195,6 +210,7 @@ export default {
 }
 .approval-buttons button {
   width: 153px;
+  margin-bottom: 4px;
 }
 
 .alert {
