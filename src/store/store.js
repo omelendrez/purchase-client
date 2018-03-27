@@ -384,6 +384,14 @@ export default new Vuex.Store({
       commit(types.SET_RESULTS, {
         payload: requisition.data
       });
+      const payload = {
+        document_type: 1,
+        document_id: requisition.data.id
+      };
+      const document = await DocumentStatus.fetchDocument(payload);
+      commit(types.SET_RECORD, {
+        payload: document.data
+      });
     },
 
     async [types.DELETE_REQUISITION]({ commit }, item) {
@@ -440,6 +448,14 @@ export default new Vuex.Store({
       commit(types.SET_RESULTS, {
         payload: purchaseOrder.data
       });
+      const payload = {
+        document_type: 2,
+        document_id: purchaseOrder.data.id
+      };
+      const document = await DocumentStatus.fetchDocument(payload);
+      commit(types.SET_RECORD, {
+        payload: document.data
+      });
     },
 
     async [types.DELETE_PURCHASE_ORDER]({ commit }, item) {
@@ -484,9 +500,7 @@ export default new Vuex.Store({
 
     async [types.LOAD_WORKFLOW_USERS]({ commit }, item) {
       this.dispatch("LOADING");
-      const workflowUsers = await WorkflowUsers.fetchWorkflowUsers(
-        item
-      );
+      const workflowUsers = await WorkflowUsers.fetchWorkflowUsers(item);
       commit(types.SET_WORKFLOW_USERS, {
         payload: workflowUsers.data
       });
@@ -494,9 +508,7 @@ export default new Vuex.Store({
 
     async [types.LOAD_USER_WORKFLOWS]({ commit }, item) {
       this.dispatch("LOADING");
-      const workflowUsers = await WorkflowUsers.fetchWorkflowsByUser(
-        item
-      );
+      const workflowUsers = await WorkflowUsers.fetchWorkflowsByUser(item);
       commit(types.SET_USER_WORKFLOWS, {
         payload: workflowUsers.data
       });
@@ -520,9 +532,7 @@ export default new Vuex.Store({
 
     async [types.SAVE_WORKFLOW_USER]({ commit }, item) {
       this.dispatch("LOADING");
-      const workflowUser = await WorkflowUsers.saveWorkflowUser(
-        item
-      );
+      const workflowUser = await WorkflowUsers.saveWorkflowUser(item);
       commit(types.SET_RESULTS, {
         payload: workflowUser.data
       });
@@ -596,7 +606,6 @@ export default new Vuex.Store({
         payload: documentStatus.data
       });
     }
-
   },
 
   mutations: {
@@ -716,7 +725,9 @@ export default new Vuex.Store({
         if (item.id === state.record.id) {
           item._rowVariant = constants.selectedRecordColor;
         }
-        item.workflow_status_name = constants.documentStatusNames.filter(name => item.workflow_status === name.key)
+        item.workflow_status_name = constants.documentStatusNames.filter(
+          name => item.workflow_status === name.key
+        );
         /*
         item._cellVariants = {
           "status.name":
@@ -739,7 +750,9 @@ export default new Vuex.Store({
         if (item.id === state.record.id) {
           item._rowVariant = constants.selectedRecordColor;
         }
-        item.workflow_status_name = constants.documentStatusNames.filter(name => item.workflow_status === name.key)
+        item.workflow_status_name = constants.documentStatusNames.filter(
+          name => item.workflow_status === name.key
+        );
 
         /*
         item._cellVariants = {
@@ -879,7 +892,7 @@ export default new Vuex.Store({
     [types.SET_USERS]: (state, { payload }) => {
       state.activeUsers = [];
       state.users = payload;
-      state.users.count = payload.rows.length
+      state.users.count = payload.rows.length;
       payload.rows.map(item => {
         item._rowVariant =
           item.status_id !== constants.activeStatus
@@ -890,7 +903,7 @@ export default new Vuex.Store({
           item._rowVariant = constants.selectedRecordColor;
         }
         if (item.status_id === constants.activeStatus) {
-          state.activeUsers.push(item)
+          state.activeUsers.push(item);
         }
       });
     },
@@ -912,13 +925,15 @@ export default new Vuex.Store({
     },
 
     [types.OFF_MESSAGES]: (state, status) => {
-      state.messages = status
+      state.messages = status;
     },
 
     [types.SET_DOCUMENT_STATUS]: (state, { payload }) => {
       payload.map(item => {
-        item.document_status_name = constants.documentStatusNames.filter(name => item.document_status === name.key)
-      })
+        item.document_status_name = constants.documentStatusNames.filter(
+          name => item.document_status === name.key
+        );
+      });
       state.documentStatus = payload;
     }
   }

@@ -195,6 +195,10 @@ export default {
     DocumentStatus
   },
   watch: {
+    item() {
+      this.form.id = this.item.id;
+      this.form.number = this.item.number;
+    },
     results() {
       this.isEditing = false;
       const results = Store.state.results;
