@@ -583,6 +583,10 @@ export default new Vuex.Store({
       commit(types.SET_DOCUMENT_STATUS, {
         payload: documentStatusList.data
       });
+      const document = await DocumentStatus.fetchDocument(item);
+      commit(types.SET_RECORD, {
+        payload: document.data
+      });
     },
 
     async [types.LOAD_DOCUMENT_STATUS]({ commit }, item) {

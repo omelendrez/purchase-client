@@ -87,7 +87,7 @@
                 {{row.item["total_amount"]}}
               </template>
 
-              <template slot="actions" slot-scope="row" v-if="this.isEditable">
+              <template slot="actions" slot-scope="row" v-if="isEditable">
                 <b-btn size="sm" variant="info" @click.stop="editItem(row.item, row.index, $event.target)" v-if="!row.item.editing" :disabled="isEditing">Edit</b-btn>
                 <b-btn size="sm" variant="success" @click.stop="saveItem(row.item, row.index, $event.target)" v-else>Save</b-btn>
                 <b-btn size="sm" variant="danger" @click.stop="deleteItem(row.item, 1)" v-if="!row.item.editing" :disabled="isEditing">Delete</b-btn>
@@ -261,7 +261,11 @@ export default {
   },
   computed: {
     isEditable() {
-      return this.form.workflow_status === 0;
+      return (
+        this.item.workflow_status === 0 ||
+        this.item.workflow_status === 3 ||
+        this.item.workflow_status === 4
+      );
     },
     fontSize() {
       return Store.state.fontSize;
