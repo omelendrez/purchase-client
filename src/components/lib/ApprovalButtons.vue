@@ -39,7 +39,7 @@ export default {
       errorMessage: ""
     };
   },
-  props: ["docType", "docId"],
+  props: ["docType"],
   computed: {
     userPermissions() {
       return Store.state.user.permissions;
