@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import Organizations from "./../services/organizations";
 import Locations from "./../services/locations";
 import Departments from "./../services/departments";
+import DocumentStatus from "./../services/document_status";
 import Profiles from "./../services/profiles";
 import Projects from "./../services/projects";
 import Permissions from "./../services/permissions";
@@ -17,7 +18,7 @@ import Users from "./../services/users";
 import UserPermissions from "./../services/users_permissions";
 import Vendors from "./../services/vendors";
 import Workflows from "./../services/workflows";
-import WorkflowSteps from "./../services/workflow_steps";
+import WorkflowUsers from "./../services/workflow_users";
 
 import * as types from "../store/mutation-types";
 import * as constants from "./constants";
@@ -34,9 +35,11 @@ const state = {
   activeUsers: [],
   activeVendors: [],
   activeWorkflows: [],
+  documentStatus: [],
   organizations: [],
   locations: [],
   departments: [],
+  messages: false,
   projects: [],
   permissions: [],
   profiles: [],
@@ -46,13 +49,14 @@ const state = {
   purchaseOrderItems: [],
   vendors: [],
   workflows: [],
-  workflowSteps: [],
+  workflowUsers: [],
   status: [],
   units: [],
   user: [],
   userPermissions: [],
   notUserPermissions: [],
   users: [],
+  userWorkflows: [],
   password: [],
   record: [],
   results: [],
@@ -112,6 +116,12 @@ export default new Vuex.Store({
     [types.ADD_ITEM]({ commit }, item) {
       commit(types.SET_RECORD, {
         payload: item
+      });
+    },
+
+    [types.HIDE_MESSAGES]({ commit }) {
+      commit(types.OFF_MESSAGES, {
+        status: !state.messages
       });
     },
 
@@ -374,6 +384,14 @@ export default new Vuex.Store({
       commit(types.SET_RESULTS, {
         payload: requisition.data
       });
+      const payload = {
+        document_type: 1,
+        document_id: requisition.data.id
+      };
+      const document = await DocumentStatus.fetchDocument(payload);
+      commit(types.SET_RECORD, {
+        payload: document.data
+      });
     },
 
     async [types.DELETE_REQUISITION]({ commit }, item) {
@@ -430,6 +448,14 @@ export default new Vuex.Store({
       commit(types.SET_RESULTS, {
         payload: purchaseOrder.data
       });
+      const payload = {
+        document_type: 2,
+        document_id: purchaseOrder.data.id
+      };
+      const document = await DocumentStatus.fetchDocument(payload);
+      commit(types.SET_RECORD, {
+        payload: document.data
+      });
     },
 
     async [types.DELETE_PURCHASE_ORDER]({ commit }, item) {
@@ -472,13 +498,19 @@ export default new Vuex.Store({
       });
     },
 
-    async [types.LOAD_WORKFLOW_STEPS]({ commit }, item) {
+    async [types.LOAD_WORKFLOW_USERS]({ commit }, item) {
       this.dispatch("LOADING");
-      const workflowSteps = await WorkflowSteps.fetchWorkflowSteps(
-        item
-      );
-      commit(types.SET_WORKFLOW_STEPS, {
-        payload: workflowSteps.data
+      const workflowUsers = await WorkflowUsers.fetchWorkflowUsers(item);
+      commit(types.SET_WORKFLOW_USERS, {
+        payload: workflowUsers.data
+      });
+    },
+
+    async [types.LOAD_USER_WORKFLOWS]({ commit }, item) {
+      this.dispatch("LOADING");
+      const workflowUsers = await WorkflowUsers.fetchWorkflowsByUser(item);
+      commit(types.SET_USER_WORKFLOWS, {
+        payload: workflowUsers.data
       });
     },
 
@@ -498,23 +530,19 @@ export default new Vuex.Store({
       });
     },
 
-    async [types.SAVE_WORKFLOW_STEP]({ commit }, item) {
+    async [types.SAVE_WORKFLOW_USER]({ commit }, item) {
       this.dispatch("LOADING");
-      const workflowStep = await WorkflowSteps.saveWorkflowStep(
-        item
-      );
+      const workflowUser = await WorkflowUsers.saveWorkflowUser(item);
       commit(types.SET_RESULTS, {
-        payload: workflowStep.data
+        payload: workflowUser.data
       });
     },
 
-    async [types.DELETE_WORKFLOW_STEP]({ commit }, item) {
+    async [types.DELETE_WORKFLOW_USER]({ commit }, payload) {
       this.dispatch("LOADING");
-      const workflowStep = await WorkflowSteps.deleteWorkflowStep(
-        item.id
-      );
+      const workflowUser = await WorkflowUsers.deleteWorkflowUser(payload);
       commit(types.SET_RESULTS, {
-        payload: workflowStep.data
+        payload: workflowUser.data
       });
     },
 
@@ -555,6 +583,27 @@ export default new Vuex.Store({
       const vendor = await Vendors.deleteVendor(item.id);
       commit(types.SET_RESULTS, {
         payload: vendor.data
+      });
+    },
+
+    async [types.SAVE_DOCUMENT_STATUS]({ commit }, item) {
+      this.dispatch("LOADING");
+      await DocumentStatus.setDocumentStatus(item);
+      const documentStatusList = await DocumentStatus.fetchDocumentStatus(item);
+      commit(types.SET_DOCUMENT_STATUS, {
+        payload: documentStatusList.data
+      });
+      const document = await DocumentStatus.fetchDocument(item);
+      commit(types.SET_RECORD, {
+        payload: document.data
+      });
+    },
+
+    async [types.LOAD_DOCUMENT_STATUS]({ commit }, item) {
+      this.dispatch("LOADING");
+      const documentStatus = await DocumentStatus.fetchDocumentStatus(item);
+      commit(types.SET_DOCUMENT_STATUS, {
+        payload: documentStatus.data
       });
     }
   },
@@ -676,6 +725,9 @@ export default new Vuex.Store({
         if (item.id === state.record.id) {
           item._rowVariant = constants.selectedRecordColor;
         }
+        item.workflow_status_name = constants.documentStatusNames.filter(
+          name => item.workflow_status === name.key
+        );
         /*
         item._cellVariants = {
           "status.name":
@@ -698,6 +750,10 @@ export default new Vuex.Store({
         if (item.id === state.record.id) {
           item._rowVariant = constants.selectedRecordColor;
         }
+        item.workflow_status_name = constants.documentStatusNames.filter(
+          name => item.workflow_status === name.key
+        );
+
         /*
         item._cellVariants = {
           "status.name":
@@ -801,8 +857,12 @@ export default new Vuex.Store({
       });
     },
 
-    [types.SET_WORKFLOW_STEPS]: (state, { payload }) => {
-      state.workflowSteps = payload;
+    [types.SET_WORKFLOW_USERS]: (state, { payload }) => {
+      state.workflowUsers = payload;
+    },
+
+    [types.SET_USER_WORKFLOWS]: (state, { payload }) => {
+      state.userWorkflows = payload;
     },
 
     [types.SET_VENDORS]: (state, { payload }) => {
@@ -832,7 +892,7 @@ export default new Vuex.Store({
     [types.SET_USERS]: (state, { payload }) => {
       state.activeUsers = [];
       state.users = payload;
-      state.users.count = payload.rows.length
+      state.users.count = payload.rows.length;
       payload.rows.map(item => {
         item._rowVariant =
           item.status_id !== constants.activeStatus
@@ -843,7 +903,7 @@ export default new Vuex.Store({
           item._rowVariant = constants.selectedRecordColor;
         }
         if (item.status_id === constants.activeStatus) {
-          state.activeUsers.push(item)
+          state.activeUsers.push(item);
         }
       });
     },
@@ -862,6 +922,19 @@ export default new Vuex.Store({
 
     [types.SET_LOADING]: (state, status) => {
       state.loading = status;
+    },
+
+    [types.OFF_MESSAGES]: (state, status) => {
+      state.messages = status;
+    },
+
+    [types.SET_DOCUMENT_STATUS]: (state, { payload }) => {
+      payload.map(item => {
+        item.document_status_name = constants.documentStatusNames.filter(
+          name => item.document_status === name.key
+        );
+      });
+      state.documentStatus = payload;
     }
   }
 });

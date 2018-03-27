@@ -12,7 +12,7 @@ export default {
   name: "Add",
   methods: {
     addItem() {
-      Store.dispatch("ADD_ITEM", { id: 0 });
+      Store.dispatch("ADD_ITEM", { id: 0, workflow_status: 0 });
       this.$router.push({ name: Store.state.option.slice(0, -1) });
     }
   }

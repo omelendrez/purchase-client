@@ -165,7 +165,6 @@ export default {
       return this.mainOption === option;
     },
     optionIsSelected(option) {
-      // console.log("option", option);
       return this.menuOption === option;
     }
   }

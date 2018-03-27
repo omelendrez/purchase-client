@@ -5,3 +5,33 @@ export const activeStatus = 1;
 export const defaultFontSize = 14; // github default
 export const maxFontSize = 20;
 export const minFontSize = 10;
+export const documentStatusNames = [
+  {
+    key: 0,
+    text: 'Not started'
+  },
+  {
+    key: 1,
+    text: 'Approval ongoing'
+  },
+  {
+    key: 2,
+    text: 'Request cancelled'
+  },
+  {
+    key: 3,
+    text: 'Request on-hold'
+  },
+  {
+    key: 4,
+    text: 'Document changes requested'
+  },
+  {
+    key: 5,
+    text: 'Re-assigned approver'
+  },
+  {
+    key: 6,
+    text: 'Request approved'
+  }
+]
