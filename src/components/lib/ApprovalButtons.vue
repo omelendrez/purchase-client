@@ -13,8 +13,8 @@
       <div class="buttons" v-if="userIs([1, 3])">
         <b-button variant="primary" v-if="status===0 && workflow_id !== 0" @click="launch">Launch workflow</b-button>
         <b-button variant="primary" v-if="status===3 || status===4" @click="launch">Re-submit</b-button>
-        <b-button variant="danger" v-if="status===0" @click="cancel">Cancel</b-button>
-        <b-button variant="info" v-if="status===0" @click="putOnHold">Put onhold</b-button>
+        <b-button variant="danger" v-if="status===0  || status===4" @click="cancel">Cancel</b-button>
+        <b-button variant="info" v-if="status===0 || status===4" @click="putOnHold">Put onhold</b-button>
       </div>
 
       <div class="buttons" v-if="userIs([2, 4])">
@@ -89,7 +89,10 @@ export default {
         return;
       }
       const userPermissions = uwfs.filter(item => {
-        return item.workflow_id === this.document.workflow_id;
+        return (
+          item.workflow_id === this.document.workflow_id ||
+          this.document.workflow_id === 0
+        );
       });
       return perms.find(reqPerm => {
         return userPermissions.find(userPerm => {

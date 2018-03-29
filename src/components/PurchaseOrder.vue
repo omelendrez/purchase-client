@@ -212,6 +212,7 @@ export default {
     item() {
       this.form.id = this.item.id;
       this.form.number = this.item.number;
+      this.form.workflow_id = this.item.workflow_id;
     },
     results() {
       this.isEditing = false;
@@ -434,6 +435,7 @@ export default {
       return;
     }
     Store.dispatch("LOAD_VENDORS");
+    Store.dispatch("LOAD_WORKFLOWS");
     Store.dispatch("LOAD_LOCATIONS");
     Store.dispatch("LOAD_UNITS");
     Store.dispatch("LOAD_PURCHASE_ORDER_ITEMS", this.item.id);
@@ -456,6 +458,7 @@ export default {
       this.form.expected_delivery = this.item._expected_delivery;
       this.form.instructions = this.item.instructions;
       this.form.payment_terms = this.item.payment_terms;
+      Store.dispatch("LOAD_USER_WORKFLOWS", this.item["user.id"]);
       const payload = {
         document_type: 2,
         document_id: this.item.id
