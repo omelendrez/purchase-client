@@ -10,14 +10,14 @@
         <b-form-textarea id="remarks" placeholder="You can add here a remark you may want the other actors of this request's approval process be aware of" v-model="remarks" rows=4 />
       </b-form-group>
 
-      <div class="buttons" v-if="userIs(['PRI', 'POI'])">
-        <b-button variant="primary" v-if="status===0 && workflow_id === 0" @click="launch">Launch workflow</b-button>
+      <div class="buttons" v-if="userIs([1, 3])">
+        <b-button variant="primary" v-if="status===0 && workflow_id !== 0" @click="launch">Launch workflow</b-button>
         <b-button variant="primary" v-if="status===3 || status===4" @click="launch">Re-submit</b-button>
         <b-button variant="danger" v-if="status===0" @click="cancel">Cancel</b-button>
         <b-button variant="info" v-if="status===0" @click="putOnHold">Put onhold</b-button>
       </div>
 
-      <div class="buttons" v-if="userIs(['PRA', 'POA'])">
+      <div class="buttons" v-if="userIs([2, 4])">
         <b-button variant="success" v-if="status===1  || status===5" @click="approve">Approve</b-button>
         <b-button variant="warning" v-if="status===1  || status===5" @click="requestChanges">Request changes</b-button>
         <b-button variant="info" v-if="status===1  || status===5" @click="reassign">Re-assign</b-button>
@@ -44,6 +44,9 @@ export default {
   },
   props: ["docType"],
   computed: {
+    userWorkflows() {
+      return Store.state.userWorkflows;
+    },
     userPermissions() {
       return Store.state.user.permissions;
     },
@@ -81,16 +84,18 @@ export default {
   },
   methods: {
     userIs(perms) {
-      const uPerms = this.userPermissions;
-      for (let i = 0; i < perms.length; i++) {
-        const perm = perms[i];
-        for (let j = 0; j < uPerms.length; j++) {
-          const uPerm = uPerms[j];
-          if (uPerm === perm && perm.substring(0, 2) === this.docType) {
-            return true;
-          }
-        }
+      const uwfs = this.userWorkflows.rows;
+      if (!uwfs) {
+        return;
       }
+      const userPermissions = uwfs.filter(item => {
+        return item.workflow_id === this.document.workflow_id;
+      });
+      return perms.find(reqPerm => {
+        return userPermissions.find(userPerm => {
+          return userPerm.user_type === reqPerm;
+        });
+      });
     },
     clearRemarks() {
       this.remarks = "";

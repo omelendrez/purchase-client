@@ -127,22 +127,22 @@ export default {
       for (let i = 0; i < wfUsers.length; i++) {
         const item = wfUsers[i];
         switch (item.user_type) {
-          case 1:
+          case 1: // PRI
             this.selectedPRI.push(item.user_id);
             break;
-          case 2:
+          case 2: // PRA
             this.selectedPRA.push(item.user_id);
             break;
-          case 3:
+          case 3: // POI
             this.selectedPOI.push(item.user_id);
             break;
-          case 4:
+          case 4: // POA
             this.selectedPOA.push(item.user_id);
             break;
-          case 5:
+          case 5: // RRI
             this.selectedRRI.push(item.user_id);
             break;
-          case 6:
+          case 6: // RFPI
             this.selectedRFPI.push(item.user_id);
             break;
         }

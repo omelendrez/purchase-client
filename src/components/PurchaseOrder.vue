@@ -110,7 +110,7 @@
 
         </b-tab>
 
-        <b-tab title="Workflow">
+        <b-tab title="Workflow" v-if="canSeeWorkflow">
           <b-form @reset="closeTabIndex">
             <ApprovalButtons v-bind:doc-type="this.docType" />
             <ItemsButtons />
@@ -184,7 +184,8 @@ export default {
       updatingItem: false,
       isEditing: false,
       itemRows: [],
-      fields: fields
+      fields: fields,
+      canSeeWorkflow: false
     };
   },
   components: {
@@ -195,6 +196,19 @@ export default {
     DocumentStatus
   },
   watch: {
+    userWorkflows() {
+      const wf = Store.state.userWorkflows.rows;
+      if (!wf) {
+        return;
+      }
+      if (this.item.workflow_id === 0) {
+        this.canSeeWorkflow = true;
+      } else {
+        this.canSeeWorkflow = wf.find(item => {
+          return item.workflow_id === this.item.workflow_id;
+        });
+      }
+    },
     item() {
       this.form.id = this.item.id;
       this.form.number = this.item.number;
@@ -264,6 +278,9 @@ export default {
     }
   },
   computed: {
+    userWorkflows() {
+      return Store.state.userWorkflows;
+    },
     isEditable() {
       return (
         this.item.workflow_status === 0 ||
