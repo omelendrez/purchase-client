@@ -93,13 +93,6 @@
 
     </b-navbar>
 
-    <b-navbar-nav class="font-size">
-      <b-nav-form>
-        <b-button size="sm" class="my-2 my-sm-0" @click="changeFontSize(-1)">A-</b-button>
-        <b-button size="sm" class="my-2 my-sm-0" @click="changeFontSize(+1)">A+</b-button>
-      </b-nav-form>
-    </b-navbar-nav>
-
     <div v-if="isLoading" class="fa-3x loading-spinner">
       <i class="fas fa-circle-notch fa-spin"></i>
     </div>
@@ -141,9 +134,6 @@ export default {
     }
   },
   methods: {
-    changeFontSize(incrDecr) {
-      Store.dispatch("CHANGE_FONT_SIZE", incrDecr);
-    },
     setMain(option) {
       Store.dispatch("SET_MAIN_OPTION", option);
       this.$router.push({ name: "Empty" });
@@ -173,11 +163,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.font-size {
-  position: fixed;
-  bottom: 2px;
-  right: 2px;
-}
 .loading-spinner {
   position: fixed;
   top: 40%;

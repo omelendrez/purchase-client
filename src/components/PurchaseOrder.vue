@@ -11,35 +11,35 @@
           <b-form @submit="onSubmit" @reset="onReset" v-if="showForm" id="addForm">
 
             <b-form-group horizontal label="Number" label-for="number">
-              <b-form-input id="number" v-model="form.number" readonly v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="number" v-model="form.number" readonly></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Vendor" label-for="vendor_id">
-              <b-form-select v-model="form.vendor_id" :options="vendorOptions" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.vendor_id" :options="vendorOptions" :disabled="!this.isEditable" />
             </b-form-group>
 
             <b-form-group horizontal label="Date" label-for="date">
-              <b-form-input id="date" type="date" v-model.trim="form.date" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="date" type="date" v-model.trim="form.date" :disabled="!this.isEditable"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Requester" label-for="full_name">
-              <b-form-input id="full_name" v-model="form.full_name" readonly v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-input id="full_name" v-model="form.full_name" readonly />
             </b-form-group>
 
             <b-form-group horizontal label="Delivery location" label-for="location_id">
-              <b-form-select v-model="form.location_id" :options="deliveryLocationOptions" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.location_id" :options="deliveryLocationOptions" :disabled="!this.isEditable" />
             </b-form-group>
 
             <b-form-group horizontal label="Expected Delivery" label-for="expected_delivery">
-              <b-form-input id="expected_delivery" type="date" v-model.trim="form.expected_delivery" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="expected_delivery" type="date" v-model.trim="form.expected_delivery" :disabled="!this.isEditable"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Instructions" label-for="instructions">
-              <b-form-textarea id="instructions" v-model="form.instructions" rows="2" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
+              <b-form-textarea id="instructions" v-model="form.instructions" rows="2" :disabled="!this.isEditable"></b-form-textarea>
             </b-form-group>
 
             <b-form-group horizontal label="Payment terms" label-for="payment_terms">
-              <b-form-textarea id="payment_terms" v-model="form.payment_terms" rows="2" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
+              <b-form-textarea id="payment_terms" v-model="form.payment_terms" rows="2" :disabled="!this.isEditable"></b-form-textarea>
             </b-form-group>
 
             <RequestButtons/>
@@ -270,9 +270,6 @@ export default {
         this.item.workflow_status === 3 ||
         this.item.workflow_status === 4
       );
-    },
-    fontSize() {
-      return Store.state.fontSize;
     },
     units() {
       const units = Store.state.activeUnits;

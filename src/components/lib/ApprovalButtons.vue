@@ -3,21 +3,24 @@
     <b-card>
 
       <b-form-group horizontal label="Workflow" label-for="workflow_id">
-        <b-form-select :options="workflows" :disabled="!canEdit" v-model="workflow_id" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+        <b-form-select :options="workflows" :disabled="!canEdit" v-model="workflow_id" />
       </b-form-group>
 
       <b-form-group horizontal label="Remarks" label-for="remarks" v-if="status!==6">
-        <b-form-textarea id="remarks" placeholder="You can add here a remark you may want the other actors of this request's approval process be aware of" v-model="remarks" rows=4 v-bind:style="{ fontSize: fontSize + 'px' }" />
+        <b-form-textarea id="remarks" placeholder="You can add here a remark you may want the other actors of this request's approval process be aware of" v-model="remarks" rows=4 />
       </b-form-group>
 
-      <div class="buttons">
-        <b-button variant="primary" v-if="userIs(['PRI', 'POI'])" :disabled="status!==0 || workflow_id === 0" @click="launch">Launch workflow</b-button>
-        <b-button variant="primary" v-if="userIs(['PRI', 'POI'])" :disabled="status!==3 && status!==4" @click="launch">Re-submit</b-button>
-        <b-button variant="danger" v-if="userIs(['PRI', 'POI'])" :disabled="status!==0" @click="cancel">Cancel</b-button>
-        <b-button variant="info" v-if="userIs(['PRI', 'POI'])" :disabled="status!==0" @click="putOnHold">Put onhold</b-button>
-        <b-button variant="success" v-if="userIs(['PRA', 'POA'])" :disabled="status!==1  && status!==5" @click="approve">Approve</b-button>
-        <b-button variant="warning" v-if="userIs(['PRA', 'POA'])" :disabled="status!==1  && status!==5" @click="requestChanges">Request changes</b-button>
-        <b-button variant="info" v-if="userIs(['PRA', 'POA'])" :disabled="status!==1  && status!==5" @click="reassign">Re-assign</b-button>
+      <div class="buttons" v-if="userIs(['PRI', 'POI'])">
+        <b-button variant="primary" v-if="status===0 && workflow_id === 0" @click="launch">Launch workflow</b-button>
+        <b-button variant="primary" v-if="status===3 || status===4" @click="launch">Re-submit</b-button>
+        <b-button variant="danger" v-if="status===0" @click="cancel">Cancel</b-button>
+        <b-button variant="info" v-if="status===0" @click="putOnHold">Put onhold</b-button>
+      </div>
+
+      <div class="buttons" v-if="userIs(['PRA', 'POA'])">
+        <b-button variant="success" v-if="status===1  || status===5" @click="approve">Approve</b-button>
+        <b-button variant="warning" v-if="status===1  || status===5" @click="requestChanges">Request changes</b-button>
+        <b-button variant="info" v-if="status===1  || status===5" @click="reassign">Re-assign</b-button>
       </div>
 
       <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
@@ -49,9 +52,6 @@ export default {
     },
     userId() {
       return Store.state.user.id;
-    },
-    fontSize() {
-      return Store.state.fontSize;
     },
     document() {
       return Store.state.record;

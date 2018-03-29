@@ -12,31 +12,31 @@
           <b-form @submit="onSubmit" @reset="onReset" v-if="showForm" id="addForm">
 
             <b-form-group horizontal label="Company" label-for="organization_id">
-              <b-form-select v-model="form.organization_id" :options="organizations" @change="updateChildrenTables" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.organization_id" :options="organizations" @change="updateChildrenTables" />
             </b-form-group>
 
             <b-form-group horizontal label="User name" label-for="user_name">
-              <b-form-input id="user_name" v-model.trim="form.user_name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="user_name" v-model.trim="form.user_name"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Full name" label-for="full_name">
-              <b-form-input id="full_name" v-model.trim="form.full_name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="full_name" v-model.trim="form.full_name"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Email address" label-for="email">
-              <b-form-input id="email" type="email" v-model.trim="form.email" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="email" type="email" v-model.trim="form.email"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Profile" label-for="profile_id">
-              <b-form-select v-model="form.profile_id" :options="profiles" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.profile_id" :options="profiles" />
             </b-form-group>
 
             <b-form-group horizontal label="Department" label-for="department_id">
-              <b-form-select v-model="form.department_id" :options="departmentOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.department_id" :options="departmentOptions" />
             </b-form-group>
 
             <b-form-group horizontal label="Location" label-for="location_id">
-              <b-form-select v-model="form.location_id" :options="locationOptions" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.location_id" :options="locationOptions" />
             </b-form-group>
 
             <Buttons />
@@ -136,9 +136,6 @@ export default {
     }
   },
   computed: {
-    fontSize() {
-      return Store.state.fontSize;
-    },
     results() {
       return Store.state.results;
     },

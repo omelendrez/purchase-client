@@ -11,15 +11,15 @@
           <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
             <b-form-group horizontal label="Company" label-for="organization_id">
-              <b-form-select v-model="form.organization_id" :options="organizations" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.organization_id" :options="organizations" />
             </b-form-group>
 
             <b-form-group horizontal label="Name" label-for="name">
-              <b-form-input id="name" v-model.trim="form.name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="name" v-model.trim="form.name"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Description" label-for="description">
-              <b-form-input id="description" v-model.trim="form.description" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="description" v-model.trim="form.description"></b-form-input>
             </b-form-group>
 
             <Buttons/>
@@ -65,8 +65,8 @@
           <h5>RFPI - Request For Payment Issuers</h5>
           <b-card>
             <b-form-checkbox-group v-model="selectedRFPI" :options="RFPI" />
-            <WorkflowButtons v-bind:options="selectedRFPI" v-bind:user-type=6 v-bind:workflow-id="this.form.id" />
           </b-card>
+          <WorkflowButtons v-bind:options="selectedRFPI" v-bind:user-type=6 v-bind:workflow-id="this.form.id" />
         </b-tab>
       </b-tabs>
       <b-container>
@@ -196,9 +196,6 @@ export default {
     },
     users() {
       return Store.state.activeUsers;
-    },
-    fontSize() {
-      return Store.state.fontSize;
     },
     organizations() {
       const organizations = Store.state.activeOrganizations;

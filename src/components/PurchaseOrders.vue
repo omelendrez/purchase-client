@@ -12,10 +12,10 @@
 
     <b-table small hover outlined :items="purchaseOrders.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" :show-empty="true" head-variant="light">
       <template slot="actions" slot-scope="row">
-        <b-btn size="sm" variant="outline-dark" @click.stop="row.toggleDetails" v-bind:style="{ fontSize: fontSize + 'px' }">{{ row.detailsShowing ? 'Hide' : 'Show'}}</b-btn>
-        <b-btn size="sm" variant="info" @click.stop="editItem(row.item)" v-bind:style="{ fontSize: fontSize + 'px' }">Modify</b-btn>
-        <b-btn size="sm" v-if="row.item.status_id === 1" variant="danger" @click.stop="deleteItem(row.item, 1)" v-bind:style="{ fontSize: fontSize + 'px' }">Inactivate</b-btn>
-        <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(row.item, 0)" v-bind:style="{ fontSize: fontSize + 'px' }">Re-activate</b-btn>
+        <b-btn size="sm" variant="outline-dark" @click.stop="row.toggleDetails">{{ row.detailsShowing ? 'Hide' : 'Show'}}</b-btn>
+        <b-btn size="sm" variant="info" @click.stop="editItem(row.item)">Modify</b-btn>
+        <b-btn size="sm" v-if="row.item.status_id === 1" variant="danger" @click.stop="deleteItem(row.item, 1)">Inactivate</b-btn>
+        <b-btn size="sm" v-else variant="success" @click.stop="deleteItem(row.item, 0)">Re-activate</b-btn>
       </template>
 
       <template slot="row-details" slot-scope="row">
@@ -147,9 +147,6 @@ export default {
     }
   },
   computed: {
-    fontSize() {
-      return Store.state.fontSize;
-    },
     results() {
       return Store.state.results;
     },
