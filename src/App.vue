@@ -1,21 +1,15 @@
 <template>
   <div id="app">
     <Header />
-    <router-view v-bind:style="{ fontSize: fontSize + 'px' }" />
+    <router-view />
   </div>
 </template>
 
 <script>
 import Header from "./components/lib/Header";
-import Store from "./store/store";
 
 export default {
   name: "App",
-  computed: {
-    fontSize() {
-      return Store.state.fontSize;
-    }
-  },
   components: {
     Header
   }

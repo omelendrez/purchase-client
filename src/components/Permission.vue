@@ -7,20 +7,20 @@
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
       <b-form-group horizontal label="Code" label-for="code">
-        <b-form-input id="code" v-model.trim="form.code" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+        <b-form-input id="code" v-model.trim="form.code"></b-form-input>
       </b-form-group>
 
       <b-form-group horizontal label="Name" label-for="name">
-        <b-form-input id="name" v-model.trim="form.name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+        <b-form-input id="name" v-model.trim="form.name"></b-form-input>
       </b-form-group>
 
       <b-form-group horizontal label="Description" label-for="description">
-        <b-form-textarea id="description" v-model="form.description" placeholder="Enter a short explanation on the use of this code" :rows="3" :max-len="255" required :max-rows="3" v-bind:style="{ fontSize: fontSize + 'px' }">
+        <b-form-textarea id="description" v-model="form.description" placeholder="Enter a short explanation on the use of this code" :rows="3" :max-len="255" required :max-rows="3">
         </b-form-textarea>
       </b-form-group>
 
       <b-form-group horizontal label="Order" label-for="order">
-        <b-form-input id="order" type="number" v-model.trim="form.order" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+        <b-form-input id="order" type="number" v-model.trim="form.order"></b-form-input>
       </b-form-group>
 
       <Buttons/>
@@ -66,9 +66,6 @@ export default {
     }
   },
   computed: {
-    fontSize() {
-      return Store.state.fontSize;
-    },
     results() {
       return Store.state.results;
     },

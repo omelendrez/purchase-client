@@ -6,7 +6,7 @@
     </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
       <b-form-group horizontal label="Name" label-for="name">
-        <b-form-input id="name" v-model.trim="form.name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+        <b-form-input id="name" v-model.trim="form.name"></b-form-input>
       </b-form-group>
 
       <Buttons/>
@@ -49,9 +49,6 @@ export default {
     }
   },
   computed: {
-    fontSize() {
-      return Store.state.fontSize;
-    },
     results() {
       return Store.state.results;
     },

@@ -65,7 +65,6 @@ const state = {
   mainOptionChanged: false,
   globalAdmin: false,
   admin: false,
-  fontSize: constants.defaultFontSize,
   loading: false
 };
 
@@ -77,18 +76,6 @@ export default new Vuex.Store({
     },
     [types.LOADED]({ commit }) {
       commit(types.SET_LOADING, false);
-    },
-    [types.CHANGE_FONT_SIZE]({ commit }, incrDecr) {
-      if (state.fontSize > constants.maxFontSize && incrDecr > 0) {
-        incrDecr = 0;
-      } else {
-        if (state.fontSize < constants.minFontSize && incrDecr < 0) {
-          incrDecr = 0;
-        }
-      }
-      commit(types.SET_FONT_SIZE, {
-        payload: incrDecr
-      });
     },
 
     [types.SET_MENU_OPTION]({ commit }, option) {
@@ -883,10 +870,6 @@ export default new Vuex.Store({
 
     [types.SET_STATUS]: (state, { payload }) => {
       state.status = payload;
-    },
-
-    [types.SET_FONT_SIZE]: (state, { payload }) => {
-      state.fontSize += payload;
     },
 
     [types.SET_USERS]: (state, { payload }) => {

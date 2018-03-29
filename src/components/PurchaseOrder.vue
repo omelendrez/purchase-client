@@ -11,35 +11,35 @@
           <b-form @submit="onSubmit" @reset="onReset" v-if="showForm" id="addForm">
 
             <b-form-group horizontal label="Number" label-for="number">
-              <b-form-input id="number" v-model="form.number" readonly v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="number" v-model="form.number" readonly></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Vendor" label-for="vendor_id">
-              <b-form-select v-model="form.vendor_id" :options="vendorOptions" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.vendor_id" :options="vendorOptions" :disabled="!this.isEditable" />
             </b-form-group>
 
             <b-form-group horizontal label="Date" label-for="date">
-              <b-form-input id="date" type="date" v-model.trim="form.date" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="date" type="date" v-model.trim="form.date" :disabled="!this.isEditable"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Requester" label-for="full_name">
-              <b-form-input id="full_name" v-model="form.full_name" readonly v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-input id="full_name" v-model="form.full_name" readonly />
             </b-form-group>
 
             <b-form-group horizontal label="Delivery location" label-for="location_id">
-              <b-form-select v-model="form.location_id" :options="deliveryLocationOptions" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+              <b-form-select v-model="form.location_id" :options="deliveryLocationOptions" :disabled="!this.isEditable" />
             </b-form-group>
 
             <b-form-group horizontal label="Expected Delivery" label-for="expected_delivery">
-              <b-form-input id="expected_delivery" type="date" v-model.trim="form.expected_delivery" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+              <b-form-input id="expected_delivery" type="date" v-model.trim="form.expected_delivery" :disabled="!this.isEditable"></b-form-input>
             </b-form-group>
 
             <b-form-group horizontal label="Instructions" label-for="instructions">
-              <b-form-textarea id="instructions" v-model="form.instructions" rows="2" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
+              <b-form-textarea id="instructions" v-model="form.instructions" rows="2" :disabled="!this.isEditable"></b-form-textarea>
             </b-form-group>
 
             <b-form-group horizontal label="Payment terms" label-for="payment_terms">
-              <b-form-textarea id="payment_terms" v-model="form.payment_terms" rows="2" :disabled="!this.isEditable" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-textarea>
+              <b-form-textarea id="payment_terms" v-model="form.payment_terms" rows="2" :disabled="!this.isEditable"></b-form-textarea>
             </b-form-group>
 
             <RequestButtons/>
@@ -110,7 +110,7 @@
 
         </b-tab>
 
-        <b-tab title="Workflow">
+        <b-tab title="Workflow" v-if="canSeeWorkflow">
           <b-form @reset="closeTabIndex">
             <ApprovalButtons v-bind:doc-type="this.docType" />
             <ItemsButtons />
@@ -184,7 +184,8 @@ export default {
       updatingItem: false,
       isEditing: false,
       itemRows: [],
-      fields: fields
+      fields: fields,
+      canSeeWorkflow: false
     };
   },
   components: {
@@ -195,9 +196,23 @@ export default {
     DocumentStatus
   },
   watch: {
+    userWorkflows() {
+      const wf = Store.state.userWorkflows.rows;
+      if (!wf) {
+        return;
+      }
+      if (this.item.workflow_id === 0) {
+        this.canSeeWorkflow = true;
+      } else {
+        this.canSeeWorkflow = wf.find(item => {
+          return item.workflow_id === this.item.workflow_id;
+        });
+      }
+    },
     item() {
       this.form.id = this.item.id;
       this.form.number = this.item.number;
+      this.form.workflow_id = this.item.workflow_id;
     },
     results() {
       this.isEditing = false;
@@ -264,15 +279,15 @@ export default {
     }
   },
   computed: {
+    userWorkflows() {
+      return Store.state.userWorkflows;
+    },
     isEditable() {
       return (
         this.item.workflow_status === 0 ||
         this.item.workflow_status === 3 ||
         this.item.workflow_status === 4
       );
-    },
-    fontSize() {
-      return Store.state.fontSize;
     },
     units() {
       const units = Store.state.activeUnits;
@@ -420,6 +435,7 @@ export default {
       return;
     }
     Store.dispatch("LOAD_VENDORS");
+    Store.dispatch("LOAD_WORKFLOWS");
     Store.dispatch("LOAD_LOCATIONS");
     Store.dispatch("LOAD_UNITS");
     Store.dispatch("LOAD_PURCHASE_ORDER_ITEMS", this.item.id);
@@ -442,6 +458,7 @@ export default {
       this.form.expected_delivery = this.item._expected_delivery;
       this.form.instructions = this.item.instructions;
       this.form.payment_terms = this.item.payment_terms;
+      Store.dispatch("LOAD_USER_WORKFLOWS", this.item["user.id"]);
       const payload = {
         document_type: 2,
         document_id: this.item.id

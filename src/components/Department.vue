@@ -7,11 +7,11 @@
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
       <b-form-group horizontal label="Company" label-for="organization_id">
-        <b-form-select v-model="form.organization_id" :options="organizations" required v-bind:style="{ fontSize: fontSize + 'px' }" />
+        <b-form-select v-model="form.organization_id" :options="organizations" />
       </b-form-group>
 
       <b-form-group horizontal label="Name" label-for="name">
-        <b-form-input id="name" v-model.trim="form.name" required v-bind:style="{ fontSize: fontSize + 'px' }"></b-form-input>
+        <b-form-input id="name" v-model.trim="form.name"></b-form-input>
       </b-form-group>
 
       <Buttons/>
@@ -55,9 +55,6 @@ export default {
     }
   },
   computed: {
-    fontSize() {
-      return Store.state.fontSize;
-    },
     organizations() {
       const organizations = Store.state.activeOrganizations;
       if (!organizations) {
