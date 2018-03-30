@@ -1,4 +1,4 @@
-eq<template>
+<template>
 
   <b-container class="requisition">
     <h3 class="text-center">
@@ -73,7 +73,7 @@ eq<template>
                 <div v-if="!row.item.editing">
                   {{row.item["unit.name"]}}
                 </div>
-                <b-form-select v-model="itemForm.unit_id" :options="units" v-else required/>
+                <b-form-select v-model="itemForm.unit_id" :options="unitOptions" v-else required/>
               </template>
 
               <template slot="actions" slot-scope="row" v-if="isEditable">
@@ -187,6 +187,30 @@ export default {
     DocumentStatus
   },
   watch: {
+    activeProjects() {
+      this.refreshData(
+        Store.state.activeProjects,
+        this.projectOptions,
+        this.form.organization_id
+      );
+    },
+    activeDepartments() {
+      this.refreshData(
+        Store.state.activeDepartments,
+        this.departmentOptions,
+        this.form.organization_id
+      );
+    },
+    activeLocations() {
+      this.refreshData(
+        Store.state.activeLocations,
+        this.deliveryLocationOptions,
+        this.form.organization_id
+      );
+    },
+    activeUnits() {
+      this.refreshData(Store.state.activeUnits, this.unitOptions, null);
+    },
     userWorkflows() {
       const wf = Store.state.userWorkflows.rows;
       if (!wf) {
@@ -259,76 +283,17 @@ export default {
         this.item.workflow_status === 4
       );
     },
-    locations() {
-      const locations = Store.state.activeLocations;
-      if (!locations) {
-        return;
-      }
-      const options = [];
-      for (let i = 0; i < locations.length; i++) {
-        if (
-          locations[i].organization_id === Store.state.user.organization_id ||
-          Store.state.globalAdmin
-        ) {
-          options.push({
-            value: locations[i].id,
-            text: locations[i].name
-          });
-        }
-      }
-      return options;
+    activeLocations() {
+      return Store.state.activeLocations;
     },
-    departments() {
-      const departments = Store.state.activeDepartments;
-      if (!departments) {
-        return;
-      }
-      const options = [];
-      for (let i = 0; i < departments.length; i++) {
-        if (
-          departments[i].organization_id === Store.state.user.organization_id ||
-          Store.state.globalAdmin
-        ) {
-          options.push({
-            value: departments[i].id,
-            text: departments[i].name
-          });
-        }
-      }
-      return options;
+    activeDepartments() {
+      return Store.state.activeDepartments;
     },
-    units() {
-      const units = Store.state.activeUnits;
-      if (!units) {
-        return;
-      }
-      const options = [];
-      for (let i = 0; i < units.length; i++) {
-        options.push({
-          value: units[i].id,
-          text: units[i].name
-        });
-      }
-      return options;
+    activeUnits() {
+      return Store.state.activeUnits;
     },
-    projects() {
-      const projects = Store.state.activeProjects;
-      if (!projects) {
-        return;
-      }
-      const options = [];
-      for (let i = 0; i < projects.length; i++) {
-        if (
-          projects[i].organization_id === Store.state.user.organization_id ||
-          Store.state.globalAdmin
-        ) {
-          options.push({
-            value: projects[i].id,
-            text: projects[i].name
-          });
-        }
-      }
-      return options;
+    activeProjects() {
+      return Store.state.activeProjects;
     },
     requisitionItems() {
       return Store.state.requisitionItems;
@@ -440,7 +405,9 @@ export default {
         return;
       }
       for (let i = 0; i < table.length; i++) {
-        if (table[i].organization_id === organizationId) {
+        if (
+          table[i].organization_id === organizationId ? organizationId : true
+        ) {
           options.push({
             value: table[i].id,
             text: table[i].name
@@ -487,21 +454,6 @@ export default {
       };
       Store.dispatch("LOAD_DOCUMENT_STATUS", payload);
     }
-    this.refreshData(
-      Store.state.activeLocations,
-      this.deliveryLocationOptions,
-      this.form.organization_id
-    );
-    this.refreshData(
-      Store.state.activeDepartments,
-      this.departmentOptions,
-      this.form.organization_id
-    );
-    this.refreshData(
-      Store.state.activeProjects,
-      this.projectOptions,
-      this.form.organization_id
-    );
     this.fields.push(...actions);
   }
 };
