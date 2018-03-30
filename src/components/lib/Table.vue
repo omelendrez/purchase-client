@@ -6,18 +6,30 @@
         <b-btn :disabled="!filter" @click="filter = ''" variant="info" class="reset-button">Reset</b-btn>
       </b-input-group>
     </b-form-group>
-    <b-table small fixed hover :items="tableItems.rows" :fields="fields" :filter="filter"  outlined :show-empty="true" :per-page="perPage" :current-page="currentPage" head-variant="light">
+    <b-table fixed hover :items="tableItems.rows" :fields="fields" :filter="filter" outlined :show-empty="true" :per-page="perPage" :current-page="currentPage" head-variant="light">
+      <template slot="number" slot-scope="row">
+        <b-link size="sm" @click.stop="info(row.item, row.index, $event.target)">
+          {{row.item.number}}
+        </b-link>
+      </template>
     </b-table>
     <b-pagination :total-rows="tableItems.count" :per-page="perPage" v-model="currentPage" variant="info" />
   </div>
 </template>
 
 <script>
+import Store from "./../../store/store";
+const org = require("./Fields").org;
+
 export default {
   name: "Table",
   props: {
     tableItems: {
       type: Object,
+      required: true
+    },
+    formName: {
+      type: String,
       required: true
     }
   },
@@ -29,8 +41,7 @@ export default {
       fields: [
         {
           key: "number",
-          class: "text-center",
-          sortable: true
+          class: "text-center"
         },
         {
           key: "date",
@@ -39,25 +50,29 @@ export default {
         {
           key: "user.full_name",
           label: "Requester",
-          sortable: true
+          sortable: true,
+          class: "text-left"
         },
         {
           key: "workflow_status_name",
           label: "Status",
           class: "text-center"
-        },
-        {
-          label: "Created",
-          key: "created_at",
-          class: "text-center text-nowrap"
-        },
-        {
-          label: "Updated",
-          key: "updated_at",
-          class: "text-center text-nowrap"
         }
       ]
     };
+  },
+  methods: {
+    info(item) {
+      Store.dispatch("ADD_ITEM", item);
+      this.$nextTick(() => {
+        this.$router.push({ name: this.formName });
+      });
+    }
+  },
+  created() {
+    if (Store.state.globalAdmin) {
+      this.fields.unshift(org);
+    }
   }
 };
 </script>
