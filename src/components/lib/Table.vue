@@ -9,7 +9,7 @@
     <b-table fixed hover :items="tableItems.rows" :fields="fields" :filter="filter" outlined :show-empty="true" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="actions" slot-scope="row">
         <b-button size="sm" variant="info" @click.stop="info(row.item, row.index, $event.target)">
-          Info
+          Open
         </b-button>
       </template>
     </b-table>
