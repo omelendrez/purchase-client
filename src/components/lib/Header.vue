@@ -78,12 +78,16 @@
             <!-- activities -->
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PRI-PRA')" v-bind:active="optionIsSelected('Requisitions')" href="#/requisitions">
               <i class="fas fa-shopping-cart"></i> Purchase Requisitions</b-nav-item>
+
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-POI-POA')" v-bind:active="optionIsSelected('PurchaseOrders')" href="#/purchase_orders">
               <i class="fas fa-shopping-cart"></i> Purchase Orders</b-nav-item>
-            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PRA-POA')" v-bind:active="optionIsSelected('Approvals')" href="#/approvals">
+
+            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PRI-PRA-POI-POA')" v-bind:active="optionIsSelected('Approvals')" href="#/approvals">
               <i class="fas fa-thumbs-up"></i> Approvals</b-nav-item>
+
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-RRI')" v-bind:active="optionIsSelected('ReceivingReports')" href="#/receive_reports">
               <i class="fas fa-clipboard-check"></i> Receiving Reports</b-nav-item>
+
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PFRI')" v-bind:active="optionIsSelected('PaymentRequests')" href="#/payment_requests">
               <i class="far fa-money-bill-alt"></i> Payment Requests</b-nav-item>
           </b-navbar-nav>

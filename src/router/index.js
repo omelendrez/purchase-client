@@ -41,6 +41,8 @@ import Vendor from "@/components/Vendor";
 import Workflows from "@/components/Workflows";
 import Workflow from "@/components/Workflow";
 
+import Approvals from "@/components/Approvals";
+
 Vue.use(Router);
 
 export default new Router({
@@ -179,7 +181,11 @@ export default new Router({
       path: "/workflow",
       name: "Workflow",
       component: Workflow
+    },
+    {
+      path: "/approvals",
+      name: "Approvals",
+      component: Approvals
     }
-
   ]
 });
