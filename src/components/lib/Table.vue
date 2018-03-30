@@ -7,10 +7,10 @@
       </b-input-group>
     </b-form-group>
     <b-table fixed hover :items="tableItems.rows" :fields="fields" :filter="filter" outlined :show-empty="true" :per-page="perPage" :current-page="currentPage" head-variant="light">
-      <template slot="actions" slot-scope="row">
-        <b-button size="sm" variant="info" @click.stop="info(row.item, row.index, $event.target)">
-          Open
-        </b-button>
+      <template slot="number" slot-scope="row">
+        <b-link size="sm" @click.stop="info(row.item, row.index, $event.target)">
+          {{row.item.number}}
+        </b-link>
       </template>
     </b-table>
     <b-pagination :total-rows="tableItems.count" :per-page="perPage" v-model="currentPage" variant="info" />
@@ -41,8 +41,7 @@ export default {
       fields: [
         {
           key: "number",
-          class: "text-center",
-          sortable: true
+          class: "text-center"
         },
         {
           key: "date",
@@ -58,10 +57,6 @@ export default {
           key: "workflow_status_name",
           label: "Status",
           class: "text-center"
-        },
-        {
-          key: "actions",
-          label: ""
         }
       ]
     };
@@ -69,7 +64,9 @@ export default {
   methods: {
     info(item) {
       Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: this.formName });
+      this.$nextTick(() => {
+        this.$router.push({ name: this.formName });
+      });
     }
   },
   created() {
