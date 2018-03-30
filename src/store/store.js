@@ -44,6 +44,7 @@ const state = {
   permissions: [],
   profiles: [],
   requisitions: [],
+  requisition: [],
   requisitionItems: [],
   purchaseOrders: [],
   purchaseOrderItems: [],
@@ -404,6 +405,16 @@ export default new Vuex.Store({
       );
       commit(types.SET_RESULTS, {
         payload: requisitionItem.data
+      });
+    },
+
+    async [types.IMPORT_REQUISITION]({ commit }, item) {
+      this.dispatch("LOADING");
+      const requisition = await Requisitions.fetchRequisition(
+        item
+      );
+      commit(types.SET_REQUISITION, {
+        payload: requisition.data
       });
     },
 
@@ -918,6 +929,10 @@ export default new Vuex.Store({
         );
       });
       state.documentStatus = payload;
+    },
+
+    [types.SET_REQUISITION]: (state, { payload }) => {
+      state.requisition = payload;
     }
   }
 });

@@ -393,6 +393,7 @@ export default {
     onReset(evt) {
       evt.preventDefault();
       /* Trick to reset/clear native browser form validation state */
+      Store.dispatch("LOAD_REQUISITIONS");
       this.$nextTick(() => {
         this.$router.go(-1);
       });

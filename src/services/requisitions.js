@@ -4,6 +4,9 @@ export default {
   fetchRequisitions(payload) {
     return HTTP.get(`requisitions/${payload}`)
   },
+  fetchRequisition(payload) {
+    return HTTP.get(`requisitions/${payload}/items`)
+  },
   saveRequisition(payload) {
     if (payload.id === 0) {
       return HTTP.post('requisitions', payload)

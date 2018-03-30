@@ -49,53 +49,67 @@
 
         <b-tab title="Items">
           <b-container>
-            <div class="add-button">
-              <b-button @click="addItem" variant="primary" title="Add" v-if="this.isEditable">Add item</b-button>
+            <div v-if="showImportMessage" class="text-center">
+              <p>Would you like to import items from existing Purchase Requisition?</p>
+              <b-btn variant="primary" @click.stop="showImport">Yes, import the items</b-btn>
+              <b-btn variant="danger" @click.stop="noImport">No, I will add them manually</b-btn>
             </div>
+            <b-form-group v-if="showSelectRequisition" horizontal label="Select a requisition" label-for="requisition_id">
+              <b-form-select v-model="form.requisition_id" :options="requisitionOptions" :disabled="!this.isEditable" />
+              <b-btn variant="primary" class="m-3" @click.stop="importRequisition" v-if="form.requisition_id!==0 && showImportButton">Import</b-btn>
+              <p class="mt-3">When you import a purchase requisition, the
+                <b>expected delivery date</b> and the
+                <b>delivery location</b> will also be updated from that requisition</p>
+              <b-btn class="m-3" @click.stop="cancelImport">Cancel</b-btn>
+            </b-form-group>
+            <div v-if="showItems">
+              <div class="add-button">
+                <b-button @click="addItem" variant="primary" title="Add" v-if="this.isEditable">Add item</b-button>
+              </div>
 
-            <b-table small hover outlined :items="itemRows" :fields="fields" :show-empty="true" head-variant="light">
+              <b-table small hover outlined :items="itemRows" :fields="fields" :show-empty="true" head-variant="light">
 
-              <template slot="description" slot-scope="row">
-                <div v-if="!row.item.editing">
-                  {{row.item["description"]}}
-                </div>
-                <b-form-input v-else type="text" v-model="itemForm.description" required></b-form-input>
-              </template>
+                <template slot="description" slot-scope="row">
+                  <div v-if="!row.item.editing">
+                    {{row.item["description"]}}
+                  </div>
+                  <b-form-input v-else type="text" v-model="itemForm.description" required></b-form-input>
+                </template>
 
-              <template slot="quantity" slot-scope="row">
-                <div v-if="!row.item.editing">
-                  {{row.item["quantity"]}}
-                </div>
-                <b-form-input v-else type="number" v-model="itemForm.quantity" required></b-form-input>
-              </template>
+                <template slot="quantity" slot-scope="row">
+                  <div v-if="!row.item.editing">
+                    {{row.item["quantity"]}}
+                  </div>
+                  <b-form-input v-else type="number" v-model="itemForm.quantity" required></b-form-input>
+                </template>
 
-              <template slot="unit.name" slot-scope="row">
-                <div v-if="!row.item.editing">
-                  {{row.item["unit.name"]}}
-                </div>
-                <b-form-select v-model="itemForm.unit_id" :options="units" v-else required/>
-              </template>
+                <template slot="unit.name" slot-scope="row">
+                  <div v-if="!row.item.editing">
+                    {{row.item["unit.name"]}}
+                  </div>
+                  <b-form-select v-model="itemForm.unit_id" :options="units" v-else required/>
+                </template>
 
-              <template slot="unit_price" slot-scope="row">
-                <div v-if="!row.item.editing">
-                  {{row.item["unit_price"]}}
-                </div>
-                <b-form-input v-else type="number" v-model="itemForm.unit_price" required></b-form-input>
-              </template>
+                <template slot="unit_price" slot-scope="row">
+                  <div v-if="!row.item.editing">
+                    {{row.item["unit_price"]}}
+                  </div>
+                  <b-form-input v-else type="number" v-model="itemForm.unit_price" required></b-form-input>
+                </template>
 
-              <template slot="total_amount" slot-scope="row">
-                {{row.item["total_amount"]}}
-              </template>
+                <template slot="total_amount" slot-scope="row">
+                  {{row.item["total_amount"]}}
+                </template>
 
-              <template slot="actions" slot-scope="row" v-if="isEditable">
-                <b-btn size="sm" variant="info" @click.stop="editItem(row.item, row.index, $event.target)" v-if="!row.item.editing" :disabled="isEditing">Edit</b-btn>
-                <b-btn size="sm" variant="success" @click.stop="saveItem(row.item, row.index, $event.target)" v-else>Save</b-btn>
-                <b-btn size="sm" variant="danger" @click.stop="deleteItem(row.item, 1)" v-if="!row.item.editing" :disabled="isEditing">Delete</b-btn>
-                <b-btn size="sm" variant="primary" ref="cancelSave" @click.stop="cancelSave(row.item, row.index, $event.target)" v-else>Cancel</b-btn>
-              </template>
+                <template slot="actions" slot-scope="row" v-if="isEditable">
+                  <b-btn size="sm" variant="info" @click.stop="editItem(row.item, row.index, $event.target)" v-if="!row.item.editing" :disabled="isEditing">Edit</b-btn>
+                  <b-btn size="sm" variant="success" @click.stop="saveItem(row.item, row.index, $event.target)" v-else>Save</b-btn>
+                  <b-btn size="sm" variant="danger" @click.stop="deleteItem(row.item, 1)" v-if="!row.item.editing" :disabled="isEditing">Delete</b-btn>
+                  <b-btn size="sm" variant="primary" ref="cancelSave" @click.stop="cancelSave(row.item, row.index, $event.target)" v-else>Cancel</b-btn>
+                </template>
 
-            </b-table>
-
+              </b-table>
+            </div>
             <b-modal id="modal-center" title="Delete" v-model="deleteShow" @ok="handleOk" ok-title="Yes. Delete" cancel-title="No. Leave it" ok-variant="danger" cancel-variant="success">
               <p class="my-4">Are you sure you want to delete
                 <strong>{{ selectedItem.description }} </strong>?</p>
@@ -152,6 +166,10 @@ export default {
       docType: "PO",
       tabIndex: 0,
       showForm: true,
+      showImportButton: true,
+      showImportMessage: true,
+      showSelectRequisition: false,
+      showItems: false,
       form: {
         id: 0,
         user_id: 0,
@@ -162,7 +180,8 @@ export default {
         instructions: "",
         payment_terms: "",
         location_id: 0,
-        organization_id: 0
+        organization_id: 0,
+        requisition_id: 0
       },
       itemForm: {
         id: 0,
@@ -181,6 +200,7 @@ export default {
       selectedItem: [],
       deliveryLocationOptions: [],
       vendorOptions: [],
+      requisitionOptions: [],
       updatingItem: false,
       isEditing: false,
       itemRows: [],
@@ -196,6 +216,28 @@ export default {
     DocumentStatus
   },
   watch: {
+    itemRows() {
+      if (this.itemRows.length) {
+        this.showItems = true;
+        this.showImportMessage = false;
+      }
+    },
+    requisition() {
+      if (!this.requisition) {
+        return;
+      }
+      this.form.expected_delivery = this.requisition.expected_delivery;
+      this.form.location_id = this.requisition.location_id;
+      const items = this.requisition.requisition_items;
+      for (let i = 0; i < items.length; i++) {
+        this.itemForm = items[i];
+        this.itemForm.id = 0;
+        this.itemForm.purchase_order_id = this.form.id;
+        this.itemForm.unit_price = 0;
+        this.updatingItem = true;
+        Store.dispatch("SAVE_PURCHASE_ORDER_ITEM", this.itemForm);
+      }
+    },
     userWorkflows() {
       const wf = Store.state.userWorkflows.rows;
       if (!wf) {
@@ -230,6 +272,8 @@ export default {
           Store.dispatch("LOAD_UNITS");
           Store.dispatch("ADD_ITEM", results);
         }
+        this.showSelectRequisition = false;
+        this.showItems = true;
         Store.dispatch("LOAD_PURCHASE_ORDER_ITEMS", this.form.id);
         setTimeout(() => {
           this.infoMessage = "";
@@ -262,6 +306,13 @@ export default {
         arr.push(row);
       }
       this.itemRows = arr;
+    },
+    requisitions() {
+      this.refreshData(
+        Store.state.requisitions.rows,
+        this.requisitionOptions,
+        this.form.organization_id
+      );
     },
     activeLocations() {
       this.refreshData(
@@ -303,6 +354,12 @@ export default {
       }
       return options;
     },
+    requisition() {
+      return Store.state.requisition;
+    },
+    requisitions() {
+      return Store.state.requisitions;
+    },
     purchaseOrderItems() {
       return Store.state.purchaseOrderItems;
     },
@@ -329,6 +386,31 @@ export default {
     }
   },
   methods: {
+    importRequisition() {
+      this.showImportMessage = false;
+      Store.dispatch("IMPORT_REQUISITION", this.form.requisition_id);
+    },
+    noImport() {
+      this.showImportMessage = false;
+      this.showItems = true;
+    },
+    cancelImport() {
+      this.showImportMessage = true;
+      this.showSelectRequisition = false;
+    },
+    showImport() {
+      if (this.form.id === 0) {
+        this.errorMessage =
+          "You must save the Purchase Order header before importing the items";
+        this.errorShow = true;
+        setTimeout(() => {
+          this.tabIndex = 0;
+        }, 4000);
+        return;
+      }
+      this.showImportMessage = false;
+      this.showSelectRequisition = true;
+    },
     addItem() {
       const item = {
         id: 0,
@@ -397,6 +479,8 @@ export default {
     },
     onSubmit(evt) {
       evt.preventDefault();
+      this.errorMessage = "";
+      this.errorShow = false;
       if (this.isEditable) {
         Store.dispatch("SAVE_PURCHASE_ORDER", this.form);
       } else {
@@ -408,6 +492,7 @@ export default {
     onReset(evt) {
       evt.preventDefault();
       /* Trick to reset/clear native browser form validation state */
+      Store.dispatch("LOAD_PURCHASE_ORDERS");
       this.$nextTick(() => {
         this.$router.go(-1);
       });
@@ -423,7 +508,7 @@ export default {
         if (table[i].organization_id === organizationId) {
           options.push({
             value: table[i].id,
-            text: table[i].name
+            text: table[i].name ? table[i].name : table[i].number
           });
         }
       }
@@ -439,6 +524,7 @@ export default {
     Store.dispatch("LOAD_LOCATIONS");
     Store.dispatch("LOAD_UNITS");
     Store.dispatch("LOAD_PURCHASE_ORDER_ITEMS", this.item.id);
+    Store.dispatch("LOAD_REQUISITIONS");
 
     this.form.user_id = this.isLogged;
     this.form.number = "AUTOMATIC";
