@@ -6,18 +6,30 @@
         <b-btn :disabled="!filter" @click="filter = ''" variant="info" class="reset-button">Reset</b-btn>
       </b-input-group>
     </b-form-group>
-    <b-table small fixed hover :items="tableItems.rows" :fields="fields" :filter="filter"  outlined :show-empty="true" :per-page="perPage" :current-page="currentPage" head-variant="light">
+    <b-table fixed hover :items="tableItems.rows" :fields="fields" :filter="filter" outlined :show-empty="true" :per-page="perPage" :current-page="currentPage" head-variant="light">
+      <template slot="actions" slot-scope="row">
+        <b-button size="sm" variant="info" @click.stop="info(row.item, row.index, $event.target)">
+          Info
+        </b-button>
+      </template>
     </b-table>
     <b-pagination :total-rows="tableItems.count" :per-page="perPage" v-model="currentPage" variant="info" />
   </div>
 </template>
 
 <script>
+import Store from "./../../store/store";
+const org = require("./Fields").org;
+
 export default {
   name: "Table",
   props: {
     tableItems: {
       type: Object,
+      required: true
+    },
+    formName: {
+      type: String,
       required: true
     }
   },
@@ -39,7 +51,8 @@ export default {
         {
           key: "user.full_name",
           label: "Requester",
-          sortable: true
+          sortable: true,
+          class: "text-left"
         },
         {
           key: "workflow_status_name",
@@ -47,17 +60,22 @@ export default {
           class: "text-center"
         },
         {
-          label: "Created",
-          key: "created_at",
-          class: "text-center text-nowrap"
-        },
-        {
-          label: "Updated",
-          key: "updated_at",
-          class: "text-center text-nowrap"
+          key: "actions",
+          label: ""
         }
       ]
     };
+  },
+  methods: {
+    info(item) {
+      Store.dispatch("ADD_ITEM", item);
+      this.$router.push({ name: this.formName });
+    }
+  },
+  created() {
+    if (Store.state.globalAdmin) {
+      this.fields.unshift(org);
+    }
   }
 };
 </script>

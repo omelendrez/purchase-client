@@ -409,7 +409,7 @@ export default {
       evt.preventDefault();
       /* Trick to reset/clear native browser form validation state */
       this.$nextTick(() => {
-        this.$router.push({ name: "PurchaseOrders" });
+        this.$router.go(-1);
       });
     },
     closeTabIndex() {

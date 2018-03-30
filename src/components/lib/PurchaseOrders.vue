@@ -2,7 +2,7 @@
 <template>
   <b-container>
     <h4>Purchase Orders</h4>
-    <Table v-bind:table-items="items" />
+    <Table v-bind:table-items="items" form-name="PurchaseOrder"/>
   </b-container>
 </template>
 
