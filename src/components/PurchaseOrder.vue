@@ -149,21 +149,21 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import RequestButtons from "./lib/RequestButtons";
-import ItemsButtons from "./lib/ItemsButtons";
-import ApprovalButtons from "./lib/ApprovalButtons";
-import Add from "./lib/Add";
-import DocumentStatus from "./lib/DocumentStatus";
-import { setTimeout } from "timers";
-const fields = require("./lib/Fields").purchaseOrderItems;
-const actions = require("./lib/Fields").actions;
+import Store from '../store/store'
+import RequestButtons from './lib/RequestButtons'
+import ItemsButtons from './lib/ItemsButtons'
+import ApprovalButtons from './lib/ApprovalButtons'
+import Add from './lib/Add'
+import DocumentStatus from './lib/DocumentStatus'
+import { setTimeout } from 'timers'
+const fields = require('./lib/Fields').purchaseOrderItems
+const actions = require('./lib/Fields').actions
 
 export default {
-  name: "PurchaseOrder",
+  name: 'PurchaseOrder',
   data() {
     return {
-      docType: "PO",
+      docType: 'PO',
       tabIndex: 0,
       showForm: true,
       showImportButton: true,
@@ -174,18 +174,18 @@ export default {
         id: 0,
         user_id: 0,
         vendor_id: 0,
-        full_name: "",
-        number: "",
-        date: "",
-        instructions: "",
-        payment_terms: "",
+        full_name: '',
+        number: '',
+        date: '',
+        instructions: '',
+        payment_terms: '',
         location_id: 0,
         organization_id: 0,
         requisition_id: 0
       },
       itemForm: {
         id: 0,
-        description: "",
+        description: '',
         purchase_order_id: 0,
         quantity: 0,
         unit_id: 0,
@@ -193,9 +193,9 @@ export default {
         total_amount: 0
       },
       errorShow: false,
-      errorMessage: "",
+      errorMessage: '',
       infoShow: false,
-      infoMessage: "",
+      infoMessage: '',
       deleteShow: false,
       selectedItem: [],
       deliveryLocationOptions: [],
@@ -206,7 +206,7 @@ export default {
       itemRows: [],
       fields: fields,
       canSeeWorkflow: false
-    };
+    }
   },
   components: {
     RequestButtons,
@@ -218,198 +218,198 @@ export default {
   watch: {
     itemRows() {
       if (this.itemRows.length) {
-        this.showItems = true;
-        this.showImportMessage = false;
+        this.showItems = true
+        this.showImportMessage = false
       }
     },
     requisition() {
       if (!this.requisition) {
-        return;
+        return
       }
-      this.form.expected_delivery = this.requisition.expected_delivery;
-      this.form.location_id = this.requisition.location_id;
-      const items = this.requisition.requisition_items;
+      this.form.expected_delivery = this.requisition.expected_delivery
+      this.form.location_id = this.requisition.location_id
+      const items = this.requisition.requisition_items
       for (let i = 0; i < items.length; i++) {
-        this.itemForm = items[i];
-        this.itemForm.id = 0;
-        this.itemForm.purchase_order_id = this.form.id;
-        this.itemForm.unit_price = 0;
-        this.updatingItem = true;
-        Store.dispatch("SAVE_PURCHASE_ORDER_ITEM", this.itemForm);
+        this.itemForm = items[i]
+        this.itemForm.id = 0
+        this.itemForm.purchase_order_id = this.form.id
+        this.itemForm.unit_price = 0
+        this.updatingItem = true
+        Store.dispatch('SAVE_PURCHASE_ORDER_ITEM', this.itemForm)
       }
     },
     userWorkflows() {
-      const wf = Store.state.userWorkflows.rows;
+      const wf = Store.state.userWorkflows.rows
       if (!wf) {
-        return;
+        return
       }
       if (this.item.workflow_id === 0) {
-        this.canSeeWorkflow = true;
+        this.canSeeWorkflow = true
       } else {
         this.canSeeWorkflow = wf.find(item => {
-          return item.workflow_id === this.item.workflow_id;
-        });
+          return item.workflow_id === this.item.workflow_id
+        })
       }
     },
     item() {
-      this.form.id = this.item.id;
-      this.form.number = this.item.number;
-      this.form.workflow_id = this.item.workflow_id;
+      this.form.id = this.item.id
+      this.form.number = this.item.number
+      this.form.workflow_id = this.item.workflow_id
     },
     results() {
-      this.isEditing = false;
-      const results = Store.state.results;
+      this.isEditing = false
+      const results = Store.state.results
       if (results.error) {
-        this.errorMessage = results.message;
-        this.errorShow = results.error;
+        this.errorMessage = results.message
+        this.errorShow = results.error
       } else {
-        this.infoMessage = "Database updated successfully";
-        this.infoShow = true;
+        this.infoMessage = 'Database updated successfully'
+        this.infoShow = true
         if (this.updatingItem) {
-          this.updatingItem = false;
+          this.updatingItem = false
         } else {
-          this.form.id = results.id;
-          Store.dispatch("LOAD_UNITS");
-          Store.dispatch("ADD_ITEM", results);
+          this.form.id = results.id
+          Store.dispatch('LOAD_UNITS')
+          Store.dispatch('ADD_ITEM', results)
         }
-        this.showSelectRequisition = false;
-        this.showItems = true;
-        Store.dispatch("LOAD_PURCHASE_ORDER_ITEMS", this.form.id);
+        this.showSelectRequisition = false
+        this.showItems = true
+        Store.dispatch('LOAD_PURCHASE_ORDER_ITEMS', this.form.id)
         setTimeout(() => {
-          this.infoMessage = "";
-          this.infoShow = false;
-        }, 2000);
+          this.infoMessage = ''
+          this.infoShow = false
+        }, 2000)
       }
     },
     purchaseOrderItems() {
       if (!Store.state.purchaseOrderItems.rows) {
-        return;
+        return
       }
-      const items = Store.state.purchaseOrderItems.rows;
-      const arr = [];
+      const items = Store.state.purchaseOrderItems.rows
+      const arr = []
       for (let i = 0; i < items.length; i++) {
         let row = {
           editing: false,
-          "unit.name": items[i]["unit.name"],
+          'unit.name': items[i]['unit.name'],
           unit_id: items[i].unit_id,
           description: items[i].description,
           quantity: items[i].quantity,
           id: items[i].id,
-          unit_price: items[i].unit_price.toLocaleString("en-US", {
+          unit_price: items[i].unit_price.toLocaleString('en-US', {
             minimumFractionDigits: 2
           }),
-          total_amount: items[i].total_amount.toLocaleString("en-US", {
+          total_amount: items[i].total_amount.toLocaleString('en-US', {
             minimumFractionDigits: 2
           }),
           purchase_order_id: items[i].purchase_order_id
-        };
-        arr.push(row);
+        }
+        arr.push(row)
       }
-      this.itemRows = arr;
+      this.itemRows = arr
     },
     requisitions() {
       this.refreshData(
         Store.state.requisitions.rows,
         this.requisitionOptions,
         this.form.organization_id
-      );
+      )
     },
     activeLocations() {
       this.refreshData(
         Store.state.activeLocations,
         this.deliveryLocationOptions,
         this.form.organization_id
-      );
+      )
     },
     activeVendors() {
       this.refreshData(
         Store.state.activeVendors,
         this.vendorOptions,
         this.form.organization_id
-      );
+      )
     }
   },
   computed: {
     userWorkflows() {
-      return Store.state.userWorkflows;
+      return Store.state.userWorkflows
     },
     isEditable() {
       return (
         this.item.workflow_status === 0 ||
         this.item.workflow_status === 3 ||
         this.item.workflow_status === 4
-      );
+      )
     },
     units() {
-      const units = Store.state.activeUnits;
+      const units = Store.state.activeUnits
       if (!units) {
-        return;
+        return
       }
-      const options = [];
+      const options = []
       for (let i = 0; i < units.length; i++) {
         options.push({
           value: units[i].id,
           text: units[i].name
-        });
+        })
       }
-      return options;
+      return options
     },
     requisition() {
-      return Store.state.requisition;
+      return Store.state.requisition
     },
     requisitions() {
-      return Store.state.requisitions;
+      return Store.state.requisitions
     },
     purchaseOrderItems() {
-      return Store.state.purchaseOrderItems;
+      return Store.state.purchaseOrderItems
     },
     results() {
-      return Store.state.results;
+      return Store.state.results
     },
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     item() {
-      return Store.state.record;
+      return Store.state.record
     },
     organizationId() {
-      return Store.state.user.organization_id;
+      return Store.state.user.organization_id
     },
     fullName() {
-      return Store.state.user.full_name;
+      return Store.state.user.full_name
     },
     activeLocations() {
-      return Store.state.activeLocations;
+      return Store.state.activeLocations
     },
     activeVendors() {
-      return Store.state.activeVendors;
+      return Store.state.activeVendors
     }
   },
   methods: {
     importRequisition() {
-      this.showImportMessage = false;
-      Store.dispatch("IMPORT_REQUISITION", this.form.requisition_id);
+      this.showImportMessage = false
+      Store.dispatch('IMPORT_REQUISITION', this.form.requisition_id)
     },
     noImport() {
-      this.showImportMessage = false;
-      this.showItems = true;
+      this.showImportMessage = false
+      this.showItems = true
     },
     cancelImport() {
-      this.showImportMessage = true;
-      this.showSelectRequisition = false;
+      this.showImportMessage = true
+      this.showSelectRequisition = false
     },
     showImport() {
       if (this.form.id === 0) {
         this.errorMessage =
-          "You must save the Purchase Order header before importing the items";
-        this.errorShow = true;
+          'You must save the Purchase Order header before importing the items'
+        this.errorShow = true
         setTimeout(() => {
-          this.tabIndex = 0;
-        }, 4000);
-        return;
+          this.tabIndex = 0
+        }, 4000)
+        return
       }
-      this.showImportMessage = false;
-      this.showSelectRequisition = true;
+      this.showImportMessage = false
+      this.showSelectRequisition = true
     },
     addItem() {
       const item = {
@@ -418,21 +418,21 @@ export default {
         purchase_order_id: this.item.id,
         quantity: 0,
         unit_price: 0,
-        description: "",
+        description: '',
         editing: true,
         isNew: true
-      };
+      }
       // this.itemRows.unshift(item);
-      this.itemRows.push(item);
-      this.isEditing = true;
-      this.itemForm = item;
+      this.itemRows.push(item)
+      this.isEditing = true
+      this.itemForm = item
     },
     saveItem(item, index, target) {
-      this.errorMessage = "";
-      this.errorShow = false;
-      this.updatingItem = true;
+      this.errorMessage = ''
+      this.errorShow = false
+      this.updatingItem = true
       if (this.itemForm.quantity < 1) {
-        this.errorMessage = "Quantity cannot be lower than 1";
+        this.errorMessage = 'Quantity cannot be lower than 1'
       }
       if (
         !this.itemForm.unit_id ||
@@ -440,120 +440,120 @@ export default {
         !this.itemForm.description.length
       ) {
         this.errorMessage =
-          "You must fill all item fields in oder to be able to save";
+          'You must fill all item fields in oder to be able to save'
       }
       if (this.errorMessage) {
-        this.errorShow = true;
-        return;
+        this.errorShow = true
+        return
       }
-      Store.dispatch("SAVE_PURCHASE_ORDER_ITEM", this.itemForm);
+      Store.dispatch('SAVE_PURCHASE_ORDER_ITEM', this.itemForm)
     },
     editItem(item, index, target) {
-      item.editing = true;
-      this.isEditing = true;
-      this.itemForm.id = item.id;
-      this.itemForm.unit_id = item.unit_id;
-      this.itemForm.description = item.description;
-      this.itemForm.quantity = item.quantity;
-      this.itemForm.purchase_order_id = item.purchase_order_id;
+      item.editing = true
+      this.isEditing = true
+      this.itemForm.id = item.id
+      this.itemForm.unit_id = item.unit_id
+      this.itemForm.description = item.description
+      this.itemForm.quantity = item.quantity
+      this.itemForm.purchase_order_id = item.purchase_order_id
     },
 
     deleteItem(item, type) {
-      this.selectedItem = item;
+      this.selectedItem = item
       if (type === 1) {
-        this.deleteShow = true;
+        this.deleteShow = true
       } else {
-        this.handleOk();
+        this.handleOk()
       }
     },
     handleOk() {
-      this.updatingItem = true;
-      Store.dispatch("DELETE_PURCHASE_ORDER_ITEM", this.selectedItem);
+      this.updatingItem = true
+      Store.dispatch('DELETE_PURCHASE_ORDER_ITEM', this.selectedItem)
     },
     cancelSave(item, index, target) {
-      item.editing = false;
-      this.isEditing = false;
+      item.editing = false
+      this.isEditing = false
       if (item.isNew) {
-        this.itemRows.splice(index, 1);
+        this.itemRows.splice(index, 1)
       }
     },
     onSubmit(evt) {
-      evt.preventDefault();
-      this.errorMessage = "";
-      this.errorShow = false;
+      evt.preventDefault()
+      this.errorMessage = ''
+      this.errorShow = false
       if (this.isEditable) {
-        Store.dispatch("SAVE_PURCHASE_ORDER", this.form);
+        Store.dispatch('SAVE_PURCHASE_ORDER', this.form)
       } else {
         this.errorMessage =
-          "You are not entitled to modify this document at its current status";
-        this.errorShow = true;
+          'You are not entitled to modify this document at its current status'
+        this.errorShow = true
       }
     },
     onReset(evt) {
-      evt.preventDefault();
+      evt.preventDefault()
       /* Trick to reset/clear native browser form validation state */
-      Store.dispatch("LOAD_PURCHASE_ORDERS");
+      Store.dispatch('LOAD_PURCHASE_ORDERS')
       this.$nextTick(() => {
-        this.$router.go(-1);
-      });
+        this.$router.go(-1)
+      })
     },
     closeTabIndex() {
-      this.tabIndex = 0;
+      this.tabIndex = 0
     },
     refreshData(table, options, organizationId) {
       if (!table.length) {
-        return;
+        return
       }
       for (let i = 0; i < table.length; i++) {
         if (table[i].organization_id === organizationId) {
           options.push({
             value: table[i].id,
             text: table[i].name ? table[i].name : table[i].number
-          });
+          })
         }
       }
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
-    Store.dispatch("LOAD_VENDORS");
-    Store.dispatch("LOAD_WORKFLOWS");
-    Store.dispatch("LOAD_LOCATIONS");
-    Store.dispatch("LOAD_UNITS");
-    Store.dispatch("LOAD_PURCHASE_ORDER_ITEMS", this.item.id);
-    Store.dispatch("LOAD_REQUISITIONS");
+    Store.dispatch('LOAD_VENDORS')
+    Store.dispatch('LOAD_WORKFLOWS')
+    Store.dispatch('LOAD_LOCATIONS')
+    Store.dispatch('LOAD_UNITS')
+    Store.dispatch('LOAD_PURCHASE_ORDER_ITEMS', this.item.id)
+    Store.dispatch('LOAD_REQUISITIONS')
 
-    this.form.user_id = this.isLogged;
-    this.form.number = "AUTOMATIC";
-    this.form.organization_id = this.organizationId;
-    this.form.full_name = this.fullName;
-    const now = new Date();
-    this.form.date = now.toISOString().substring(0, 10);
+    this.form.user_id = this.isLogged
+    this.form.number = 'AUTOMATIC'
+    this.form.organization_id = this.organizationId
+    this.form.full_name = this.fullName
+    const now = new Date()
+    this.form.date = now.toISOString().substring(0, 10)
     if (this.item.id !== 0) {
-      this.form.id = this.item.id;
-      this.form.user_id = this.item["user.id"];
-      this.form.organization_id = this.item.organization_id;
-      this.form.full_name = this.item["user.full_name"];
-      this.form.number = this.item.number;
-      this.form.vendor_id = this.item.vendor_id;
-      this.form.date = this.item._date;
-      this.form.location_id = this.item.location_id;
-      this.form.expected_delivery = this.item._expected_delivery;
-      this.form.instructions = this.item.instructions;
-      this.form.payment_terms = this.item.payment_terms;
-      Store.dispatch("LOAD_USER_WORKFLOWS", this.item["user.id"]);
+      this.form.id = this.item.id
+      this.form.user_id = this.item['user.id']
+      this.form.organization_id = this.item.organization_id
+      this.form.full_name = this.item['user.full_name']
+      this.form.number = this.item.number
+      this.form.vendor_id = this.item.vendor_id
+      this.form.date = this.item._date
+      this.form.location_id = this.item.location_id
+      this.form.expected_delivery = this.item._expected_delivery
+      this.form.instructions = this.item.instructions
+      this.form.payment_terms = this.item.payment_terms
+      Store.dispatch('LOAD_USER_WORKFLOWS', this.item['user.id'])
       const payload = {
         document_type: 2,
         document_id: this.item.id
-      };
-      Store.dispatch("LOAD_DOCUMENT_STATUS", payload);
+      }
+      Store.dispatch('LOAD_DOCUMENT_STATUS', payload)
     }
-    this.fields.push(...actions);
+    this.fields.push(...actions)
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -575,7 +575,7 @@ export default {
 .to-right {
   float: right;
 }
-table input[type="number"] {
+table input[type='number'] {
   max-width: 96px;
   margin: 0 auto;
   text-align: center;

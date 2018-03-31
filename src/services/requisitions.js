@@ -1,20 +1,20 @@
 import HTTP from '../components/lib/http-common'
 
 export default {
-  fetchRequisitions(payload) {
+  fetchRequisitions (payload) {
     return HTTP.get(`requisitions/${payload}`)
   },
-  fetchRequisition(payload) {
+  fetchRequisition (payload) {
     return HTTP.get(`requisitions/${payload}/items`)
   },
-  saveRequisition(payload) {
+  saveRequisition (payload) {
     if (payload.id === 0) {
       return HTTP.post('requisitions', payload)
     } else {
       return HTTP.put(`requisitions/${payload.id}`, payload)
     }
   },
-  deleteRequisition(payload) {
+  deleteRequisition (payload) {
     return HTTP.delete(`requisitions/${payload}`)
   }
 }

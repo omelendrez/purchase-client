@@ -47,55 +47,55 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import Buttons from "./lib/Buttons";
+import Store from '../store/store'
+import Buttons from './lib/Buttons'
 
 export default {
-  name: "Vendor",
+  name: 'Vendor',
   data() {
     return {
       form: {
         id: 0,
-        code: "",
-        name: "",
-        address: "",
-        phone: "",
-        email: "",
-        contact: "",
+        code: '',
+        name: '',
+        address: '',
+        phone: '',
+        email: '',
+        contact: '',
         organization_id: 0,
         show: true
       },
       errorShow: false,
-      errorMessage: ""
-    };
+      errorMessage: ''
+    }
   },
   components: {
     Buttons
   },
   watch: {
     results() {
-      const results = Store.state.results;
+      const results = Store.state.results
       if (results.error) {
-        this.errorMessage = results.message;
-        this.errorShow = results.error;
-        return;
+        this.errorMessage = results.message
+        this.errorShow = results.error
+        return
       }
-      this.$router.push({ name: "Vendors" });
+      this.$router.push({ name: 'Vendors' })
     }
   },
   computed: {
     results() {
-      return Store.state.results;
+      return Store.state.results
     },
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     organizations() {
-      const organizations = Store.state.activeOrganizations;
+      const organizations = Store.state.activeOrganizations
       if (!organizations) {
-        return;
+        return
       }
-      const options = [];
+      const options = []
       for (let i = 0; i < organizations.length; i++) {
         if (
           organizations[i].id === Store.state.user.organization_id ||
@@ -104,85 +104,85 @@ export default {
           options.push({
             value: organizations[i].id,
             text: organizations[i].name
-          });
+          })
         }
       }
-      return options;
+      return options
     },
     item() {
-      return Store.state.record;
+      return Store.state.record
     },
     state() {
-      return this.form.vendor_name.length >= 6;
+      return this.form.vendor_name.length >= 6
     },
     invalidFeedback() {
       if (this.form.vendor_name.length > 6) {
-        return "";
+        return ''
       }
       if (this.form.vendor_name.length > 0) {
-        return "Enter at least 6 characters";
+        return 'Enter at least 6 characters'
       }
     },
     validFeedback() {
-      return this.state ? "Valid" : "";
+      return this.state ? 'Valid' : ''
     }
   },
   methods: {
     onSubmit(evt) {
-      evt.preventDefault();
-      Store.dispatch("SAVE_VENDOR", this.form);
+      evt.preventDefault()
+      Store.dispatch('SAVE_VENDOR', this.form)
     },
     onReset(evt) {
-      evt.preventDefault();
+      evt.preventDefault()
       /* Reset our form values */
-      this.form.id = 0;
-      this.form.code = "";
-      this.form.name = "";
-      this.form.address = "";
-      this.form.phone = "";
-      this.form.email = "";
-      this.form.contact = "";
-      this.form.organization_id = 0;
+      this.form.id = 0
+      this.form.code = ''
+      this.form.name = ''
+      this.form.address = ''
+      this.form.phone = ''
+      this.form.email = ''
+      this.form.contact = ''
+      this.form.organization_id = 0
       /* Trick to reset/clear native browser form validation state */
-      this.form.show = false;
+      this.form.show = false
       this.$nextTick(() => {
-        this.$router.push({ name: "Vendors" });
-      });
+        this.$router.push({ name: 'Vendors' })
+      })
     },
     refreshData(table, options, organizationId) {
       if (!table) {
-        return;
+        return
       }
       for (let i = 0; i < table.length; i++) {
         if (table[i].organization_id === organizationId) {
           options.push({
             value: table[i].id,
             text: table[i].name
-          });
+          })
         }
       }
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
-    Store.dispatch("LOAD_ORGANIZATIONS");
+    Store.dispatch('LOAD_ORGANIZATIONS')
     this.$nextTick(() => {
       if (this.item) {
-        this.form.id = this.item.id;
-        this.form.code = this.item.code;
-        this.form.name = this.item.name;
-        this.form.address = this.item.address;
-        this.form.phone = this.item.phone;
-        this.form.email = this.item.email;
-        this.form.contact = this.item.contact;
-        this.form.organization_id = this.item.organization_id;
+        this.form.id = this.item.id
+        this.form.code = this.item.code
+        this.form.name = this.item.name
+        this.form.address = this.item.address
+        this.form.phone = this.item.phone
+        this.form.email = this.item.email
+        this.form.contact = this.item.contact
+        this.form.organization_id = this.item.organization_id
       }
-    });
+    })
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

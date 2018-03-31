@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "ItemsButtons"
-};
+  name: 'ItemsButtons'
+}
 </script>
 
 <style scoped>

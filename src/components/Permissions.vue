@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import Add from "./lib/Add";
-const fields = require("./lib/Fields").permissions;
-const commonFields = require("./lib/Fields").commonFields;
-const actions = require("./lib/Fields").actions;
+import Store from '../store/store'
+import Add from './lib/Add'
+const fields = require('./lib/Fields').permissions
+const commonFields = require('./lib/Fields').commonFields
+const actions = require('./lib/Fields').actions
 
 export default {
-  name: "Permissions",
+  name: 'Permissions',
   data() {
     return {
       perPage: 10,
@@ -47,67 +47,67 @@ export default {
       filter: null,
       deleteShow: false,
       selectedItem: {
-        code: "",
-        name: "",
-        description: ""
+        code: '',
+        name: '',
+        description: ''
       },
       fields: fields
-    };
+    }
   },
   methods: {
     editItem(item) {
-      Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "Permission" });
+      Store.dispatch('ADD_ITEM', item)
+      this.$router.push({ name: 'Permission' })
     },
     deleteItem(item, type) {
-      this.selectedItem = item;
+      this.selectedItem = item
       if (type === 1) {
-        this.deleteShow = true;
+        this.deleteShow = true
       } else {
-        this.handleOk();
+        this.handleOk()
       }
     },
     handleOk() {
-      Store.dispatch("DELETE_PERMISSION", this.selectedItem);
+      Store.dispatch('DELETE_PERMISSION', this.selectedItem)
     }
   },
   watch: {
     results() {
-      const results = Store.state.results;
+      const results = Store.state.results
       if (results.error) {
-        return;
+        return
       }
-      Store.dispatch("LOAD_PERMISSIONS");
+      Store.dispatch('LOAD_PERMISSIONS')
     }
   },
   computed: {
     results() {
-      return Store.state.results;
+      return Store.state.results
     },
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     permissions() {
-      return Store.state.permissions;
+      return Store.state.permissions
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
-    Store.dispatch("SET_MENU_OPTION", this.$route.name);
-    Store.dispatch("LOAD_PERMISSIONS");
+    Store.dispatch('SET_MENU_OPTION', this.$route.name)
+    Store.dispatch('LOAD_PERMISSIONS')
 
-    this.fields.push(...commonFields);
+    this.fields.push(...commonFields)
     if (Store.state.admin) {
-      this.fields.push(...actions);
+      this.fields.push(...actions)
     }
   },
   components: {
     Add
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

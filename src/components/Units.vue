@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import Add from "./lib/Add";
-const fields = require("./lib/Fields").units;
-const commonFields = require("./lib/Fields").commonFields;
-const actions = require("./lib/Fields").actions;
+import Store from '../store/store'
+import Add from './lib/Add'
+const fields = require('./lib/Fields').units
+const commonFields = require('./lib/Fields').commonFields
+const actions = require('./lib/Fields').actions
 
 export default {
-  name: "Units",
+  name: 'Units',
   data() {
     return {
       perPage: 10,
@@ -47,66 +47,66 @@ export default {
       filter: null,
       deleteShow: false,
       selectedItem: {
-        code: "",
-        name: ""
+        code: '',
+        name: ''
       },
       fields: fields
-    };
+    }
   },
   methods: {
     editItem(item) {
-      Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "Unit" });
+      Store.dispatch('ADD_ITEM', item)
+      this.$router.push({ name: 'Unit' })
     },
     deleteItem(item, type) {
-      this.selectedItem = item;
+      this.selectedItem = item
       if (type === 1) {
-        this.deleteShow = true;
+        this.deleteShow = true
       } else {
-        this.handleOk();
+        this.handleOk()
       }
     },
     handleOk() {
-      Store.dispatch("DELETE_UNIT", this.selectedItem);
+      Store.dispatch('DELETE_UNIT', this.selectedItem)
     }
   },
   watch: {
     results() {
-      const results = Store.state.results;
+      const results = Store.state.results
       if (results.error) {
-        return;
+        return
       }
-      Store.dispatch("LOAD_UNITS");
+      Store.dispatch('LOAD_UNITS')
     }
   },
   computed: {
     results() {
-      return Store.state.results;
+      return Store.state.results
     },
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     units() {
-      return Store.state.units;
+      return Store.state.units
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
-    Store.dispatch("SET_MENU_OPTION", this.$route.name);
-    Store.dispatch("LOAD_UNITS");
+    Store.dispatch('SET_MENU_OPTION', this.$route.name)
+    Store.dispatch('LOAD_UNITS')
 
-    this.fields.push(...commonFields);
+    this.fields.push(...commonFields)
     if (Store.state.admin) {
-      this.fields.push(...actions);
+      this.fields.push(...actions)
     }
   },
   components: {
     Add
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

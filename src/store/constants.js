@@ -1,7 +1,7 @@
-export const activeColor = "success";
-export const inactiveColor = "inactive";
-export const selectedRecordColor = "selected";
-export const activeStatus = 1;
+export const activeColor = 'success'
+export const inactiveColor = 'inactive'
+export const selectedRecordColor = 'selected'
+export const activeStatus = 1
 export const documentStatusNames = [
   {
     key: 0,
@@ -21,7 +21,7 @@ export const documentStatusNames = [
   },
   {
     key: 4,
-    text: 'Document changes requested'
+    text: 'Changes requested'
   },
   {
     key: 5,

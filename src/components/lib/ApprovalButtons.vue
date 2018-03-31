@@ -30,186 +30,186 @@
 </template>
 
 <script>
-import Store from "./../../store/store";
+import Store from './../../store/store'
 
 export default {
-  name: "ApprovalButtons",
+  name: 'ApprovalButtons',
   data() {
     return {
       workflow_id: 0,
-      remarks: "",
+      remarks: '',
       errorShow: false,
-      errorMessage: ""
-    };
+      errorMessage: ''
+    }
   },
-  props: ["docType"],
+  props: ['docType'],
   computed: {
     userWorkflows() {
-      return Store.state.userWorkflows;
+      return Store.state.userWorkflows
     },
     userPermissions() {
-      return Store.state.user.permissions;
+      return Store.state.user.permissions
     },
     canEdit() {
-      return this.status === 0 || this.status === 3 || this.status === 4;
+      return this.status === 0 || this.status === 3 || this.status === 4
     },
     userId() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     document() {
-      return Store.state.record;
+      return Store.state.record
     },
     status() {
-      return Store.state.record.workflow_status;
+      return Store.state.record.workflow_status
     },
     workflows() {
-      const workflows = Store.state.activeWorkflows;
+      const workflows = Store.state.activeWorkflows
       if (!workflows) {
-        return;
+        return
       }
-      const options = [];
+      const options = []
       for (let i = 0; i < workflows.length; i++) {
         if (
-          workflows[i].organization_id === Store.state.user.organization_id ||
+          workflows[i].organization_id === this.document.organization_id ||
           Store.state.globalAdmin
         ) {
           options.push({
             value: workflows[i].id,
             text: workflows[i].name
-          });
+          })
         }
       }
-      return options;
+      return options
     }
   },
   methods: {
     userIs(perms) {
-      const uwfs = this.userWorkflows.rows;
+      const uwfs = this.userWorkflows.rows
       if (!uwfs) {
-        return;
+        return
       }
       const userPermissions = uwfs.filter(item => {
         return (
           item.workflow_id === this.document.workflow_id ||
           this.document.workflow_id === 0
-        );
-      });
+        )
+      })
       return perms.find(reqPerm => {
         return userPermissions.find(userPerm => {
-          return userPerm.user_type === reqPerm;
-        });
-      });
+          return userPerm.user_type === reqPerm
+        })
+      })
     },
     clearRemarks() {
-      this.remarks = "";
+      this.remarks = ''
     },
     textOk() {
       if (!this.remarks.length) {
-        this.errorMessage = "You must enter a remark";
-        this.errorShow = true;
-        return false;
+        this.errorMessage = 'You must enter a remark'
+        this.errorShow = true
+        return false
       } else {
-        this.errorShow = false;
-        this.errorMessage = "";
-        return true;
+        this.errorShow = false
+        this.errorMessage = ''
+        return true
       }
     },
     launch(e) {
-      e.preventDefault();
+      e.preventDefault()
       if (!this.textOk()) {
-        return;
+        return
       }
       const data = {
         workflow_id: this.workflow_id,
         document_id: this.document.id,
         user_id: this.userId,
-        document_type: this.docType === "PR" ? 1 : 2,
+        document_type: this.docType === 'PR' ? 1 : 2,
         remarks: this.remarks,
         document_status: 1
-      };
-      Store.dispatch("SAVE_DOCUMENT_STATUS", data);
-      this.clearRemarks();
+      }
+      Store.dispatch('SAVE_DOCUMENT_STATUS', data)
+      this.clearRemarks()
     },
     cancel(e) {
-      e.preventDefault();
+      e.preventDefault()
       if (!this.textOk()) {
-        return;
+        return
       }
       const data = {
         document_id: this.document.id,
         user_id: this.userId,
-        document_type: this.docType === "PR" ? 1 : 2,
+        document_type: this.docType === 'PR' ? 1 : 2,
         remarks: this.remarks,
         document_status: 2
-      };
-      Store.dispatch("SAVE_DOCUMENT_STATUS", data);
-      this.clearRemarks();
+      }
+      Store.dispatch('SAVE_DOCUMENT_STATUS', data)
+      this.clearRemarks()
     },
     putOnHold(e) {
-      e.preventDefault();
+      e.preventDefault()
       if (!this.textOk()) {
-        return;
+        return
       }
       const data = {
         document_id: this.document.id,
         user_id: this.userId,
-        document_type: this.docType === "PR" ? 1 : 2,
+        document_type: this.docType === 'PR' ? 1 : 2,
         remarks: this.remarks,
         document_status: 3
-      };
-      Store.dispatch("SAVE_DOCUMENT_STATUS", data);
-      this.clearRemarks();
+      }
+      Store.dispatch('SAVE_DOCUMENT_STATUS', data)
+      this.clearRemarks()
     },
     requestChanges(e) {
-      e.preventDefault();
+      e.preventDefault()
       if (!this.textOk()) {
-        return;
+        return
       }
       const data = {
         document_id: this.document.id,
         user_id: this.userId,
-        document_type: this.docType === "PR" ? 1 : 2,
+        document_type: this.docType === 'PR' ? 1 : 2,
         remarks: this.remarks,
         document_status: 4
-      };
-      Store.dispatch("SAVE_DOCUMENT_STATUS", data);
-      this.clearRemarks();
+      }
+      Store.dispatch('SAVE_DOCUMENT_STATUS', data)
+      this.clearRemarks()
     },
     reassign(e) {
-      e.preventDefault();
+      e.preventDefault()
       if (!this.textOk()) {
-        return;
+        return
       }
       const data = {
         document_id: this.document.id,
         user_id: this.userId,
-        document_type: this.docType === "PR" ? 1 : 2,
+        document_type: this.docType === 'PR' ? 1 : 2,
         remarks: this.remarks,
         document_status: 5
-      };
-      Store.dispatch("SAVE_DOCUMENT_STATUS", data);
-      this.clearRemarks();
+      }
+      Store.dispatch('SAVE_DOCUMENT_STATUS', data)
+      this.clearRemarks()
     },
     approve(e) {
-      e.preventDefault();
+      e.preventDefault()
       if (!this.textOk()) {
-        return;
+        return
       }
       const data = {
         document_id: this.document.id,
         user_id: this.userId,
-        document_type: this.docType === "PR" ? 1 : 2,
+        document_type: this.docType === 'PR' ? 1 : 2,
         remarks: this.remarks,
         document_status: 6
-      };
-      Store.dispatch("SAVE_DOCUMENT_STATUS", data);
-      this.clearRemarks();
+      }
+      Store.dispatch('SAVE_DOCUMENT_STATUS', data)
+      this.clearRemarks()
     }
   },
   created() {
-    this.workflow_id = this.document.workflow_id;
+    this.workflow_id = this.document.workflow_id
   }
-};
+}
 </script>
 
 <style scoped>
