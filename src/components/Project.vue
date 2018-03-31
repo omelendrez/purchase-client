@@ -125,6 +125,7 @@ export default {
   padding: 60px;
   margin-top: 18px;
 }
+
 #addForm {
   margin: 0 auto;
   max-width: 800px;
