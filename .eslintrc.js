@@ -1,5 +1,6 @@
 module.exports = {
   "env": {
+    "commonjs": true,
     "browser": true,
     "es6": true
   },
@@ -12,21 +13,10 @@ module.exports = {
   },
   "plugins": ["vue"],
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "windows"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "never"
-    ]
+    "indent": ["error",2,{"SwitchCase": 1}],
+    "linebreak-style": ["error","windows"],
+    "quotes": ["error","single"],
+    "semi": ["error","never"],
+    "no-unused-vars": "off"
   }
 };

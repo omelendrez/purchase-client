@@ -106,7 +106,7 @@ export default {
     handleSubmit() {
       this.$refs.modal.hide()
     },
-    resetPassword(item, type) {
+    resetPassword(item) {
       this.selectedItem = item
       this.resetShow = true
     }
