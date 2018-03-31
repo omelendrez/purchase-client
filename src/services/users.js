@@ -1,26 +1,26 @@
 import HTTP from '../components/lib/http-common'
 
 export default {
-  fetchUsers(payload) {
-    return HTTP.get(`users/${payload}`);
+  fetchUsers (payload) {
+    return HTTP.get(`users/${payload}`)
   },
-  login(payload) {
-    return HTTP.post("login", payload);
+  login (payload) {
+    return HTTP.post('login', payload)
   },
-  saveUser(payload) {
+  saveUser (payload) {
     if (payload.id === 0) {
-      return HTTP.post("users", payload);
+      return HTTP.post('users', payload)
     } else {
-      return HTTP.put(`users/${payload.id}`, payload);
+      return HTTP.put(`users/${payload.id}`, payload)
     }
   },
-  changePassword(payload) {
-    return HTTP.put(`users/${payload.id}/password`, payload);
+  changePassword (payload) {
+    return HTTP.put(`users/${payload.id}/password`, payload)
   },
-  resetPassword(payload) {
-    return HTTP.put(`users/${payload.id}/password-reset`, payload);
+  resetPassword (payload) {
+    return HTTP.put(`users/${payload.id}/password-reset`, payload)
   },
-  deleteUser(payload) {
-    return HTTP.delete(`users/${payload}`);
+  deleteUser (payload) {
+    return HTTP.delete(`users/${payload}`)
   }
-};
+}

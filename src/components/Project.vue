@@ -4,11 +4,11 @@
     <h3 class="text-center">
       <i class="fas fa-industry"></i>
       Project {{ this.form.name}}
-      </h3>
+    </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
 
       <b-form-group horizontal label="Company" label-for="organization_id">
-        <b-form-select v-model="form.organization_id" :options="organizations"/>
+        <b-form-select v-model="form.organization_id" :options="organizations" />
       </b-form-group>
 
       <b-form-group horizontal label="Code" label-for="code">

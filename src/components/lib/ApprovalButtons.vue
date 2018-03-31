@@ -70,7 +70,7 @@ export default {
       const options = [];
       for (let i = 0; i < workflows.length; i++) {
         if (
-          workflows[i].organization_id === Store.state.user.organization_id ||
+          workflows[i].organization_id === this.document.organization_id ||
           Store.state.globalAdmin
         ) {
           options.push({

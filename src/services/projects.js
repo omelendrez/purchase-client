@@ -1,17 +1,17 @@
-import HTTP from "../components/lib/http-common";
+import HTTP from '../components/lib/http-common'
 
 export default {
-  fetchProjects(payload) {
-    return HTTP.get(`projects/${payload}`);
+  fetchProjects (payload) {
+    return HTTP.get(`projects/${payload}`)
   },
-  saveProject(payload) {
+  saveProject (payload) {
     if (payload.id === 0) {
-      return HTTP.post("projects", payload);
+      return HTTP.post('projects', payload)
     } else {
-      return HTTP.put(`projects/${payload.id}`, payload);
+      return HTTP.put(`projects/${payload.id}`, payload)
     }
   },
-  deleteProject(payload) {
-    return HTTP.delete(`projects/${payload}`);
+  deleteProject (payload) {
+    return HTTP.delete(`projects/${payload}`)
   }
-};
+}

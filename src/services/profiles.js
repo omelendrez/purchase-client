@@ -1,17 +1,17 @@
-import HTTP from '../components/lib/http-common';
+import HTTP from '../components/lib/http-common'
 
 export default {
-  fetchProfiles() {
-    return HTTP.get('profiles');
+  fetchProfiles () {
+    return HTTP.get('profiles')
   },
-  saveProfile(payload) {
+  saveProfile (payload) {
     if (payload.id === 0) {
-      return HTTP.post("profiles", payload);
+      return HTTP.post('profiles', payload)
     } else {
-      return HTTP.put(`profiles/${payload.id}`, payload);
+      return HTTP.put(`profiles/${payload.id}`, payload)
     }
   },
-  deleteProfile(payload) {
-    return HTTP.delete(`profiles/${payload}`);
+  deleteProfile (payload) {
+    return HTTP.delete(`profiles/${payload}`)
   }
-};
+}
