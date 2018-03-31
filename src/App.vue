@@ -6,20 +6,20 @@
 </template>
 
 <script>
-import Header from "./components/lib/Header";
+import Header from './components/lib/Header'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     Header
   }
-};
+}
 </script>
 
 <style>
 body {
   background-color: rgb(240, 240, 240) !important;
-  font-family: "Roboto", sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
 }
 .table-inactive {
   color: red;
