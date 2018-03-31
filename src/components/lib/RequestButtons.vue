@@ -7,8 +7,8 @@
 
 <script>
 export default {
-  name: "RequestButtons"
-};
+  name: 'RequestButtons'
+}
 </script>
 
 <style scoped>

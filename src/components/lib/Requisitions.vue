@@ -7,15 +7,15 @@
 </template>
 
 <script>
-import Table from "./Table";
-import Store from "./../../store/store";
+import Table from './Table'
+import Store from './../../store/store'
 
 export default {
-  name: "Requisitions",
+  name: 'Requisitions',
   data() {
     return {
       items: {}
-    };
+    }
   },
   components: {
     Table
@@ -23,14 +23,14 @@ export default {
   watch: {
     requisitions() {
       if (this.requisitions) {
-        this.items = this.requisitions;
+        this.items = this.requisitions
       }
     }
   },
   computed: {
     requisitions() {
-      return Store.state.requisitions;
+      return Store.state.requisitions
     }
   }
-};
+}
 </script>

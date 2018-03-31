@@ -16,15 +16,15 @@
 </template>
 
 <script>
-import Store from "./../store/store";
-import Requisitions from "./lib/Requisitions";
-import PurchaseOrders from "./lib/PurchaseOrders";
+import Store from './../store/store'
+import Requisitions from './lib/Requisitions'
+import PurchaseOrders from './lib/PurchaseOrders'
 
 export default {
-  name: "Approvals",
+  name: 'Approvals',
   computed: {
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     }
   },
   components: {
@@ -33,14 +33,14 @@ export default {
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
-    Store.dispatch("SET_MENU_OPTION", this.$route.name);
-    Store.dispatch("LOAD_REQUISITIONS");
-    Store.dispatch("LOAD_PURCHASE_ORDERS");
+    Store.dispatch('SET_MENU_OPTION', this.$route.name)
+    Store.dispatch('LOAD_REQUISITIONS')
+    Store.dispatch('LOAD_PURCHASE_ORDERS')
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

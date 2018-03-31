@@ -31,15 +31,15 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import Add from "./lib/Add";
-const fields = require("./lib/Fields").projects;
-const commonFields = require("./lib/Fields").commonFields;
-const actions = require("./lib/Fields").actions;
-const org = require("./lib/Fields").org;
+import Store from '../store/store'
+import Add from './lib/Add'
+const fields = require('./lib/Fields').projects
+const commonFields = require('./lib/Fields').commonFields
+const actions = require('./lib/Fields').actions
+const org = require('./lib/Fields').org
 
 export default {
-  name: "Projects",
+  name: 'Projects',
   data() {
     return {
       perPage: 10,
@@ -47,69 +47,69 @@ export default {
       filter: null,
       deleteShow: false,
       selectedItem: {
-        code: "",
-        name: ""
+        code: '',
+        name: ''
       },
       fields: fields
-    };
+    }
   },
   methods: {
     editItem(item) {
-      Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "Project" });
+      Store.dispatch('ADD_ITEM', item)
+      this.$router.push({ name: 'Project' })
     },
     deleteItem(item, type) {
-      this.selectedItem = item;
+      this.selectedItem = item
       if (type === 1) {
-        this.deleteShow = true;
+        this.deleteShow = true
       } else {
-        this.handleOk();
+        this.handleOk()
       }
     },
     handleOk() {
-      Store.dispatch("DELETE_PROJECT", this.selectedItem);
+      Store.dispatch('DELETE_PROJECT', this.selectedItem)
     }
   },
   watch: {
     results() {
-      const results = Store.state.results;
+      const results = Store.state.results
       if (results.error) {
-        return;
+        return
       }
-      Store.dispatch("LOAD_PROJECTS");
+      Store.dispatch('LOAD_PROJECTS')
     }
   },
   computed: {
     results() {
-      return Store.state.results;
+      return Store.state.results
     },
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     projects() {
-      return Store.state.projects;
+      return Store.state.projects
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
-    Store.dispatch("SET_MENU_OPTION", this.$route.name);
-    Store.dispatch("LOAD_PROJECTS");
+    Store.dispatch('SET_MENU_OPTION', this.$route.name)
+    Store.dispatch('LOAD_PROJECTS')
 
     if (Store.state.globalAdmin) {
-      this.fields.unshift(org);
+      this.fields.unshift(org)
     }
-    this.fields.push(...commonFields);
+    this.fields.push(...commonFields)
     if (Store.state.admin) {
-      this.fields.push(...actions);
+      this.fields.push(...actions)
     }
   },
   components: {
     Add
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

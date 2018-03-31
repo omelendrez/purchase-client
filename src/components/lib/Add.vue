@@ -6,15 +6,15 @@
 </template>
 
 <script>
-import Store from "../../store/store";
+import Store from '../../store/store'
 
 export default {
-  name: "Add",
+  name: 'Add',
   methods: {
     addItem() {
-      Store.dispatch("ADD_ITEM", { id: 0, workflow_status: 0 });
-      this.$router.push({ name: Store.state.option.slice(0, -1) });
+      Store.dispatch('ADD_ITEM', { id: 0, workflow_status: 0 })
+      this.$router.push({ name: Store.state.option.slice(0, -1) })
     }
   }
-};
+}
 </script>

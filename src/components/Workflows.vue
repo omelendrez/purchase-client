@@ -32,15 +32,15 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import Add from "./lib/Add";
-const fields = require("./lib/Fields").workflows;
-const commonFields = require("./lib/Fields").commonFields;
-const actions = require("./lib/Fields").actions;
-const org = require("./lib/Fields").org;
+import Store from '../store/store'
+import Add from './lib/Add'
+const fields = require('./lib/Fields').workflows
+const commonFields = require('./lib/Fields').commonFields
+const actions = require('./lib/Fields').actions
+const org = require('./lib/Fields').org
 
 export default {
-  name: "Workflows",
+  name: 'Workflows',
   data() {
     return {
       perPage: 10,
@@ -50,82 +50,82 @@ export default {
       resetShow: false,
       selectedItem: {
         id: 0,
-        name: "",
-        description: "",
+        name: '',
+        description: '',
         organization_id: 0
       },
       fields: fields
-    };
+    }
   },
   components: {
     Add
   },
   methods: {
     addItem() {
-      Store.dispatch("ADD_ITEM", {
+      Store.dispatch('ADD_ITEM', {
         id: 0,
-        name: "",
-        description: "",
+        name: '',
+        description: '',
         organization_id: 0
-      });
-      this.$router.push({ name: "Workflow" });
+      })
+      this.$router.push({ name: 'Workflow' })
     },
     editItem(item) {
-      Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "Workflow" });
+      Store.dispatch('ADD_ITEM', item)
+      this.$router.push({ name: 'Workflow' })
     },
     handleOk() {
-      Store.dispatch("DELETE_WORKFLOW", this.selectedItem);
+      Store.dispatch('DELETE_WORKFLOW', this.selectedItem)
     },
     deleteItem(item, type) {
-      this.selectedItem = item;
+      this.selectedItem = item
       if (type === 1) {
-        this.deleteShow = true;
+        this.deleteShow = true
       } else {
-        this.handleOk();
+        this.handleOk()
       }
     }
   },
   watch: {
     results() {
-      Store.dispatch("LOAD_WORKFLOWS");
+      Store.dispatch('LOAD_WORKFLOWS')
     },
     workflows() {
-      return Store.dispatch.workflows;
+      return Store.dispatch.workflows
     }
   },
   computed: {
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     user() {
-      return Store.state.user;
+      return Store.state.user
     },
     workflows() {
-      return Store.state.workflows;
+      return Store.state.workflows
     },
     results() {
-      return Store.state.results;
+      return Store.state.results
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
-    Store.dispatch("SET_MENU_OPTION", this.$route.name);
-    Store.dispatch("LOAD_WORKFLOWS");
-    Store.dispatch("LOAD_ORGANIZATIONS");
+    Store.dispatch('SET_MENU_OPTION', this.$route.name)
+    Store.dispatch('LOAD_WORKFLOWS')
+    Store.dispatch('LOAD_ORGANIZATIONS')
 
     if (Store.state.globalAdmin) {
-      this.fields.unshift(org);
+      this.fields.unshift(org)
     }
-    this.fields.push(...commonFields);
+    this.fields.push(...commonFields)
     if (Store.state.admin) {
-      this.fields.push(...actions);
+      this.fields.push(...actions)
     }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import Store from "./../../store/store";
-const org = require("./Fields").org;
+import Store from './../../store/store'
+const org = require('./Fields').org
 
 export default {
-  name: "Table",
+  name: 'Table',
   props: {
     tableItems: {
       type: Object,
@@ -40,41 +40,41 @@ export default {
       filter: null,
       fields: [
         {
-          key: "number",
-          class: "text-center"
+          key: 'number',
+          class: 'text-center'
         },
         {
-          key: "date",
-          class: "text-center text-nowrap"
+          key: 'date',
+          class: 'text-center text-nowrap'
         },
         {
-          key: "user.full_name",
-          label: "Requester",
+          key: 'user.full_name',
+          label: 'Requester',
           sortable: true,
-          class: "text-left"
+          class: 'text-left'
         },
         {
-          key: "workflow_status_name",
-          label: "Status",
-          class: "text-center"
+          key: 'workflow_status_name',
+          label: 'Status',
+          class: 'text-center'
         }
       ]
-    };
+    }
   },
   methods: {
     info(item) {
-      Store.dispatch("ADD_ITEM", item);
+      Store.dispatch('ADD_ITEM', item)
       this.$nextTick(() => {
-        this.$router.push({ name: this.formName });
-      });
+        this.$router.push({ name: this.formName })
+      })
     }
   },
   created() {
     if (Store.state.globalAdmin) {
-      this.fields.unshift(org);
+      this.fields.unshift(org)
     }
   }
-};
+}
 </script>
 
 <style scoped>

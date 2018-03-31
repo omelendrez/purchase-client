@@ -124,31 +124,31 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import RequestButtons from "./lib/RequestButtons";
-import ItemsButtons from "./lib/ItemsButtons";
-import ApprovalButtons from "./lib/ApprovalButtons";
-import Add from "./lib/Add";
-import DocumentStatus from "./lib/DocumentStatus";
-import { setTimeout } from "timers";
-const fields = require("./lib/Fields").requisitionItems;
-const actions = require("./lib/Fields").actions;
+import Store from '../store/store'
+import RequestButtons from './lib/RequestButtons'
+import ItemsButtons from './lib/ItemsButtons'
+import ApprovalButtons from './lib/ApprovalButtons'
+import Add from './lib/Add'
+import DocumentStatus from './lib/DocumentStatus'
+import { setTimeout } from 'timers'
+const fields = require('./lib/Fields').requisitionItems
+const actions = require('./lib/Fields').actions
 
 export default {
-  name: "Requisition",
+  name: 'Requisition',
   data() {
     return {
-      docType: "PR",
+      docType: 'PR',
       tabIndex: 0,
       showForm: true,
       form: {
         id: 0,
         user_id: 0,
-        full_name: "",
-        number: "",
-        date: "",
+        full_name: '',
+        number: '',
+        date: '',
         department_id: 0,
-        remarks: "",
+        remarks: '',
         project_id: 0,
         location_id: 0,
         organization_id: 0,
@@ -157,15 +157,15 @@ export default {
       },
       itemForm: {
         id: 0,
-        description: "",
+        description: '',
         requisition_id: 0,
         quantity: 0,
         unit_id: 0
       },
       errorShow: false,
-      errorMessage: "",
+      errorMessage: '',
       infoShow: false,
-      infoMessage: "",
+      infoMessage: '',
       deleteShow: false,
       selectedItem: [],
       deliveryLocationOptions: [],
@@ -177,7 +177,7 @@ export default {
       itemRows: [],
       fields: fields,
       canSeeWorkflow: false
-    };
+    }
   },
   components: {
     RequestButtons,
@@ -192,126 +192,126 @@ export default {
         Store.state.activeProjects,
         this.projectOptions,
         this.form.organization_id
-      );
+      )
     },
     activeDepartments() {
       this.refreshData(
         Store.state.activeDepartments,
         this.departmentOptions,
         this.form.organization_id
-      );
+      )
     },
     activeLocations() {
       this.refreshData(
         Store.state.activeLocations,
         this.deliveryLocationOptions,
         this.form.organization_id
-      );
+      )
     },
     activeUnits() {
-      this.refreshData(Store.state.activeUnits, this.unitOptions, null);
+      this.refreshData(Store.state.activeUnits, this.unitOptions, null)
     },
     userWorkflows() {
-      const wf = Store.state.userWorkflows.rows;
+      const wf = Store.state.userWorkflows.rows
       if (!wf) {
-        return;
+        return
       }
       if (this.item.workflow_id === 0) {
-        this.canSeeWorkflow = true;
+        this.canSeeWorkflow = true
       } else {
         this.canSeeWorkflow = wf.find(item => {
-          return item.workflow_id === this.item.workflow_id;
-        });
+          return item.workflow_id === this.item.workflow_id
+        })
       }
     },
     item() {
-      this.form.id = this.item.id;
-      this.form.number = this.item.number;
+      this.form.id = this.item.id
+      this.form.number = this.item.number
     },
     results() {
-      this.isEditing = false;
-      const results = Store.state.results;
+      this.isEditing = false
+      const results = Store.state.results
       if (results.error) {
-        this.errorMessage = results.message;
-        this.errorShow = results.error;
+        this.errorMessage = results.message
+        this.errorShow = results.error
       } else {
-        this.infoMessage = "Database updated successfully";
-        this.infoShow = true;
+        this.infoMessage = 'Database updated successfully'
+        this.infoShow = true
         if (this.updatingItem) {
-          this.updatingItem = false;
+          this.updatingItem = false
         } else {
-          this.form.id = results.id;
-          Store.dispatch("LOAD_UNITS");
-          Store.dispatch("ADD_ITEM", results);
+          this.form.id = results.id
+          Store.dispatch('LOAD_UNITS')
+          Store.dispatch('ADD_ITEM', results)
         }
-        Store.dispatch("LOAD_REQUISITION_ITEMS", this.form.id);
+        Store.dispatch('LOAD_REQUISITION_ITEMS', this.form.id)
         setTimeout(() => {
-          this.infoMessage = "";
-          this.infoShow = false;
-        }, 2000);
+          this.infoMessage = ''
+          this.infoShow = false
+        }, 2000)
       }
     },
     requisitionItems() {
       if (!Store.state.requisitionItems.rows) {
-        return;
+        return
       }
-      const items = Store.state.requisitionItems.rows;
-      const arr = [];
+      const items = Store.state.requisitionItems.rows
+      const arr = []
       for (let i = 0; i < items.length; i++) {
         let row = {
           editing: false,
-          "unit.name": items[i]["unit.name"],
+          'unit.name': items[i]['unit.name'],
           unit_id: items[i].unit_id,
           description: items[i].description,
           quantity: items[i].quantity,
           id: items[i].id,
           requisition_id: items[i].requisition_id
-        };
-        arr.push(row);
+        }
+        arr.push(row)
       }
-      this.itemRows = arr;
+      this.itemRows = arr
     }
   },
   computed: {
     userWorkflows() {
-      return Store.state.userWorkflows;
+      return Store.state.userWorkflows
     },
     isEditable() {
       return (
         this.item.workflow_status === 0 ||
         this.item.workflow_status === 3 ||
         this.item.workflow_status === 4
-      );
+      )
     },
     activeLocations() {
-      return Store.state.activeLocations;
+      return Store.state.activeLocations
     },
     activeDepartments() {
-      return Store.state.activeDepartments;
+      return Store.state.activeDepartments
     },
     activeUnits() {
-      return Store.state.activeUnits;
+      return Store.state.activeUnits
     },
     activeProjects() {
-      return Store.state.activeProjects;
+      return Store.state.activeProjects
     },
     requisitionItems() {
-      return Store.state.requisitionItems;
+      return Store.state.requisitionItems
     },
     results() {
-      return Store.state.results;
+      return Store.state.results
     },
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     item() {
-      return Store.state.record;
+      return Store.state.record
     },
     organizationId() {
-      return Store.state.user.organization_id;
+      return Store.state.user.organization_id
     },
     fullName() {
-      return Store.state.user.full_name;
+      return Store.state.user.full_name
     }
   },
   methods: {
@@ -321,21 +321,21 @@ export default {
         unit_id: 0,
         requisition_id: this.item.id,
         quantity: 0,
-        description: "",
+        description: '',
         editing: true,
         isNew: true
-      };
+      }
       // this.itemRows.unshift(item);
-      this.itemRows.push(item);
-      this.isEditing = true;
-      this.itemForm = item;
+      this.itemRows.push(item)
+      this.isEditing = true
+      this.itemForm = item
     },
     saveItem(item, index, target) {
-      this.errorMessage = "";
-      this.errorShow = false;
-      this.updatingItem = true;
+      this.errorMessage = ''
+      this.errorShow = false
+      this.updatingItem = true
       if (this.itemForm.quantity < 1) {
-        this.errorMessage = "Quantity cannot be lower than 1";
+        this.errorMessage = 'Quantity cannot be lower than 1'
       }
       if (
         !this.itemForm.unit_id ||
@@ -343,67 +343,67 @@ export default {
         !this.itemForm.description.length
       ) {
         this.errorMessage =
-          "You must fill all item fields in oder to be able to save";
+          'You must fill all item fields in oder to be able to save'
       }
       if (this.errorMessage) {
-        this.errorShow = true;
-        return;
+        this.errorShow = true
+        return
       }
-      Store.dispatch("SAVE_REQUISITION_ITEM", this.itemForm);
+      Store.dispatch('SAVE_REQUISITION_ITEM', this.itemForm)
     },
     editItem(item, index, target) {
-      item.editing = true;
-      this.isEditing = true;
-      this.itemForm.id = item.id;
-      this.itemForm.unit_id = item.unit_id;
-      this.itemForm.description = item.description;
-      this.itemForm.quantity = item.quantity;
-      this.itemForm.requisition_id = item.requisition_id;
+      item.editing = true
+      this.isEditing = true
+      this.itemForm.id = item.id
+      this.itemForm.unit_id = item.unit_id
+      this.itemForm.description = item.description
+      this.itemForm.quantity = item.quantity
+      this.itemForm.requisition_id = item.requisition_id
     },
 
     deleteItem(item, type) {
-      this.selectedItem = item;
+      this.selectedItem = item
       if (type === 1) {
-        this.deleteShow = true;
+        this.deleteShow = true
       } else {
-        this.handleOk();
+        this.handleOk()
       }
     },
     handleOk() {
-      this.updatingItem = true;
-      Store.dispatch("DELETE_REQUISITION_ITEM", this.selectedItem);
+      this.updatingItem = true
+      Store.dispatch('DELETE_REQUISITION_ITEM', this.selectedItem)
     },
     cancelSave(item, index, target) {
-      item.editing = false;
-      this.isEditing = false;
+      item.editing = false
+      this.isEditing = false
       if (item.isNew) {
-        this.itemRows.splice(index, 1);
+        this.itemRows.splice(index, 1)
       }
     },
     onSubmit(evt) {
-      evt.preventDefault();
+      evt.preventDefault()
       if (this.isEditable) {
-        Store.dispatch("SAVE_REQUISITION", this.form);
+        Store.dispatch('SAVE_REQUISITION', this.form)
       } else {
         this.errorMessage =
-          "You are not entitled to modify this document at its current status";
-        this.errorShow = true;
+          'You are not entitled to modify this document at its current status'
+        this.errorShow = true
       }
     },
     onReset(evt) {
-      evt.preventDefault();
+      evt.preventDefault()
       /* Trick to reset/clear native browser form validation state */
-      Store.dispatch("LOAD_REQUISITIONS");
+      Store.dispatch('LOAD_REQUISITIONS')
       this.$nextTick(() => {
-        this.$router.go(-1);
-      });
+        this.$router.go(-1)
+      })
     },
     closeTabIndex() {
-      this.tabIndex = 0;
+      this.tabIndex = 0
     },
     refreshData(table, options, organizationId) {
       if (!table.length) {
-        return;
+        return
       }
       for (let i = 0; i < table.length; i++) {
         if (
@@ -412,52 +412,52 @@ export default {
           options.push({
             value: table[i].id,
             text: table[i].name
-          });
+          })
         }
       }
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
-    Store.dispatch("LOAD_REQUISITION_ITEMS", this.item.id);
-    Store.dispatch("LOAD_WORKFLOWS");
-    Store.dispatch("LOAD_PROJECTS");
-    Store.dispatch("LOAD_LOCATIONS");
-    Store.dispatch("LOAD_DEPARTMENTS");
-    Store.dispatch("LOAD_UNITS");
+    Store.dispatch('LOAD_REQUISITION_ITEMS', this.item.id)
+    Store.dispatch('LOAD_WORKFLOWS')
+    Store.dispatch('LOAD_PROJECTS')
+    Store.dispatch('LOAD_LOCATIONS')
+    Store.dispatch('LOAD_DEPARTMENTS')
+    Store.dispatch('LOAD_UNITS')
 
-    this.form.user_id = this.isLogged;
-    this.form.number = "AUTOMATIC";
-    this.form.organization_id = this.organizationId;
-    this.form.full_name = this.fullName;
-    const now = new Date();
-    this.form.date = now.toISOString().substring(0, 10);
+    this.form.user_id = this.isLogged
+    this.form.number = 'AUTOMATIC'
+    this.form.organization_id = this.organizationId
+    this.form.full_name = this.fullName
+    const now = new Date()
+    this.form.date = now.toISOString().substring(0, 10)
     if (this.item.id !== 0) {
-      this.form.id = this.item.id;
-      this.form.user_id = this.item["user.id"];
-      this.form.organization_id = this.item.organization_id;
-      this.form.full_name = this.item["user.full_name"];
-      this.form.number = this.item.number;
-      this.form.date = this.item._date;
-      this.form.location_id = this.item.location_id;
-      this.form.department_id = this.item["user.department_id"];
-      this.form.project_id = this.item.project_id;
-      this.form.expected_delivery = this.item._expected_delivery;
-      this.form.remarks = this.item.remarks;
-      this.form.workflow_status = this.item.workflow_status;
-      Store.dispatch("LOAD_USER_WORKFLOWS", this.item["user.id"]);
+      this.form.id = this.item.id
+      this.form.user_id = this.item['user.id']
+      this.form.organization_id = this.item.organization_id
+      this.form.full_name = this.item['user.full_name']
+      this.form.number = this.item.number
+      this.form.date = this.item._date
+      this.form.location_id = this.item.location_id
+      this.form.department_id = this.item['user.department_id']
+      this.form.project_id = this.item.project_id
+      this.form.expected_delivery = this.item._expected_delivery
+      this.form.remarks = this.item.remarks
+      this.form.workflow_status = this.item.workflow_status
+      Store.dispatch('LOAD_USER_WORKFLOWS', this.item['user.id'])
       const payload = {
         document_type: 1,
         document_id: this.item.id
-      };
-      Store.dispatch("LOAD_DOCUMENT_STATUS", payload);
+      }
+      Store.dispatch('LOAD_DOCUMENT_STATUS', payload)
     }
-    this.fields.push(...actions);
+    this.fields.push(...actions)
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -479,7 +479,7 @@ export default {
 .to-right {
   float: right;
 }
-table input[type="number"] {
+table input[type='number'] {
   max-width: 96px;
   margin: 0 auto;
   text-align: center;

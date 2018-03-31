@@ -24,26 +24,26 @@
 </template>
 
 <script>
-import Store from "../store/store";
+import Store from '../store/store'
 
 export default {
-  name: "Home",
+  name: 'Home',
   data() {
-    return {};
+    return {}
   },
   computed: {
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return false;
+      this.$router.push({ name: 'Login' })
+      return false
     }
-    Store.dispatch("SET_MENU_OPTION", this.$route.name);
+    Store.dispatch('SET_MENU_OPTION', this.$route.name)
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

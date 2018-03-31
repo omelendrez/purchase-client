@@ -80,26 +80,26 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import Buttons from "./lib/Buttons";
-import WorkflowButtons from "./lib/WorkflowButtons";
+import Store from '../store/store'
+import Buttons from './lib/Buttons'
+import WorkflowButtons from './lib/WorkflowButtons'
 
 export default {
-  name: "Workflow",
+  name: 'Workflow',
   data() {
     return {
       show: true,
       form: {
         id: 0,
-        name: "",
-        description: "",
+        name: '',
+        description: '',
         organization_id: 0
       },
       tabIndex: 0,
       errorShow: false,
-      errorMessage: "",
+      errorMessage: '',
       infoShow: false,
-      infoMessage: "",
+      infoMessage: '',
       PRI: [],
       PRA: [],
       POI: [],
@@ -112,7 +112,7 @@ export default {
       selectedPOA: [],
       selectedRRI: [],
       selectedRFPI: []
-    };
+    }
   },
   components: {
     Buttons,
@@ -120,89 +120,89 @@ export default {
   },
   watch: {
     workflowUsers() {
-      const wfUsers = Store.state.workflowUsers.rows;
+      const wfUsers = Store.state.workflowUsers.rows
       if (!wfUsers) {
-        return;
+        return
       }
       for (let i = 0; i < wfUsers.length; i++) {
-        const item = wfUsers[i];
+        const item = wfUsers[i]
         switch (item.user_type) {
           case 1: // PRI
-            this.selectedPRI.push(item.user_id);
-            break;
+            this.selectedPRI.push(item.user_id)
+            break
           case 2: // PRA
-            this.selectedPRA.push(item.user_id);
-            break;
+            this.selectedPRA.push(item.user_id)
+            break
           case 3: // POI
-            this.selectedPOI.push(item.user_id);
-            break;
+            this.selectedPOI.push(item.user_id)
+            break
           case 4: // POA
-            this.selectedPOA.push(item.user_id);
-            break;
+            this.selectedPOA.push(item.user_id)
+            break
           case 5: // RRI
-            this.selectedRRI.push(item.user_id);
-            break;
+            this.selectedRRI.push(item.user_id)
+            break
           case 6: // RFPI
-            this.selectedRFPI.push(item.user_id);
-            break;
+            this.selectedRFPI.push(item.user_id)
+            break
         }
       }
     },
     messages() {
-      this.errorMessage = "";
-      this.errorShow = false;
-      this.infoMessage = "";
-      this.infoShow = false;
+      this.errorMessage = ''
+      this.errorShow = false
+      this.infoMessage = ''
+      this.infoShow = false
     },
     results() {
-      const results = Store.state.results;
+      const results = Store.state.results
       if (results.error) {
-        this.errorMessage = results.message;
-        this.errorShow = results.error;
+        this.errorMessage = results.message
+        this.errorShow = results.error
       } else {
-        this.infoMessage = "Database updated successfully";
-        this.infoShow = true;
+        this.infoMessage = 'Database updated successfully'
+        this.infoShow = true
       }
       setTimeout(() => {
-        Store.dispatch("HIDE_MESSAGES");
-      }, 2000);
+        Store.dispatch('HIDE_MESSAGES')
+      }, 2000)
     },
     users() {
-      const self = this;
+      const self = this
       const users = Store.state.activeUsers.filter(user => {
-        return user.organization_id === self.form.organization_id;
-      });
+        return user.organization_id === self.form.organization_id
+      })
       if (!users) {
-        return;
+        return
       }
       for (let i = 0; i < users.length; i++) {
-        const perms = users[i].users_permissions;
+        const perms = users[i].users_permissions
         for (let j = 0; j < perms.length; j++) {
-          const perm = perms[j].permission.code;
+          const perm = perms[j].permission.code
           this[perm].push({
             value: users[i].id,
             text: `${users[i].full_name} (${users[i].email})`
-          });
+          })
         }
       }
     }
   },
   computed: {
     workflowUsers() {
-      return Store.state.workflowUsers;
+      return Store.state.workflowUsers
     },
     messages() {
-      return Store.state.messages;
+      return Store.state.messages
     },
     users() {
-      return Store.state.activeUsers;
+      return Store.state.activeUsers
     },
     organizations() {
-      const organizations = Store.state.activeOrganizations;
+      const organizations = Store.state.activeOrganizations
       if (!organizations) {
-        return;
+        return
       }
-      const options = [];
+      const options = []
       for (let i = 0; i < organizations.length; i++) {
         if (
           organizations[i].id === Store.state.user.organization_id ||
@@ -211,56 +211,56 @@ export default {
           options.push({
             value: organizations[i].id,
             text: organizations[i].name
-          });
+          })
         }
       }
-      return options;
+      return options
     },
     results() {
-      return Store.state.results;
+      return Store.state.results
     },
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     item() {
-      return Store.state.record;
+      return Store.state.record
     },
     organization_id() {
-      return Store.state.user.organization_id;
+      return Store.state.user.organization_id
     }
   },
   methods: {
     saveSelected() {},
     undoSelected() {},
     onSubmit(evt) {
-      evt.preventDefault();
-      Store.dispatch("SAVE_WORKFLOW", this.form);
+      evt.preventDefault()
+      Store.dispatch('SAVE_WORKFLOW', this.form)
     },
     onReset(evt) {
-      evt.preventDefault();
+      evt.preventDefault()
       /* Trick to reset/clear native browser form validation state */
-      this.show = false;
+      this.show = false
       this.$nextTick(() => {
-        this.$router.push({ name: "Workflows" });
-      });
+        this.$router.push({ name: 'Workflows' })
+      })
     }
   },
   created() {
-    Store.dispatch("LOAD_ORGANIZATIONS");
-    Store.dispatch("LOAD_USERS");
+    Store.dispatch('LOAD_ORGANIZATIONS')
+    Store.dispatch('LOAD_USERS')
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
     if (this.item) {
-      this.form.id = this.item.id;
-      Store.dispatch("LOAD_WORKFLOW_USERS", this.item.id);
-      this.form.name = this.item.name;
-      this.form.description = this.item.description;
-      this.form.organization_id = this.item.organization_id;
+      this.form.id = this.item.id
+      Store.dispatch('LOAD_WORKFLOW_USERS', this.item.id)
+      this.form.name = this.item.name
+      this.form.description = this.item.description
+      this.form.organization_id = this.item.organization_id
     }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

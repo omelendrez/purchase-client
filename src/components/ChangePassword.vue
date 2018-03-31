@@ -37,110 +37,110 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import { setTimeout } from "timers";
+import Store from '../store/store'
+import { setTimeout } from 'timers'
 
 export default {
-  name: "ChangePassword",
+  name: 'ChangePassword',
   data() {
     return {
       form: {
         user_name: Store.state.user.user_name,
-        password_current: "",
-        password_new: "",
-        password_retype: "",
+        password_current: '',
+        password_new: '',
+        password_retype: '',
         id: Store.state.user.id
       },
       show: true,
       showError: false,
-      errorMessage: "",
+      errorMessage: '',
       showMessage: false,
-      userMessage: ""
-    };
+      userMessage: ''
+    }
   },
   computed: {
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     pwdState() {
-      return this.form.password_current.length > 0;
+      return this.form.password_current.length > 0
     },
     pwdValidFeedback() {
-      return this.pwdState ? "Ok" : "";
+      return this.pwdState ? 'Ok' : ''
     },
     pwdInvalidFeedback() {
-      return this.pwdState ? "" : "Enter your password";
+      return this.pwdState ? '' : 'Enter your password'
     },
     newState() {
-      return this.form.password_new.length > 5;
+      return this.form.password_new.length > 5
     },
     newValidFeedback() {
-      return this.newState ? "Ok" : "";
+      return this.newState ? 'Ok' : ''
     },
     newInvalidFeedback() {
-      return this.newState ? "" : "Password must be at least 6 characters long";
+      return this.newState ? '' : 'Password must be at least 6 characters long'
     },
     retState() {
       return (
         this.form.password_retype === this.form.password_new &&
         this.form.password_retype.length > 0
-      );
+      )
     },
     retValidFeedback() {
-      return this.retState ? "Ok" : "";
+      return this.retState ? 'Ok' : ''
     },
     retInvalidFeedback() {
       return this.retState
-        ? ""
-        : "The confirmation password must be the same than the new password";
+        ? ''
+        : 'The confirmation password must be the same than the new password'
     },
     allOk() {
-      return this.newState && this.pwdState && this.retState;
+      return this.newState && this.pwdState && this.retState
     },
     password() {
-      return Store.state.password;
+      return Store.state.password
     }
   },
   watch: {
     password() {
-      const password = Store.state.password;
+      const password = Store.state.password
       if (password.msg) {
-        this.errorMessage = password.msg;
-        this.showError = true;
+        this.errorMessage = password.msg
+        this.showError = true
       } else {
-        this.userMessage = "Password has been successfuly changed";
-        this.showMessage = true;
+        this.userMessage = 'Password has been successfuly changed'
+        this.showMessage = true
         setTimeout(() => {
-          this.$router.push({ name: "Home" });
-        }, 2000);
+          this.$router.push({ name: 'Home' })
+        }, 2000)
       }
     }
   },
   methods: {
     onSubmit(evt) {
-      evt.preventDefault();
-      Store.dispatch("CHANGE_PASSWORD", this.form);
+      evt.preventDefault()
+      Store.dispatch('CHANGE_PASSWORD', this.form)
     },
     onReset(evt) {
-      evt.preventDefault();
+      evt.preventDefault()
       /* Trick to reset/clear native browser form validation state */
-      this.show = false;
-      this.form.password_current = "";
-      this.form.password_new = "";
-      this.form.password_retype = "";
-      this.show = true;
+      this.show = false
+      this.form.password_current = ''
+      this.form.password_new = ''
+      this.form.password_retype = ''
+      this.show = true
     },
     exit(evt) {
-      evt.preventDefault();
-      this.$router.push({ path: Store.state.option });
+      evt.preventDefault()
+      this.$router.push({ path: Store.state.option })
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
+      this.$router.push({ name: 'Login' })
     }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

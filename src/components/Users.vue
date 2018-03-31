@@ -44,117 +44,117 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import Add from "./lib/Add";
-const fields = require("./lib/Fields").users;
-const commonFields = require("./lib/Fields").commonFields;
-const actions = require("./lib/Fields").actions;
-const org = require("./lib/Fields").org;
+import Store from '../store/store'
+import Add from './lib/Add'
+const fields = require('./lib/Fields').users
+const commonFields = require('./lib/Fields').commonFields
+const actions = require('./lib/Fields').actions
+const org = require('./lib/Fields').org
 
 export default {
-  name: "Users",
+  name: 'Users',
   data() {
     return {
-      pwd: "",
+      pwd: '',
       perPage: 10,
       currentPage: 1,
       filter: null,
       deleteShow: false,
       resetShow: false,
       selectedItem: {
-        user_name: "",
-        full_name: ""
+        user_name: '',
+        full_name: ''
       },
       fields: fields
-    };
+    }
   },
   components: {
     Add
   },
   methods: {
     addItem() {
-      Store.dispatch("ADD_ITEM", {
+      Store.dispatch('ADD_ITEM', {
         id: 0,
-        user_name: "",
-        full_name: "",
+        user_name: '',
+        full_name: '',
         organization_id: 0,
         department_id: 0,
         profile_id: 0,
         location_id: 0
-      });
-      this.$router.push({ name: "User" });
+      })
+      this.$router.push({ name: 'User' })
     },
     editItem(item) {
-      Store.dispatch("ADD_ITEM", item);
-      this.$router.push({ name: "User" });
+      Store.dispatch('ADD_ITEM', item)
+      this.$router.push({ name: 'User' })
     },
     handleOk() {
-      Store.dispatch("DELETE_USER", this.selectedItem);
+      Store.dispatch('DELETE_USER', this.selectedItem)
     },
     deleteItem(item, type) {
-      this.selectedItem = item;
+      this.selectedItem = item
       if (type === 1) {
-        this.deleteShow = true;
+        this.deleteShow = true
       } else {
-        this.handleOk();
+        this.handleOk()
       }
     },
     handleOkReset() {
-      this.selectedItem.password = this.pwd;
-      Store.dispatch("RESET_PASSWORD", this.selectedItem);
+      this.selectedItem.password = this.pwd
+      Store.dispatch('RESET_PASSWORD', this.selectedItem)
     },
     handleSubmit() {
-      this.$refs.modal.hide();
+      this.$refs.modal.hide()
     },
     resetPassword(item, type) {
-      this.selectedItem = item;
-      this.resetShow = true;
+      this.selectedItem = item
+      this.resetShow = true
     }
   },
   watch: {
     results() {
-      Store.dispatch("LOAD_USERS");
+      Store.dispatch('LOAD_USERS')
     },
     users() {
-      return Store.dispatch.users;
+      return Store.dispatch.users
     }
   },
   computed: {
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     user() {
-      return Store.state.user;
+      return Store.state.user
     },
     users() {
-      return Store.state.users;
+      return Store.state.users
     },
     results() {
-      return Store.state.results;
+      return Store.state.results
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
-    Store.dispatch("SET_MENU_OPTION", this.$route.name);
-    Store.dispatch("LOAD_USERS");
-    Store.dispatch("LOAD_ORGANIZATIONS");
-    Store.dispatch("LOAD_LOCATIONS");
-    Store.dispatch("LOAD_DEPARTMENTS");
-    Store.dispatch("LOAD_PROFILES");
-    Store.dispatch("LOAD_PERMISSIONS");
+    Store.dispatch('SET_MENU_OPTION', this.$route.name)
+    Store.dispatch('LOAD_USERS')
+    Store.dispatch('LOAD_ORGANIZATIONS')
+    Store.dispatch('LOAD_LOCATIONS')
+    Store.dispatch('LOAD_DEPARTMENTS')
+    Store.dispatch('LOAD_PROFILES')
+    Store.dispatch('LOAD_PERMISSIONS')
 
     if (Store.state.globalAdmin) {
-      this.fields.unshift(org);
+      this.fields.unshift(org)
     }
-    this.fields.push(...commonFields);
+    this.fields.push(...commonFields)
     if (Store.state.admin) {
-      this.fields.push(...actions);
+      this.fields.push(...actions)
     }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

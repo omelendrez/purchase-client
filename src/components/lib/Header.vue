@@ -105,64 +105,64 @@
 </template>
 
 <script>
-import Store from "../../store/store";
+import Store from '../../store/store'
 export default {
-  name: "Header",
+  name: 'Header',
   data() {
-    return {};
+    return {}
   },
   computed: {
     isLoading() {
-      return Store.state.loading;
+      return Store.state.loading
     },
     user() {
-      return Store.state.user;
+      return Store.state.user
     },
     isLogged() {
-      return this.user.id;
+      return this.user.id
     },
     isAdmin() {
-      return this.user.profile_id === 1;
+      return this.user.profile_id === 1
     },
     isGlobalAdmin() {
-      return Store.state.globalAdmin;
+      return Store.state.globalAdmin
     },
     userFullName() {
-      return this.user.full_name;
+      return this.user.full_name
     },
     mainOption() {
-      return Store.state.mainOption;
+      return Store.state.mainOption
     },
     menuOption() {
-      return Store.state.option;
+      return Store.state.option
     }
   },
   methods: {
     setMain(option) {
-      Store.dispatch("SET_MAIN_OPTION", option);
-      this.$router.push({ name: "Empty" });
+      Store.dispatch('SET_MAIN_OPTION', option)
+      this.$router.push({ name: 'Empty' })
     },
     canSeeHeader(option, permissions) {
       return (
         this.user.permissions.find(perm => {
-          return permissions.indexOf(perm) > -1;
+          return permissions.indexOf(perm) > -1
         }) ||
-        (this.isGlobalAdmin && permissions.indexOf("ADM") > -1)
-      );
+        (this.isGlobalAdmin && permissions.indexOf('ADM') > -1)
+      )
     },
     canAccessOption(option, permissions) {
       return this.user.permissions.find(perm => {
-        return permissions.indexOf(perm) > -1 && this.mainOption === option;
-      });
+        return permissions.indexOf(perm) > -1 && this.mainOption === option
+      })
     },
     groupIsSelected(option, permissions) {
-      return this.mainOption === option;
+      return this.mainOption === option
     },
     optionIsSelected(option) {
-      return this.menuOption === option;
+      return this.menuOption === option
     }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -77,18 +77,18 @@
 </template>
 
 <script>
-import Store from "../store/store";
-import Buttons from "./lib/Buttons";
+import Store from '../store/store'
+import Buttons from './lib/Buttons'
 
 export default {
-  name: "User",
+  name: 'User',
   data() {
     return {
       form: {
         id: 0,
-        user_name: "",
-        full_name: "",
-        email: "",
+        user_name: '',
+        full_name: '',
+        email: '',
         profile_id: 0,
         department_id: 0,
         organization_id: 0,
@@ -97,71 +97,71 @@ export default {
       tabIndex: 0,
       showForm: true,
       errorShow: false,
-      errorMessage: "",
+      errorMessage: '',
       locationOptions: [],
       departmentOptions: [],
       fields: [
         {
-          key: "code"
+          key: 'code'
         },
         {
-          key: "name"
+          key: 'name'
         },
         {
-          key: "description"
+          key: 'description'
         },
         {
-          key: "actions",
-          label: " "
+          key: 'actions',
+          label: ' '
         }
       ],
       onPermissions: false
-    };
+    }
   },
   components: {
     Buttons
   },
   watch: {
     results() {
-      const results = Store.state.results;
+      const results = Store.state.results
       if (results.error) {
-        this.errorMessage = results.message;
-        this.errorShow = results.error;
-        return;
+        this.errorMessage = results.message
+        this.errorShow = results.error
+        return
       }
       if (this.onPermissions) {
-        this.onPermissions = false;
-        Store.dispatch("LOAD_USER_PERMISSIONS", this.item);
+        this.onPermissions = false
+        Store.dispatch('LOAD_USER_PERMISSIONS', this.item)
       }
     }
   },
   computed: {
     results() {
-      return Store.state.results;
+      return Store.state.results
     },
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     },
     profiles() {
-      const profiles = Store.state.profiles.rows;
+      const profiles = Store.state.profiles.rows
       if (!profiles) {
-        return;
+        return
       }
-      const options = [];
+      const options = []
       for (let i = 0; i < profiles.length; i++) {
         options.push({
           value: profiles[i].id,
           text: profiles[i].name
-        });
+        })
       }
-      return options;
+      return options
     },
     organizations() {
-      const organizations = Store.state.activeOrganizations;
+      const organizations = Store.state.activeOrganizations
       if (!organizations) {
-        return;
+        return
       }
-      const options = [];
+      const options = []
       for (let i = 0; i < organizations.length; i++) {
         if (
           organizations[i].id === Store.state.user.organization_id ||
@@ -170,33 +170,33 @@ export default {
           options.push({
             value: organizations[i].id,
             text: organizations[i].name
-          });
+          })
         }
       }
-      return options;
+      return options
     },
     locations() {
-      const locations = Store.state.activeLocations;
+      const locations = Store.state.activeLocations
       if (!locations) {
-        return;
+        return
       }
-      const options = [];
+      const options = []
       for (let i = 0; i < locations.length; i++) {
         if (locations[i].organization_id === Store.state.user.organization_id) {
           options.push({
             value: locations[i].id,
             text: locations[i].name
-          });
+          })
         }
       }
-      return options;
+      return options
     },
     departments() {
-      const departments = Store.state.activeDepartments;
+      const departments = Store.state.activeDepartments
       if (!departments) {
-        return;
+        return
       }
-      const options = [];
+      const options = []
       for (let i = 0; i < departments.length; i++) {
         if (
           departments[i].organization_id === Store.state.user.organization_id
@@ -204,67 +204,67 @@ export default {
           options.push({
             value: departments[i].id,
             text: departments[i].name
-          });
+          })
         }
       }
-      return options;
+      return options
     },
     userPermissions() {
-      return Store.state.userPermissions;
+      return Store.state.userPermissions
     },
     notUserPermissions() {
-      return Store.state.notUserPermissions;
+      return Store.state.notUserPermissions
     },
     item() {
-      return Store.state.record;
+      return Store.state.record
     },
     state() {
-      return this.form.user_name.length >= 6;
+      return this.form.user_name.length >= 6
     },
     invalidFeedback() {
       if (this.form.user_name.length > 6) {
-        return "";
+        return ''
       }
       if (this.form.user_name.length > 0) {
-        return "Enter at least 6 characters";
+        return 'Enter at least 6 characters'
       }
     },
     validFeedback() {
-      return this.state ? "Valid" : "";
+      return this.state ? 'Valid' : ''
     }
   },
   methods: {
     assignPermission(item) {
-      this.onPermissions = true;
+      this.onPermissions = true
       const payload = {
         user_id: this.item.id,
         permission_id: item.id
-      };
-      Store.dispatch("SAVE_USER_PERMISSION", payload);
+      }
+      Store.dispatch('SAVE_USER_PERMISSION', payload)
     },
     removePermission(item) {
-      this.onPermissions = true;
-      Store.dispatch("DELETE_USER_PERMISSION", item);
+      this.onPermissions = true
+      Store.dispatch('DELETE_USER_PERMISSION', item)
     },
     onSubmit(evt) {
-      evt.preventDefault();
-      Store.dispatch("SAVE_USER", this.form);
+      evt.preventDefault()
+      Store.dispatch('SAVE_USER', this.form)
     },
     onReset(evt) {
-      evt.preventDefault();
+      evt.preventDefault()
       /* Reset our form values */
-      this.form.user_name = "";
-      this.form.full_name = "";
-      this.form.email = "";
-      this.form.organization_id = 0;
-      this.form.location_id = 0;
-      this.form.profile_id = 0;
-      this.form.department_id = 0;
+      this.form.user_name = ''
+      this.form.full_name = ''
+      this.form.email = ''
+      this.form.organization_id = 0
+      this.form.location_id = 0
+      this.form.profile_id = 0
+      this.form.department_id = 0
       /* Trick to reset/clear native browser form validation state */
-      this.showForm = false;
+      this.showForm = false
       this.$nextTick(() => {
-        this.$router.push({ name: "Users" });
-      });
+        this.$router.push({ name: 'Users' })
+      })
     },
     updateChildrenTables(organizationId) {
       this.$nextTick(() => {
@@ -272,63 +272,63 @@ export default {
           Store.state.activeLocations,
           this.locationOptions,
           organizationId
-        );
+        )
         this.refreshData(
           Store.state.activeDepartments,
           this.departmentOptions,
           organizationId
-        );
-      });
+        )
+      })
     },
     refreshData(table, options, organizationId) {
       if (!table) {
-        return;
+        return
       }
       for (let i = 0; i < table.length; i++) {
         if (table[i].organization_id === organizationId) {
           options.push({
             value: table[i].id,
             text: table[i].name
-          });
+          })
         }
       }
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
-      return;
+      this.$router.push({ name: 'Login' })
+      return
     }
-    Store.dispatch("LOAD_ORGANIZATIONS");
-    Store.dispatch("LOAD_LOCATIONS");
-    Store.dispatch("LOAD_DEPARTMENTS");
-    Store.dispatch("LOAD_PROFILES");
-    Store.dispatch("LOAD_PERMISSIONS");
+    Store.dispatch('LOAD_ORGANIZATIONS')
+    Store.dispatch('LOAD_LOCATIONS')
+    Store.dispatch('LOAD_DEPARTMENTS')
+    Store.dispatch('LOAD_PROFILES')
+    Store.dispatch('LOAD_PERMISSIONS')
     this.$nextTick(() => {
       if (this.item) {
-        Store.dispatch("LOAD_USER_PERMISSIONS", this.item);
-        this.form.id = this.item.id;
-        this.form.user_name = this.item.user_name;
-        this.form.full_name = this.item.full_name;
-        this.form.email = this.item.email;
-        this.form.organization_id = this.item.organization_id;
-        this.form.location_id = this.item.location_id;
-        this.form.department_id = this.item.department_id;
-        this.form.profile_id = this.item.profile_id;
+        Store.dispatch('LOAD_USER_PERMISSIONS', this.item)
+        this.form.id = this.item.id
+        this.form.user_name = this.item.user_name
+        this.form.full_name = this.item.full_name
+        this.form.email = this.item.email
+        this.form.organization_id = this.item.organization_id
+        this.form.location_id = this.item.location_id
+        this.form.department_id = this.item.department_id
+        this.form.profile_id = this.item.profile_id
         this.refreshData(
           Store.state.activeLocations,
           this.locationOptions,
           this.form.organization_id
-        );
+        )
         this.refreshData(
           Store.state.activeDepartments,
           this.departmentOptions,
           this.form.organization_id
-        );
+        )
       }
-    });
+    })
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

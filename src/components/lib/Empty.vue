@@ -4,21 +4,21 @@
 </template>
 
 <script>
-import Store from "./../../store/store";
+import Store from './../../store/store'
 export default {
-  name: "Empty",
+  name: 'Empty',
   data() {
-    return {};
+    return {}
   },
   computed: {
     isLogged() {
-      return Store.state.user.id;
+      return Store.state.user.id
     }
   },
   created() {
     if (!this.isLogged) {
-      this.$router.push({ name: "Login" });
+      this.$router.push({ name: 'Login' })
     }
   }
-};
+}
 </script>

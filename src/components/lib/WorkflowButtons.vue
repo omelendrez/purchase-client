@@ -5,33 +5,33 @@
 </template>
 
 <script>
-import Store from "../../store/store";
+import Store from '../../store/store'
 export default {
-  name: "WorkflowButtons",
-  props: ["options", "userType", "workflowId"],
+  name: 'WorkflowButtons',
+  props: ['options', 'userType', 'workflowId'],
   methods: {
     saveSelected(e) {
-      e.preventDefault();
+      e.preventDefault()
       let payload = {
         workflow_id: this.workflowId,
         user_type: this.userType
-      };
-      Store.dispatch("DELETE_WORKFLOW_USER", payload);
+      }
+      Store.dispatch('DELETE_WORKFLOW_USER', payload)
       for (let i = 0; i < this.options.length; i++) {
-        const userId = this.options[i];
+        const userId = this.options[i]
         if (userId) {
           payload = {
             user_id: userId,
             workflow_id: this.workflowId,
             user_type: this.userType
-          };
-          Store.dispatch("SAVE_WORKFLOW_USER", payload);
+          }
+          Store.dispatch('SAVE_WORKFLOW_USER', payload)
         }
       }
     },
     undoSelected() {}
   }
-};
+}
 </script>
 
 <style scoped>
