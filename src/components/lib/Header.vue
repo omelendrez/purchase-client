@@ -6,7 +6,7 @@
       <b-navbar-toggle target="nav_collapse_main"></b-navbar-toggle>
 
       <b-navbar-brand @click.stop="setMain('home')" href="#/">
-        <i class="fas fa-home"></i>
+        <i class="fas fa-home blue"></i>
       </b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse_main">
@@ -28,7 +28,7 @@
             <b-nav-item-dropdown right>
               <!-- Using button-content slot -->
               <template slot="button-content">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user text-warning"></i>
                 {{userFullName}}
               </template>
               <b-dropdown-item href="#/login">
@@ -156,7 +156,9 @@ export default {
       })
     },
     groupIsSelected(option, permissions) {
-      return this.mainOption === option
+      if (permissions) {
+        return this.mainOption === option
+      }
     },
     optionIsSelected(option) {
       return this.menuOption === option
@@ -183,5 +185,8 @@ export default {
 #nav_collapse_sub a.active {
   background-color: #90a4ae;
   border-radius: 3px;
+}
+.blue {
+  color: var(--blue);
 }
 </style>
