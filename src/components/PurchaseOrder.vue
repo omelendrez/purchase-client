@@ -102,10 +102,10 @@
                 </template>
 
                 <template slot="actions" slot-scope="row" v-if="isEditable">
-                  <b-btn size="sm" variant="info" @click.stop="editItem(row.item, row.index, $event.target)" v-if="!row.item.editing" :disabled="isEditing">Edit</b-btn>
-                  <b-btn size="sm" variant="success" @click.stop="saveItem(row.item, row.index, $event.target)" v-else>Save</b-btn>
+                  <b-btn size="sm" variant="info" @click.stop="editItem(row.item)" v-if="!row.item.editing" :disabled="isEditing">Edit</b-btn>
+                  <b-btn size="sm" variant="success" @click.stop="saveItem()" v-else>Save</b-btn>
                   <b-btn size="sm" variant="danger" @click.stop="deleteItem(row.item, 1)" v-if="!row.item.editing" :disabled="isEditing">Delete</b-btn>
-                  <b-btn size="sm" variant="primary" ref="cancelSave" @click.stop="cancelSave(row.item, row.index, $event.target)" v-else>Cancel</b-btn>
+                  <b-btn size="sm" variant="primary" ref="cancelSave" @click.stop="cancelSave(row.item, row.index)" v-else>Cancel</b-btn>
                 </template>
 
               </b-table>
@@ -427,7 +427,7 @@ export default {
       this.isEditing = true
       this.itemForm = item
     },
-    saveItem(item, index, target) {
+    saveItem() {
       this.errorMessage = ''
       this.errorShow = false
       this.updatingItem = true
@@ -448,7 +448,7 @@ export default {
       }
       Store.dispatch('SAVE_PURCHASE_ORDER_ITEM', this.itemForm)
     },
-    editItem(item, index, target) {
+    editItem(item) {
       item.editing = true
       this.isEditing = true
       this.itemForm.id = item.id
@@ -470,7 +470,7 @@ export default {
       this.updatingItem = true
       Store.dispatch('DELETE_PURCHASE_ORDER_ITEM', this.selectedItem)
     },
-    cancelSave(item, index, target) {
+    cancelSave(item, index) {
       item.editing = false
       this.isEditing = false
       if (item.isNew) {

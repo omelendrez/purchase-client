@@ -19,7 +19,6 @@ export default {
 <style>
 body {
   background-color: rgb(240, 240, 240) !important;
-  font-family: 'Roboto', sans-serif !important;
 }
 .table-inactive {
   color: red;
