@@ -12,7 +12,7 @@
 
       <div class="buttons" v-if="userIs([1, 3])">
         <b-button variant="primary" v-if="status===0 && workflow_id !== 0" @click="launch">Launch workflow</b-button>
-        <b-button variant="primary" v-if="status===3 || status===4" @click="launch">Re-submit</b-button>
+        <b-button variant="primary" v-if="(status===3 || status===4) && workflow_id !== 0" @click="launch">Re-submit</b-button>
         <b-button variant="danger" v-if="status===0  || status===4" @click="cancel">Cancel</b-button>
         <b-button variant="info" v-if="status===0 || status===4" @click="putOnHold">Put onhold</b-button>
       </div>
