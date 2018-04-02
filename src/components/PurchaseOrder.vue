@@ -549,7 +549,7 @@ export default {
       this.form.expected_delivery = this.item._expected_delivery
       this.form.instructions = this.item.instructions
       this.form.payment_terms = this.item.payment_terms
-      Store.dispatch('LOAD_USER_WORKFLOWS', this.item.user.id)
+      Store.dispatch('LOAD_USER_WORKFLOWS', this.isLogged)
       const payload = {
         document_type: 2,
         document_id: this.item.id
