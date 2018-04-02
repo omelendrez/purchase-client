@@ -71,14 +71,14 @@
 
                 <template slot="description" slot-scope="row">
                   <div v-if="!row.item.editing">
-                    {{row.item["description"]}}
+                    {{row.item.description}}
                   </div>
                   <b-form-input v-else type="text" v-model="itemForm.description" required></b-form-input>
                 </template>
 
                 <template slot="quantity" slot-scope="row">
                   <div v-if="!row.item.editing">
-                    {{row.item["quantity"]}}
+                    {{row.item.quantity}}
                   </div>
                   <b-form-input v-else type="number" v-model="itemForm.quantity" required></b-form-input>
                 </template>
@@ -92,13 +92,13 @@
 
                 <template slot="unit_price" slot-scope="row">
                   <div v-if="!row.item.editing">
-                    {{row.item["unit_price"]}}
+                    {{row.item.unit_price}}
                   </div>
                   <b-form-input v-else type="number" v-model="itemForm.unit_price" required></b-form-input>
                 </template>
 
                 <template slot="total_amount" slot-scope="row">
-                  {{row.item["total_amount"]}}
+                  {{row.item.total_amount}}
                 </template>
 
                 <template slot="actions" slot-scope="row" v-if="isEditable">
@@ -306,6 +306,10 @@ export default {
         arr.push(row)
       }
       this.itemRows = arr
+      if (arr.length) {
+        this.showImportMessage = false
+        this.showItems = true
+      }
     },
     requisitions() {
       this.refreshData(
@@ -455,6 +459,7 @@ export default {
       this.itemForm.unit_id = item.unit_id
       this.itemForm.description = item.description
       this.itemForm.quantity = item.quantity
+      this.itemForm.unit_price = item.unit_price.replace(',', '')
       this.itemForm.purchase_order_id = item.purchase_order_id
     },
 
@@ -534,9 +539,9 @@ export default {
     this.form.date = now.toISOString().substring(0, 10)
     if (this.item.id !== 0) {
       this.form.id = this.item.id
-      this.form.user_id = this.item['user.id']
+      this.form.user_id = this.item.user.id
       this.form.organization_id = this.item.organization_id
-      this.form.full_name = this.item['user.full_name']
+      this.form.full_name = this.item.user.full_name
       this.form.number = this.item.number
       this.form.vendor_id = this.item.vendor_id
       this.form.date = this.item._date
@@ -544,7 +549,7 @@ export default {
       this.form.expected_delivery = this.item._expected_delivery
       this.form.instructions = this.item.instructions
       this.form.payment_terms = this.item.payment_terms
-      Store.dispatch('LOAD_USER_WORKFLOWS', this.item['user.id'])
+      Store.dispatch('LOAD_USER_WORKFLOWS', this.isLogged)
       const payload = {
         document_type: 2,
         document_id: this.item.id

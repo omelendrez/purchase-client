@@ -19,85 +19,115 @@
       </template>
 
       <template slot="row-details" slot-scope="row">
-        <b-card class="card-data">
-          <b-row>
-            <b-col colspan="2">
-              <b-button size="sm" variant="outline-dark" class="float-right" @click="row.toggleDetails">Hide Details</b-button>
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col class="text-sm-right">
-              <b>Number:</b>
-            </b-col>
-            <b-col cols="8">
-              {{ row.item["number"] }}
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col class="text-sm-right">
-              <b>Requester:</b>
-            </b-col>
-            <b-col cols="8">
-              {{ row.item["user.full_name"] }}
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col class="text-sm-right">
-              <b>Date:</b>
-            </b-col>
-            <b-col cols="8">
-              {{ row.item["date"] }}
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col class="text-sm-right">
-              <b>Department:</b>
-            </b-col>
-            <b-col cols="8">
-              {{ row.item["department.name"] }}
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col class="text-sm-right">
-              <b>Project:</b>
-            </b-col>
-            <b-col cols="8">
-              {{ row.item["project.name"] }}
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col class="text-sm-right">
-              <b>Delivery location:</b>
-            </b-col>
-            <b-col cols="8">
-              {{ row.item["location.name"] }}
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col class="text-sm-right">
-              <b>Expected delivery date:</b>
-            </b-col>
-            <b-col cols="8">
-              {{ row.item["expected_delivery"] }}
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col class="text-sm-right">
-              <b>Remarks/purpose:</b>
-            </b-col>
-            <b-col cols="8">
-              {{ row.item["remarks"] }}
-            </b-col>
-          </b-row>
-        </b-card>
+        <b-row>
+          <b-col>
+            <b-card class="card-data">
+              <b-row>
+                <b-col colspan="2">
+                  <b-button size="sm" variant="outline-dark" class="float-right" @click="row.toggleDetails">Hide Details</b-button>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-sm-right">
+                  <b>Number:</b>
+                </b-col>
+                <b-col cols="8">
+                  {{ row.item.number }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-sm-right">
+                  <b>Requester:</b>
+                </b-col>
+                <b-col cols="8">
+                  {{ row.item.user.full_name }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-sm-right">
+                  <b>Date:</b>
+                </b-col>
+                <b-col cols="8">
+                  {{ row.item.date }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-sm-right">
+                  <b>Department:</b>
+                </b-col>
+                <b-col cols="8">
+                  {{ row.item.department.name }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-sm-right">
+                  <b>Project:</b>
+                </b-col>
+                <b-col cols="8">
+                  {{ row.item.project.name }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-sm-right">
+                  <b>Delivery location:</b>
+                </b-col>
+                <b-col cols="8">
+                  {{ row.item.location.name }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-sm-right">
+                  <b>Expected delivery date:</b>
+                </b-col>
+                <b-col cols="8">
+                  {{ row.item.expected_delivery }}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-sm-right">
+                  <b>Remarks/purpose:</b>
+                </b-col>
+                <b-col cols="8">
+                  {{ row.item.remarks }}
+                </b-col>
+              </b-row>
+            </b-card>
+          </b-col>
+          <b-col>
+            <b-card>
+              <b-row class="header">
+                <b-col>
+                  Description
+                </b-col>
+                <b-col>
+                  UoM
+                </b-col>
+                <b-col>
+                  Quantity
+                </b-col>
+              </b-row>
+              <b-row v-for="(itm, index) in row.item['requisition_items']" :key="index">
+                <b-col>
+                  {{ itm.description }}
+                </b-col>
+                <b-col>
+                  {{ itm.unit.name }}
+                </b-col>
+                <b-col>
+                  {{ itm.quantity }}
+                </b-col>
+              </b-row>
+            </b-card>
+          </b-col>
+        </b-row>
       </template>
 
       <template slot="table-caption">
-        {{requisitions.count}} registros
+        {{count}} registros
       </template>
     </b-table>
 
-    <b-pagination :total-rows="requisitions.count" :per-page="perPage" v-model="currentPage" variant="info" />
+    <b-pagination :total-rows="count" :per-page="perPage" v-model="currentPage" variant="info" />
 
     <b-modal id="modal-center" title="Inactivate" v-model="deleteShow" @ok="handleOk" ok-title="Yes. Inactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
       <p class="my-4">Are you sure you want to inactivate
@@ -121,6 +151,7 @@ export default {
       perPage: 10,
       currentPage: 1,
       filter: null,
+      count: 0,
       deleteShow: false,
       selectedItem: {
         name: ''
@@ -146,6 +177,9 @@ export default {
     }
   },
   watch: {
+    requisitions() {
+      this.count = this.requisitions.rows.length
+    },
     results() {
       const results = Store.state.results
       if (results.error) {
@@ -204,7 +238,9 @@ export default {
 .reset-button {
   margin-left: 10px;
 }
-.card-data {
-  max-width: 800px;
+.header {
+  font-weight: bold;
+  background-color: #e9ecef;
+  padding: 6px;
 }
 </style>
