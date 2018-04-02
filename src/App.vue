@@ -17,8 +17,12 @@ export default {
 </script>
 
 <style>
+html {
+  font-size: 90%;
+}
 body {
   background-color: rgb(240, 240, 240) !important;
+  font-family: 'Roboto', sans-serif;
 }
 .table-inactive {
   color: red;
