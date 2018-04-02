@@ -437,18 +437,18 @@ export default {
     this.form.date = now.toISOString().substring(0, 10)
     if (this.item.id !== 0) {
       this.form.id = this.item.id
-      this.form.user_id = this.item['user.id']
+      this.form.user_id = this.item.user.id
       this.form.organization_id = this.item.organization_id
-      this.form.full_name = this.item['user.full_name']
+      this.form.full_name = this.item.user.full_name
       this.form.number = this.item.number
       this.form.date = this.item._date
       this.form.location_id = this.item.location_id
-      this.form.department_id = this.item['user.department_id']
+      this.form.department_id = this.item.user.department_id
       this.form.project_id = this.item.project_id
       this.form.expected_delivery = this.item._expected_delivery
       this.form.remarks = this.item.remarks
       this.form.workflow_status = this.item.workflow_status
-      Store.dispatch('LOAD_USER_WORKFLOWS', this.item['user.id'])
+      Store.dispatch('LOAD_USER_WORKFLOWS', this.item.user.id)
       const payload = {
         document_type: 1,
         document_id: this.item.id
