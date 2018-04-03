@@ -524,11 +524,11 @@ export default {
       this.$router.push({ name: 'Login' })
       return
     }
+    Store.dispatch('LOAD_PURCHASE_ORDER_ITEMS', this.item.id)
     Store.dispatch('LOAD_VENDORS')
     Store.dispatch('LOAD_WORKFLOWS')
     Store.dispatch('LOAD_LOCATIONS')
     Store.dispatch('LOAD_UNITS')
-    Store.dispatch('LOAD_PURCHASE_ORDER_ITEMS', this.item.id)
     Store.dispatch('LOAD_REQUISITIONS')
 
     this.form.user_id = this.isLogged
