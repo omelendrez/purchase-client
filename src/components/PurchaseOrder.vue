@@ -42,6 +42,10 @@
               <b-form-textarea id="payment_terms" v-model="form.payment_terms" rows="2" :disabled="!this.isEditable"></b-form-textarea>
             </b-form-group>
 
+            <b-form-group horizontal label="Total order" label-for="total_amount">
+              <b-form-input id="total_amount" v-model="form.total_amount" rows="2" readonly></b-form-input>
+            </b-form-group>
+
             <RequestButtons/>
 
           </b-form>
@@ -181,7 +185,8 @@ export default {
         payment_terms: '',
         location_id: 0,
         organization_id: 0,
-        requisition_id: 0
+        requisition_id: 0,
+        total_amount: 0
       },
       itemForm: {
         id: 0,
@@ -517,6 +522,9 @@ export default {
           })
         }
       }
+    },
+    formatAmount(amount) {
+      return amount.toLocaleString('en-US', { minimumFractionDigits: 2 })
     }
   },
   created() {
@@ -549,6 +557,7 @@ export default {
       this.form.expected_delivery = this.item._expected_delivery
       this.form.instructions = this.item.instructions
       this.form.payment_terms = this.item.payment_terms
+      this.form.total_amount = this.formatAmount(this.item.total_amount)
       Store.dispatch('LOAD_USER_WORKFLOWS', this.isLogged)
       const payload = {
         document_type: 2,

@@ -173,6 +173,12 @@ const purchaseOrders = [
     class: 'text-center text-nowrap'
   },
   {
+    key: 'total_amount',
+    label: 'Total order',
+    class: 'text-right',
+    sortable: true
+  },
+  {
     key: 'workflow_status_name',
     label: 'Workflow Status',
     class: 'text-center'
@@ -283,7 +289,7 @@ const documentStatus = [
   },
   {
     key: 'document_status_name',
-    label: 'status',
+    label: 'Status',
     class: 'text-nowrap'
   },
   {

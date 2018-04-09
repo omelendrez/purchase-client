@@ -1,31 +1,23 @@
 <template>
   <div class="approval-buttons">
-    <b-card>
-
-      <b-form-group horizontal label="Workflow" label-for="workflow_id">
-        <b-form-select :options="workflows" :disabled="!canEdit" v-model="workflow_id" />
-      </b-form-group>
-
-      <b-form-group horizontal label="Remarks" label-for="remarks" v-if="status!==6">
-        <b-form-textarea id="remarks" placeholder="You can add here a remark you may want the other actors of this request's approval process be aware of" v-model="remarks" rows=4 />
-      </b-form-group>
-
-      <div class="buttons" v-if="userIs([1, 3])">
-        <b-button variant="primary" v-if="status===0 && workflow_id !== 0" @click="launch">Launch workflow</b-button>
-        <b-button variant="primary" v-if="(status===3 || status===4) && workflow_id !== 0" @click="launch">Re-submit</b-button>
-        <b-button variant="danger" v-if="status===0  || status===4" @click="cancel">Cancel</b-button>
-        <b-button variant="info" v-if="status===0 || status===4" @click="putOnHold">Put onhold</b-button>
-      </div>
-
-      <div class="buttons" v-if="userIs([2, 4])">
-        <b-button variant="success" v-if="status===1  || status===5" @click="approve">Approve</b-button>
-        <b-button variant="warning" v-if="status===1  || status===5" @click="requestChanges">Request changes</b-button>
-        <b-button variant="info" v-if="status===1  || status===5" @click="reassign">Re-assign</b-button>
-      </div>
-
-      <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
-
-    </b-card>
+    <b-form-group horizontal label="Workflow" label-for="workflow_id">
+      <b-form-select :options="workflows" :disabled="!canEdit" v-model="workflow_id" />
+    </b-form-group>
+    <b-form-group horizontal label="Remarks" label-for="remarks" v-if="status!==6">
+      <b-form-textarea id="remarks" placeholder="Remarks are mandatory when changing document status" v-model="remarks" rows=4 />
+    </b-form-group>
+    <div class="buttons" v-if="userIs([1, 3])">
+      <b-button variant="primary" v-if="status===0 && workflow_id !== 0" @click="launch">Launch workflow</b-button>
+      <b-button variant="primary" v-if="(status===3 || status===4) && workflow_id !== 0" @click="launch">Re-submit</b-button>
+      <b-button variant="danger" v-if="status===0  || status===4" @click="cancel">Cancel</b-button>
+      <b-button variant="info" v-if="status===0 || status===4" @click="putOnHold">Put onhold</b-button>
+    </div>
+    <div class="buttons" v-if="userIs([2, 4])">
+      <b-button variant="success" v-if="status===1  || status===5" @click="approve">Approve</b-button>
+      <b-button variant="warning" v-if="status===1  || status===5" @click="requestChanges">Request changes</b-button>
+      <b-button variant="info" v-if="status===1  || status===5" @click="reassign">Re-assign</b-button>
+    </div>
+    <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
   </div>
 </template>
 

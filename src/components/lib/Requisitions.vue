@@ -2,7 +2,7 @@
 <template>
   <b-container>
     <h4>Requisitions</h4>
-    <Table v-bind:table-items="items" form-name="Requisition" />
+    <Table v-bind:table-items="requisitions" form-name="requisition_approval" />
   </b-container>
 </template>
 
@@ -13,19 +13,10 @@ import Store from './../../store/store'
 export default {
   name: 'Requisitions',
   data() {
-    return {
-      items: {}
-    }
+    return {}
   },
   components: {
     Table
-  },
-  watch: {
-    requisitions() {
-      if (this.requisitions) {
-        this.items = this.requisitions
-      }
-    }
   },
   computed: {
     requisitions() {

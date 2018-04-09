@@ -25,7 +25,6 @@ export default {
   name: 'Table',
   props: {
     tableItems: {
-      type: Object,
       required: true
     },
     formName: {
@@ -63,9 +62,8 @@ export default {
   },
   methods: {
     info(item) {
-      Store.dispatch('ADD_ITEM', item)
       this.$nextTick(() => {
-        this.$router.push({ name: this.formName })
+        this.$router.push({ path: `${this.formName}/${item.id}` })
       })
     }
   },
