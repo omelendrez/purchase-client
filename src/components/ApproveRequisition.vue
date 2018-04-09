@@ -78,7 +78,6 @@ export default {
   data() {
     return {
       docType: 'PR',
-      itemRows: [],
       fields: fields
     }
   },

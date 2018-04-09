@@ -91,7 +91,6 @@ export default {
   data() {
     return {
       docType: 'PO',
-      itemRows: [],
       fields: fields,
       total_amount: 0
     }

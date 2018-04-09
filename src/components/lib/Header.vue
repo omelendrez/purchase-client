@@ -19,7 +19,7 @@
               Master tables</b-nav-item>
             <b-nav-item class="mx-4" v-if="canSeeHeader('activities','ADM-PRI-PRA-POI-POA-RRI-RFPI')" v-bind:active="groupIsSelected('activities','PRI-PRA-POI-POA-RRI-RFPI')" @click.stop="setMain('activities')">
               Daily activities</b-nav-item>
-            <b-nav-item class="mx-4" v-if="canSeeHeader('reports','ADM')" v-bind:active="groupIsSelected('reports','ADM')" @click.stop="setMain('reports')">
+            <b-nav-item class="mx-4" v-if="canSeeHeader('reports','ADM')" :disabled="true" v-bind:active="groupIsSelected('reports','ADM')" @click.stop="setMain('reports')">
               Reports</b-nav-item>
           </b-navbar-nav>
 
@@ -85,10 +85,10 @@
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PRI-PRA-POI-POA')" v-bind:active="optionIsSelected('Approvals')" href="#/approvals">
               <i class="fas fa-thumbs-up"></i> Approvals</b-nav-item>
 
-            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-RRI')" v-bind:active="optionIsSelected('ReceivingReports')" href="#/receive_reports">
+            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-RRI')" :disabled="true" v-bind:active="optionIsSelected('ReceivingReports')" href="#/receive_reports">
               <i class="fas fa-clipboard-check"></i> Receiving Reports</b-nav-item>
 
-            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PFRI')" v-bind:active="optionIsSelected('PaymentRequests')" href="#/payment_requests">
+            <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PFRI')" :disabled="true" v-bind:active="optionIsSelected('PaymentRequests')" href="#/payment_requests">
               <i class="far fa-money-bill-alt"></i> Payment Requests</b-nav-item>
           </b-navbar-nav>
         </template>
