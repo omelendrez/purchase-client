@@ -3,7 +3,9 @@
 
     <Add />
 
+    <!--
     <b-btn variant="warning" @click.stop="impData" class="add-button">Import</b-btn>
+    -->
 
     <b-form-group class="filter-form">
       <b-input-group>
@@ -40,7 +42,7 @@ const fields = require('./lib/Fields').vendors
 const commonFields = require('./lib/Fields').commonFields
 const actions = require('./lib/Fields').actions
 const org = require('./lib/Fields').org
-import importData from './lib/import'
+// import importData from './lib/import'
 
 export default {
   name: 'Vendors',
@@ -103,9 +105,10 @@ export default {
     },
     handleSubmit() {
       this.$refs.modal.hide()
-    },
+      /*    },
     impData() {
       importData()
+    */
     }
   },
   watch: {
