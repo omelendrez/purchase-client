@@ -37,6 +37,11 @@
         <b-form-input id="contact" v-model.trim="form.contact" required></b-form-input>
       </b-form-group>
 
+      <b-form-group horizontal label="Remarks" label-for="remarks">
+        <b-form-textarea id="remarks" v-model="form.remarks" placeholder="Enter the remarks for this vendor" :rows="3" required :max-rows="6">
+        </b-form-textarea>
+      </b-form-group>
+
       <Buttons />
 
       <b-alert variant="danger" :show="errorShow">{{ errorMessage }}</b-alert>
@@ -62,6 +67,7 @@ export default {
         phone: '',
         email: '',
         contact: '',
+        remarks: '',
         organization_id: 0,
         show: true
       },
@@ -142,6 +148,7 @@ export default {
       this.form.phone = ''
       this.form.email = ''
       this.form.contact = ''
+      this.form.remarks = ''
       this.form.organization_id = 0
       /* Trick to reset/clear native browser form validation state */
       this.form.show = false
@@ -178,6 +185,7 @@ export default {
         this.form.phone = this.item.phone
         this.form.email = this.item.email
         this.form.contact = this.item.contact
+        this.form.remarks = this.item.remarks
         this.form.organization_id = this.item.organization_id
       }
     })

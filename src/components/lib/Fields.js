@@ -271,6 +271,9 @@ const vendors = [
   },
   {
     key: 'contact'
+  },
+  {
+    key: 'remarks'
   }
 ]
 

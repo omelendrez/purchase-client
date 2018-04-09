@@ -51,7 +51,8 @@ export default {
       }
       if (user.id > 0) {
         this.isLoginCorrect = true
-        this.$router.push({ name: 'Home' })
+        // this.$router.push({ name: 'Home' })
+        this.$router.go(-1)
       } else {
         this.isLoginError = true
       }
