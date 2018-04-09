@@ -6,7 +6,7 @@
         <b-btn :disabled="!filter" @click="filter = ''" variant="info" class="reset-button">Reset</b-btn>
       </b-input-group>
     </b-form-group>
-    <b-table fixed hover small :items="tableItems.rows" :fields="fields" :filter="filter" outlined :show-empty="true" :per-page="perPage" :current-page="currentPage" head-variant="light">
+    <b-table fixed hover striped small :items="tableItems.rows" :fields="fields" :filter="filter" outlined :show-empty="true" :per-page="perPage" :current-page="currentPage" head-variant="light">
       <template slot="number" slot-scope="row">
         <b-link size="sm" @click.stop="info(row.item, row.index, $event.target)">
           {{row.item.number}}

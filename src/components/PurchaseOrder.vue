@@ -162,6 +162,7 @@ import DocumentStatus from './lib/DocumentStatus'
 import { setTimeout } from 'timers'
 const fields = require('./lib/Fields').purchaseOrderItems
 const actions = require('./lib/Fields').actions
+const utils = require('./lib/utils')
 
 export default {
   name: 'PurchaseOrder',
@@ -300,12 +301,8 @@ export default {
           description: items[i].description,
           quantity: items[i].quantity,
           id: items[i].id,
-          unit_price: items[i].unit_price.toLocaleString('en-US', {
-            minimumFractionDigits: 2
-          }),
-          total_amount: items[i].total_amount.toLocaleString('en-US', {
-            minimumFractionDigits: 2
-          }),
+          unit_price: this.formatAmount(items[i].unit_price),
+          total_amount: this.formatAmount(items[i].total_amount),
           purchase_order_id: items[i].purchase_order_id
         }
         arr.push(row)
@@ -395,6 +392,9 @@ export default {
     }
   },
   methods: {
+    formatAmount(amount) {
+      return utils.formatAmount(amount)
+    },
     importRequisition() {
       this.showImportMessage = false
       Store.dispatch('IMPORT_REQUISITION', this.form.requisition_id)
@@ -522,9 +522,6 @@ export default {
           })
         }
       }
-    },
-    formatAmount(amount) {
-      return amount.toLocaleString('en-US', { minimumFractionDigits: 2 })
     }
   },
   created() {

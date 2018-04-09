@@ -156,8 +156,7 @@ const requisitionItems = [
 const purchaseOrders = [
   {
     key: 'number',
-    class: 'text-center',
-    sortable: true
+    class: 'text-center'
   },
   {
     key: 'date',
@@ -165,8 +164,7 @@ const purchaseOrders = [
   },
   {
     key: 'user.full_name',
-    label: 'Requester',
-    sortable: true
+    label: 'Requester'
   },
   {
     key: 'expected_delivery',
@@ -175,8 +173,7 @@ const purchaseOrders = [
   {
     key: 'total_amount',
     label: 'Total order',
-    class: 'text-right',
-    sortable: true
+    class: 'text-right'
   },
   {
     key: 'workflow_status_name',
@@ -283,22 +280,22 @@ const organizations = [
 
 const documentStatus = [
   {
-    key: 'user.full_name',
-    label: 'User',
-    class: 'text-nowrap'
-  },
-  {
     key: 'document_status_name',
     label: 'Status',
     class: 'text-nowrap'
   },
   {
-    label: 'Executed',
-    key: 'created_at',
-    class: 'text-center text-nowrap'
+    key: 'user.full_name',
+    label: 'User',
+    class: 'text-nowrap'
   },
   {
     key: 'remarks'
+  },
+  {
+    label: 'Executed',
+    key: 'created_at',
+    class: 'text-center text-nowrap'
   }
 ]
 

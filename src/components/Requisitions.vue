@@ -10,7 +10,7 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table small hover outlined :items="requisitions.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" :show-empty="true" head-variant="light">
+    <b-table small hover striped outlined :items="requisitions.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" :show-empty="true" head-variant="light">
       <template slot="actions" slot-scope="row">
         <b-btn size="sm" variant="outline-dark" @click.stop="row.toggleDetails">{{ row.detailsShowing ? 'Hide' : 'Show'}}</b-btn>
         <b-btn size="sm" variant="info" @click.stop="editItem(row.item)">Modify</b-btn>

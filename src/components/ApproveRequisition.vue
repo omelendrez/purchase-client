@@ -29,7 +29,7 @@
     </b-card>
 
     <b-card title="Items">
-      <b-table small hover outlined :items="document.requisition_items" :fields="fields" :show-empty="true" head-variant="light">
+      <b-table small striped hover outlined :items="document.requisition_items" :fields="fields" :show-empty="true" head-variant="light">
         <template slot="description" slot-scope="row">
           <div>
             {{row.item["description"]}}

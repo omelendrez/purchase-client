@@ -935,9 +935,14 @@ export default new Vuex.Store({
 
     [types.SET_DOCUMENT_STATUS]: (state, { payload }) => {
       payload.map(item => {
-        item.document_status_name = constants.documentStatusNames.filter(
-          name => item.document_status === name.key
+        const status = constants.documentStatusNames.find(
+          status => item.document_status === status.key
         )
+        item.document_status_name = status.text
+        // item._rowVariant = status.bgColor
+        item._cellVariants = {
+          'document_status_name': status.bgColor
+        }
       })
       state.documentStatus = payload
     },

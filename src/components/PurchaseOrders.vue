@@ -10,7 +10,7 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table small hover outlined :items="purchaseOrders.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" :show-empty="true" head-variant="light">
+    <b-table small hover outlined striped :items="purchaseOrders.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" :show-empty="true" head-variant="light">
       <template slot="actions" slot-scope="row">
         <b-btn size="sm" variant="outline-dark" @click.stop="row.toggleDetails">{{ row.detailsShowing ? 'Hide' : 'Show'}}</b-btn>
         <b-btn size="sm" variant="info" @click.stop="editItem(row.item)">Modify</b-btn>
@@ -83,6 +83,14 @@
                   {{ row.item.expected_delivery }}
                 </b-col>
               </b-row>
+              <b-row>
+                <b-col class="text-sm-right">
+                  <b>Total order:</b>
+                </b-col>
+                <b-col cols="8">
+                  {{ formatAmount(row.item.total_amount) }}
+                </b-col>
+              </b-row>
             </b-card>
           </b-col>
           <b-col>
@@ -115,10 +123,10 @@
                   {{ itm.quantity }}
                 </b-col>
                 <b-col class="text-right">
-                  {{ itm.unit_price.toLocaleString('en-US', { minimumFractionDigits: 2 }) }}
+                  {{ formatAmount(itm.unit_price)}}
                 </b-col>
                 <b-col class="text-right">
-                  {{ itm.total_amount.toLocaleString('en-US', { minimumFractionDigits: 2 }) }}
+                  {{ formatAmount(itm.total_amount)}}
                 </b-col>
               </b-row>
             </b-card>
@@ -147,6 +155,7 @@ const fields = require('./lib/Fields').purchaseOrders
 const commonFields = require('./lib/Fields').commonFields
 const actions = require('./lib/Fields').actions
 const org = require('./lib/Fields').org
+const utils = require('./lib/utils')
 
 export default {
   name: 'PurchaseOrders',
@@ -164,6 +173,9 @@ export default {
     }
   },
   methods: {
+    formatAmount(amount) {
+      return utils.formatAmount(amount)
+    },
     editItem(item) {
       Store.dispatch('ADD_ITEM', item)
       this.$router.push({ name: 'PurchaseOrder' })
@@ -183,6 +195,9 @@ export default {
   watch: {
     purchaseOrders() {
       this.count = this.purchaseOrders.rows.length
+      this.purchaseOrders.rows.map(item => {
+        item.total_amount = this.formatAmount(item.total_amount)
+      })
     },
     results() {
       const results = Store.state.results
