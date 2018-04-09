@@ -61,7 +61,7 @@
       </b-table>
     </b-card>
 
-    <b-card title="History tracking">
+    <b-card title="Workflow tracking">
       <DocumentStatus />
     </b-card>
 

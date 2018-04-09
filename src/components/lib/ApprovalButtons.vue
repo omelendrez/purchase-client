@@ -49,10 +49,10 @@ export default {
       return Store.state.user.id
     },
     document() {
-      return Store.state.record
+      return Store.state.document
     },
     status() {
-      return Store.state.record.workflow_status
+      return Store.state.document.workflow_status
     },
     workflows() {
       const workflows = Store.state.activeWorkflows
@@ -62,8 +62,7 @@ export default {
       const options = []
       for (let i = 0; i < workflows.length; i++) {
         if (
-          workflows[i].organization_id === this.document.organization_id ||
-          Store.state.globalAdmin
+          workflows[i].organization_id === this.document.organization_id
         ) {
           options.push({
             value: workflows[i].id,
