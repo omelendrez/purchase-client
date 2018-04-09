@@ -13,7 +13,10 @@
         </b-link>
       </template>
     </b-table>
-    <b-pagination :total-rows="tableItems.count" :per-page="perPage" v-model="currentPage" variant="info" />
+    <b-form-group label="Per page" label-for="perPage" class="per-page">
+      <b-form-select v-model="perPage" :options="perPageOptions" />
+    </b-form-group>
+    <b-pagination :total-rows="tableItems.rows.length" :per-page="perPage" v-model="currentPage" variant="info" />
   </div>
 </template>
 
@@ -35,6 +38,7 @@ export default {
   data() {
     return {
       perPage: 10,
+      perPageOptions: [5, 10, 15, 20, 25],
       currentPage: 1,
       filter: null,
       fields: [
@@ -97,5 +101,7 @@ export default {
 </script>
 
 <style scoped>
-
+.per-page {
+  float: right;
+}
 </style>
