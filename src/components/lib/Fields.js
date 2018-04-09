@@ -27,8 +27,11 @@ const actions = [
 ]
 
 const org = {
-  key: 'organization.name',
-  label: 'Company'
+  key: 'organization.code',
+  label: 'Coy',
+  thStyle: {
+    width: '32px'
+  }
 }
 
 const users = [
@@ -273,9 +276,14 @@ const vendors = [
 
 const organizations = [
   {
+    key: 'code',
+    sortable: true
+  },
+  {
     key: 'name',
     sortable: true
   }
+
 ]
 
 const documentStatus = [

@@ -5,6 +5,11 @@
       Company {{ this.form.name}}
     </h3>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" id="addForm">
+
+      <b-form-group horizontal label="Code" label-for="code">
+        <b-form-input id="code" v-model.trim="form.code"></b-form-input>
+      </b-form-group>
+
       <b-form-group horizontal label="Name" label-for="name">
         <b-form-input id="name" v-model.trim="form.name"></b-form-input>
       </b-form-group>
@@ -27,6 +32,7 @@ export default {
     return {
       show: true,
       form: {
+        code: '',
         name: '',
         id: 0
       },
@@ -79,6 +85,7 @@ export default {
       return
     }
     if (this.item) {
+      this.form.code = this.item.code
       this.form.name = this.item.name
       this.form.id = this.item.id
     }

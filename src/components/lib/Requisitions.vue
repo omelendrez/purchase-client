@@ -8,7 +8,7 @@
 
 <script>
 import Table from './Table'
-import Store from './../../store/store'
+import Store from '../../store/store'
 
 export default {
   name: 'Requisitions',

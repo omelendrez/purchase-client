@@ -40,22 +40,33 @@ export default {
       fields: [
         {
           key: 'number',
-          class: 'text-center'
+          class: 'text-center',
+          thStyle: {
+            width: '60px'
+          }
         },
         {
           key: 'date',
-          class: 'text-center text-nowrap'
+          class: 'text-center text-nowrap',
+          thStyle: {
+            width: '60px'
+          }
         },
         {
           key: 'user.full_name',
           label: 'Requester',
-          sortable: true,
-          class: 'text-left'
+          class: 'text-left',
+          thStyle: {
+            width: '200px'
+          }
         },
         {
           key: 'workflow_status_name',
           label: 'Status',
-          class: 'text-center'
+          class: 'text-center',
+          thStyle: {
+            width: '90px'
+          }
         }
       ]
     }
@@ -70,6 +81,16 @@ export default {
   created() {
     if (Store.state.globalAdmin) {
       this.fields.unshift(org)
+    }
+    if (this.formName === 'purchase_order_approval') {
+      this.fields.push({
+        key: 'total_amount',
+        label: 'Total order',
+        class: 'text-right',
+        thStyle: {
+          width: '140px'
+        }
+      })
     }
   }
 }

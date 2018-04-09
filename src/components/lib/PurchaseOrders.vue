@@ -8,7 +8,8 @@
 
 <script>
 import Table from './Table'
-import Store from './../../store/store'
+import Store from '../../store/store'
+const utils = require('./utils')
 
 export default {
   name: 'PurchaseOrders',
@@ -18,9 +19,21 @@ export default {
   components: {
     Table
   },
+  watch: {
+    purchaseOrders() {
+      return Store.state.purchaseOrders.rows.map(item => {
+        return (item.total_amount = this.formatAmount(item.total_amount))
+      })
+    }
+  },
   computed: {
     purchaseOrders() {
       return Store.state.purchaseOrders
+    }
+  },
+  methods: {
+    formatAmount(amount) {
+      return utils.formatAmount(amount)
     }
   }
 }

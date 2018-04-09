@@ -1,9 +1,5 @@
 <template>
   <b-container class="approvals" fluid>
-    <h3 class="text-center">
-      <i class="fas fa-users"></i>
-      Approvals
-    </h3>
     <div class="w-100 main">
       <div class="text-center">
         <Requisitions />
