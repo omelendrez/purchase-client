@@ -25,9 +25,11 @@ import Permission from '@/components/Permission'
 
 import Requisitions from '@/components/Requisitions'
 import Requisition from '@/components/Requisition'
+import ApproveRequisition from '@/components/ApproveRequisition'
 
 import PurchaseOrders from '@/components/PurchaseOrders'
 import PurchaseOrder from '@/components/PurchaseOrder'
+import ApprovePurchaseOrder from '@/components/ApprovePurchaseOrder'
 
 import Units from '@/components/Units'
 import Unit from '@/components/Unit'
@@ -121,6 +123,16 @@ export default new Router({
       path: '/requisition',
       name: 'Requisition',
       component: Requisition
+    },
+    {
+      path: '/requisition_approval/:id',
+      name: 'ApproveRequisition',
+      component: ApproveRequisition
+    },
+    {
+      path: '/purchase_order_approval/:id',
+      name: 'ApprovePurchaseOrder',
+      component: ApprovePurchaseOrder
     },
     {
       path: '/purchase_orders',

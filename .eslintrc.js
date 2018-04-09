@@ -13,10 +13,10 @@ module.exports = {
   },
   "plugins": ["vue"],
   "rules": {
-    "indent": ["error",2,{"SwitchCase": 1}],
-    "linebreak-style": ["error","windows"],
-    "quotes": ["error","single"],
-    "semi": ["error","never"],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "linebreak-style": ["error", "windows"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"],
     "no-unused-vars": "warn"
   }
 };

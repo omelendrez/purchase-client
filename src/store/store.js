@@ -20,6 +20,8 @@ import Vendors from './../services/vendors'
 import Workflows from './../services/workflows'
 import WorkflowUsers from './../services/workflow_users'
 
+import Approvals from './../services/approvals'
+
 import * as types from '../store/mutation-types'
 import * as constants from './constants'
 
@@ -35,6 +37,7 @@ const state = {
   activeUsers: [],
   activeVendors: [],
   activeWorkflows: [],
+  document: [],
   documentStatus: [],
   organizations: [],
   locations: [],
@@ -72,14 +75,14 @@ const state = {
 export default new Vuex.Store({
   state,
   actions: {
-    [types.LOADING] ({ commit }) {
+    [types.LOADING]({ commit }) {
       commit(types.SET_LOADING, true)
     },
-    [types.LOADED] ({ commit }) {
+    [types.LOADED]({ commit }) {
       commit(types.SET_LOADING, false)
     },
 
-    [types.SET_MENU_OPTION] ({ commit }, option) {
+    [types.SET_MENU_OPTION]({ commit }, option) {
       if (option !== state.option) {
         commit(types.ASSIGN_MENU_OPTION, {
           payload: option
@@ -90,7 +93,7 @@ export default new Vuex.Store({
       }
     },
 
-    [types.SET_MAIN_OPTION] ({ commit }, option) {
+    [types.SET_MAIN_OPTION]({ commit }, option) {
       commit(types.ASSIGN_MAIN_OPTION, {
         payload: option
       })
@@ -101,19 +104,19 @@ export default new Vuex.Store({
       }
     },
 
-    [types.ADD_ITEM] ({ commit }, item) {
+    [types.ADD_ITEM]({ commit }, item) {
       commit(types.SET_RECORD, {
         payload: item
       })
     },
 
-    [types.HIDE_MESSAGES] ({ commit }) {
+    [types.HIDE_MESSAGES]({ commit }) {
       commit(types.OFF_MESSAGES, {
         status: !state.messages
       })
     },
 
-    async [types.LOAD_STATUS] ({ commit }) {
+    async [types.LOAD_STATUS]({ commit }) {
       this.dispatch('LOADING')
       const status = await Status.fetchStatus()
       commit(types.SET_STATUS, {
@@ -121,7 +124,15 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_PROFILES] ({ commit }) {
+    async [types.LOAD_DOCUMENT]({ commit }, item) {
+      this.dispatch('LOADING')
+      const document = await Approvals.fetchDocumentById(item)
+      commit(types.SET_DOCUMENT, {
+        payload: document.data
+      })
+    },
+
+    async [types.LOAD_PROFILES]({ commit }) {
       this.dispatch('LOADING')
       const profiles = await Profiles.fetchProfiles()
       commit(types.SET_PROFILES, {
@@ -129,7 +140,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_PERMISSIONS] ({ commit }) {
+    async [types.LOAD_PERMISSIONS]({ commit }) {
       this.dispatch('LOADING')
       const permissions = await Permissions.fetchPermissions()
       commit(types.SET_PERMISSIONS, {
@@ -137,7 +148,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_USER_PERMISSIONS] ({ commit }, item) {
+    async [types.LOAD_USER_PERMISSIONS]({ commit }, item) {
       this.dispatch('LOADING')
       const userPermissions = await UserPermissions.fetchUserPermissions(
         item.id
@@ -147,7 +158,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_PERMISSION] ({ commit }, item) {
+    async [types.SAVE_PERMISSION]({ commit }, item) {
       this.dispatch('LOADING')
       const permission = await Permissions.savePermission(item)
       commit(types.SET_RESULTS, {
@@ -155,7 +166,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_USER_PERMISSION] ({ commit }, item) {
+    async [types.SAVE_USER_PERMISSION]({ commit }, item) {
       this.dispatch('LOADING')
       const userPermission = await UserPermissions.saveUserPermission(item)
       commit(types.SET_RESULTS, {
@@ -163,7 +174,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_PERMISSION] ({ commit }, item) {
+    async [types.DELETE_PERMISSION]({ commit }, item) {
       this.dispatch('LOADING')
       const permission = await Permissions.deletePermission(item.id)
       commit(types.SET_RESULTS, {
@@ -171,7 +182,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_USER_PERMISSION] ({ commit }, item) {
+    async [types.DELETE_USER_PERMISSION]({ commit }, item) {
       this.dispatch('LOADING')
       const userPermission = await UserPermissions.deleteUserPermission(
         item.id
@@ -181,7 +192,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_USERS] ({ commit }) {
+    async [types.LOAD_USERS]({ commit }) {
       this.dispatch('LOADING')
       const users = await Users.fetchUsers(state.user.organization_id)
       commit(types.SET_USERS, {
@@ -189,7 +200,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_USER] ({ commit }, item) {
+    async [types.SAVE_USER]({ commit }, item) {
       this.dispatch('LOADING')
       const user = await Users.saveUser(item)
       commit(types.SET_RESULTS, {
@@ -197,7 +208,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_USER] ({ commit }, item) {
+    async [types.DELETE_USER]({ commit }, item) {
       this.dispatch('LOADING')
       const user = await Users.deleteUser(item.id)
       commit(types.SET_RESULTS, {
@@ -205,7 +216,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.RESET_PASSWORD] ({ commit }, item) {
+    async [types.RESET_PASSWORD]({ commit }, item) {
       this.dispatch('LOADING')
       const user = await Users.resetPassword(item)
       commit(types.SET_RESULTS, {
@@ -213,7 +224,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.CHANGE_PASSWORD] ({ commit }, item) {
+    async [types.CHANGE_PASSWORD]({ commit }, item) {
       this.dispatch('LOADING')
       const user = await Users.changePassword(item)
       commit(types.CHANGE_PASSWORD_ALERT, {
@@ -221,7 +232,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOGIN] ({ commit }, payload) {
+    async [types.LOGIN]({ commit }, payload) {
       this.dispatch('LOADING')
       const user = await Users.login(payload)
       commit(types.SET_USER, {
@@ -229,13 +240,13 @@ export default new Vuex.Store({
       })
     },
 
-    [types.LOGOUT_USER] ({ commit }) {
+    [types.LOGOUT_USER]({ commit }) {
       commit(types.SET_USER, {
         payload: { id: null }
       })
     },
 
-    async [types.LOAD_ORGANIZATIONS] ({ commit }) {
+    async [types.LOAD_ORGANIZATIONS]({ commit }) {
       this.dispatch('LOADING')
       const organizations = await Organizations.fetchOrganizations(
         state.user.organization_id
@@ -245,7 +256,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_ORGANIZATION] ({ commit }, item) {
+    async [types.SAVE_ORGANIZATION]({ commit }, item) {
       this.dispatch('LOADING')
       const organization = await Organizations.saveOrganization(item)
       commit(types.SET_RESULTS, {
@@ -253,7 +264,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_ORGANIZATION] ({ commit }, item) {
+    async [types.DELETE_ORGANIZATION]({ commit }, item) {
       this.dispatch('LOADING')
       const organization = await Organizations.deleteOrganization(item.id)
       commit(types.SET_RESULTS, {
@@ -261,7 +272,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_DEPARTMENTS] ({ commit }) {
+    async [types.LOAD_DEPARTMENTS]({ commit }) {
       this.dispatch('LOADING')
       const departments = await Departments.fetchDepartments(
         state.user.organization_id
@@ -271,7 +282,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_DEPARTMENT] ({ commit }, item) {
+    async [types.SAVE_DEPARTMENT]({ commit }, item) {
       this.dispatch('LOADING')
       const department = await Departments.saveDepartment(item)
       commit(types.SET_RESULTS, {
@@ -279,7 +290,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_DEPARTMENT] ({ commit }, item) {
+    async [types.DELETE_DEPARTMENT]({ commit }, item) {
       this.dispatch('LOADING')
       const department = await Departments.deleteDepartment(item.id)
       commit(types.SET_RESULTS, {
@@ -287,7 +298,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_PROJECTS] ({ commit }) {
+    async [types.LOAD_PROJECTS]({ commit }) {
       this.dispatch('LOADING')
       const projects = await Projects.fetchProjects(state.user.organization_id)
       commit(types.SET_PROJECTS, {
@@ -295,7 +306,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_PROJECT] ({ commit }, item) {
+    async [types.SAVE_PROJECT]({ commit }, item) {
       this.dispatch('LOADING')
       const project = await Projects.saveProject(item)
       commit(types.SET_RESULTS, {
@@ -303,7 +314,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_PROJECT] ({ commit }, item) {
+    async [types.DELETE_PROJECT]({ commit }, item) {
       this.dispatch('LOADING')
       const project = await Projects.deleteProject(item.id)
       commit(types.SET_RESULTS, {
@@ -311,7 +322,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_UNITS] ({ commit }) {
+    async [types.LOAD_UNITS]({ commit }) {
       this.dispatch('LOADING')
       const units = await Units.fetchUnits()
       commit(types.SET_UNITS, {
@@ -319,7 +330,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_VENDORS] ({ commit }) {
+    async [types.LOAD_VENDORS]({ commit }) {
       this.dispatch('LOADING')
       const vendors = await Vendors.fetchVendors(state.user.organization_id)
       commit(types.SET_VENDORS, {
@@ -327,7 +338,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_LOCATIONS] ({ commit }) {
+    async [types.LOAD_LOCATIONS]({ commit }) {
       this.dispatch('LOADING')
       const locations = await Locations.fetchLocations(
         state.user.organization_id
@@ -337,7 +348,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_LOCATION] ({ commit }, item) {
+    async [types.SAVE_LOCATION]({ commit }, item) {
       this.dispatch('LOADING')
       const location = await Locations.saveLocation(item)
       commit(types.SET_RESULTS, {
@@ -346,7 +357,7 @@ export default new Vuex.Store({
     },
 
     // REQUISITIONS
-    async [types.LOAD_REQUISITIONS] ({ commit }) {
+    async [types.LOAD_REQUISITIONS]({ commit }) {
       this.dispatch('LOADING')
       const requisitions = await Requisitions.fetchRequisitions(
         state.user.organization_id
@@ -356,7 +367,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_REQUISITION_ITEMS] ({ commit }, item) {
+    async [types.LOAD_REQUISITION_ITEMS]({ commit }, item) {
       this.dispatch('LOADING')
       const requisitioItems = await RequisitionItems.fetchRequisitionItems(
         item
@@ -366,7 +377,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_REQUISITION] ({ commit }, item) {
+    async [types.SAVE_REQUISITION]({ commit }, item) {
       this.dispatch('LOADING')
       const requisition = await Requisitions.saveRequisition(item)
       commit(types.SET_RESULTS, {
@@ -382,7 +393,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_REQUISITION] ({ commit }, item) {
+    async [types.DELETE_REQUISITION]({ commit }, item) {
       this.dispatch('LOADING')
       const requisition = await Requisitions.deleteRequisition(item.id)
       commit(types.SET_RESULTS, {
@@ -390,7 +401,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_REQUISITION_ITEM] ({ commit }, item) {
+    async [types.SAVE_REQUISITION_ITEM]({ commit }, item) {
       this.dispatch('LOADING')
       const requisitionItem = await RequisitionItems.saveRequisitionItem(item)
       commit(types.SET_RESULTS, {
@@ -398,7 +409,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_REQUISITION_ITEM] ({ commit }, item) {
+    async [types.DELETE_REQUISITION_ITEM]({ commit }, item) {
       this.dispatch('LOADING')
       const requisitionItem = await RequisitionItems.deleteRequisitionItem(
         item.id
@@ -408,7 +419,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.IMPORT_REQUISITION] ({ commit }, item) {
+    async [types.IMPORT_REQUISITION]({ commit }, item) {
       this.dispatch('LOADING')
       const requisition = await Requisitions.fetchRequisition(
         item
@@ -420,7 +431,7 @@ export default new Vuex.Store({
 
     // PURCHASE ORDERS
 
-    async [types.LOAD_PURCHASE_ORDERS] ({ commit }) {
+    async [types.LOAD_PURCHASE_ORDERS]({ commit }) {
       this.dispatch('LOADING')
       const purchaseOrders = await PurchaseOrders.fetchPurchaseOrders(
         state.user.organization_id
@@ -430,7 +441,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_PURCHASE_ORDER_ITEMS] ({ commit }, item) {
+    async [types.LOAD_PURCHASE_ORDER_ITEMS]({ commit }, item) {
       this.dispatch('LOADING')
       const purchaseOrderItems = await PurchaseOrderItems.fetchPurchaseOrderItems(
         item
@@ -440,7 +451,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_PURCHASE_ORDER] ({ commit }, item) {
+    async [types.SAVE_PURCHASE_ORDER]({ commit }, item) {
       this.dispatch('LOADING')
       const purchaseOrder = await PurchaseOrders.savePurchaseOrder(item)
       commit(types.SET_RESULTS, {
@@ -456,7 +467,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_PURCHASE_ORDER] ({ commit }, item) {
+    async [types.DELETE_PURCHASE_ORDER]({ commit }, item) {
       this.dispatch('LOADING')
       const purchaseOrder = await PurchaseOrders.deletePurchaseOrder(item.id)
       commit(types.SET_RESULTS, {
@@ -464,7 +475,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_PURCHASE_ORDER_ITEM] ({ commit }, item) {
+    async [types.SAVE_PURCHASE_ORDER_ITEM]({ commit }, item) {
       this.dispatch('LOADING')
       const purchaseOrderItem = await PurchaseOrderItems.savePurchaseOrderItem(
         item
@@ -474,7 +485,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_PURCHASE_ORDER_ITEM] ({ commit }, item) {
+    async [types.DELETE_PURCHASE_ORDER_ITEM]({ commit }, item) {
       this.dispatch('LOADING')
       const purchaseOrderItem = await PurchaseOrderItems.deletePurchaseOrderItem(
         item.id
@@ -486,7 +497,7 @@ export default new Vuex.Store({
 
     // WORKFLOWS
 
-    async [types.LOAD_WORKFLOWS] ({ commit }) {
+    async [types.LOAD_WORKFLOWS]({ commit }) {
       this.dispatch('LOADING')
       const workflows = await Workflows.fetchWorkflows(
         state.user.organization_id
@@ -496,7 +507,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_WORKFLOW_USERS] ({ commit }, item) {
+    async [types.LOAD_WORKFLOW_USERS]({ commit }, item) {
       this.dispatch('LOADING')
       const workflowUsers = await WorkflowUsers.fetchWorkflowUsers(item)
       commit(types.SET_WORKFLOW_USERS, {
@@ -504,7 +515,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_USER_WORKFLOWS] ({ commit }, item) {
+    async [types.LOAD_USER_WORKFLOWS]({ commit }, item) {
       this.dispatch('LOADING')
       const workflowUsers = await WorkflowUsers.fetchWorkflowsByUser(item)
       commit(types.SET_USER_WORKFLOWS, {
@@ -512,7 +523,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_WORKFLOW] ({ commit }, item) {
+    async [types.SAVE_WORKFLOW]({ commit }, item) {
       this.dispatch('LOADING')
       const workflow = await Workflows.saveWorkflow(item)
       commit(types.SET_RESULTS, {
@@ -520,7 +531,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_WORKFLOW] ({ commit }, item) {
+    async [types.DELETE_WORKFLOW]({ commit }, item) {
       this.dispatch('LOADING')
       const workflow = await Workflows.deleteWorkflow(item.id)
       commit(types.SET_RESULTS, {
@@ -528,7 +539,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_WORKFLOW_USER] ({ commit }, item) {
+    async [types.SAVE_WORKFLOW_USER]({ commit }, item) {
       this.dispatch('LOADING')
       const workflowUser = await WorkflowUsers.saveWorkflowUser(item)
       commit(types.SET_RESULTS, {
@@ -536,7 +547,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_WORKFLOW_USER] ({ commit }, payload) {
+    async [types.DELETE_WORKFLOW_USER]({ commit }, payload) {
       this.dispatch('LOADING')
       const workflowUser = await WorkflowUsers.deleteWorkflowUser(payload)
       commit(types.SET_RESULTS, {
@@ -544,7 +555,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_VENDOR] ({ commit }, item) {
+    async [types.SAVE_VENDOR]({ commit }, item) {
       this.dispatch('LOADING')
       const vendor = await Vendors.saveVendor(item)
       commit(types.SET_RESULTS, {
@@ -552,7 +563,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_LOCATION] ({ commit }, item) {
+    async [types.DELETE_LOCATION]({ commit }, item) {
       this.dispatch('LOADING')
       const location = await Locations.deleteLocation(item.id)
       commit(types.SET_RESULTS, {
@@ -560,7 +571,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_UNIT] ({ commit }, item) {
+    async [types.SAVE_UNIT]({ commit }, item) {
       this.dispatch('LOADING')
       const unit = await Units.saveUnit(item)
       commit(types.SET_RESULTS, {
@@ -568,7 +579,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_UNIT] ({ commit }, item) {
+    async [types.DELETE_UNIT]({ commit }, item) {
       this.dispatch('LOADING')
       const unit = await Units.deleteUnit(item.id)
       commit(types.SET_RESULTS, {
@@ -576,7 +587,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.DELETE_VENDOR] ({ commit }, item) {
+    async [types.DELETE_VENDOR]({ commit }, item) {
       this.dispatch('LOADING')
       const vendor = await Vendors.deleteVendor(item.id)
       commit(types.SET_RESULTS, {
@@ -584,7 +595,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.SAVE_DOCUMENT_STATUS] ({ commit }, item) {
+    async [types.SAVE_DOCUMENT_STATUS]({ commit }, item) {
       this.dispatch('LOADING')
       await DocumentStatus.setDocumentStatus(item)
       const documentStatusList = await DocumentStatus.fetchDocumentStatus(item)
@@ -597,7 +608,7 @@ export default new Vuex.Store({
       })
     },
 
-    async [types.LOAD_DOCUMENT_STATUS] ({ commit }, item) {
+    async [types.LOAD_DOCUMENT_STATUS]({ commit }, item) {
       this.dispatch('LOADING')
       const documentStatus = await DocumentStatus.fetchDocumentStatus(item)
       commit(types.SET_DOCUMENT_STATUS, {
@@ -924,15 +935,25 @@ export default new Vuex.Store({
 
     [types.SET_DOCUMENT_STATUS]: (state, { payload }) => {
       payload.map(item => {
-        item.document_status_name = constants.documentStatusNames.filter(
-          name => item.document_status === name.key
+        const status = constants.documentStatusNames.find(
+          status => item.document_status === status.key
         )
+        item.document_status_name = status.text
+        // item._rowVariant = status.bgColor
+        item._cellVariants = {
+          'document_status_name': status.bgColor
+        }
       })
       state.documentStatus = payload
     },
 
     [types.SET_REQUISITION]: (state, { payload }) => {
       state.requisition = payload
+    },
+
+    [types.SET_DOCUMENT]: (state, { payload }) => {
+      state.document = payload
     }
+
   }
 })

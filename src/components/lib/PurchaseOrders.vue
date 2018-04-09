@@ -2,34 +2,38 @@
 <template>
   <b-container>
     <h4>Purchase Orders</h4>
-    <Table v-bind:table-items="items" form-name="PurchaseOrder" />
+    <Table v-bind:table-items="purchaseOrders" form-name="purchase_order_approval" />
   </b-container>
 </template>
 
 <script>
 import Table from './Table'
-import Store from './../../store/store'
+import Store from '../../store/store'
+const utils = require('./utils')
 
 export default {
   name: 'PurchaseOrders',
   data() {
-    return {
-      items: {}
-    }
+    return {}
   },
   components: {
     Table
   },
   watch: {
     purchaseOrders() {
-      if (this.purchaseOrders) {
-        this.items = this.purchaseOrders
-      }
+      return Store.state.purchaseOrders.rows.map(item => {
+        return (item.total_amount = this.formatAmount(item.total_amount))
+      })
     }
   },
   computed: {
     purchaseOrders() {
       return Store.state.purchaseOrders
+    }
+  },
+  methods: {
+    formatAmount(amount) {
+      return utils.formatAmount(amount)
     }
   }
 }

@@ -42,6 +42,10 @@
               <b-form-textarea id="payment_terms" v-model="form.payment_terms" rows="2" :disabled="!this.isEditable"></b-form-textarea>
             </b-form-group>
 
+            <b-form-group horizontal label="Total order" label-for="total_amount">
+              <b-form-input id="total_amount" v-model="form.total_amount" rows="2" readonly></b-form-input>
+            </b-form-group>
+
             <RequestButtons/>
 
           </b-form>
@@ -158,6 +162,7 @@ import DocumentStatus from './lib/DocumentStatus'
 import { setTimeout } from 'timers'
 const fields = require('./lib/Fields').purchaseOrderItems
 const actions = require('./lib/Fields').actions
+const utils = require('./lib/utils')
 
 export default {
   name: 'PurchaseOrder',
@@ -181,7 +186,8 @@ export default {
         payment_terms: '',
         location_id: 0,
         organization_id: 0,
-        requisition_id: 0
+        requisition_id: 0,
+        total_amount: 0
       },
       itemForm: {
         id: 0,
@@ -295,12 +301,8 @@ export default {
           description: items[i].description,
           quantity: items[i].quantity,
           id: items[i].id,
-          unit_price: items[i].unit_price.toLocaleString('en-US', {
-            minimumFractionDigits: 2
-          }),
-          total_amount: items[i].total_amount.toLocaleString('en-US', {
-            minimumFractionDigits: 2
-          }),
+          unit_price: this.formatAmount(items[i].unit_price),
+          total_amount: this.formatAmount(items[i].total_amount),
           purchase_order_id: items[i].purchase_order_id
         }
         arr.push(row)
@@ -390,6 +392,9 @@ export default {
     }
   },
   methods: {
+    formatAmount(amount) {
+      return utils.formatAmount(amount)
+    },
     importRequisition() {
       this.showImportMessage = false
       Store.dispatch('IMPORT_REQUISITION', this.form.requisition_id)
@@ -549,6 +554,7 @@ export default {
       this.form.expected_delivery = this.item._expected_delivery
       this.form.instructions = this.item.instructions
       this.form.payment_terms = this.item.payment_terms
+      this.form.total_amount = this.formatAmount(this.item.total_amount)
       Store.dispatch('LOAD_USER_WORKFLOWS', this.isLogged)
       const payload = {
         document_type: 2,

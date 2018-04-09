@@ -10,7 +10,7 @@
       </b-input-group>
     </b-form-group>
 
-    <b-table small hover outlined :items="organizations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" :show-empty="true" head-variant="light">
+    <b-table small hover striped outlined :items="organizations.rows" :fields="fields" :filter="filter" :per-page="perPage" :current-page="currentPage" :show-empty="true" head-variant="light">
       <template slot="actions" slot-scope="cell" v-if="cell.item.id !== 1">
         <b-btn size="sm" variant="info" @click.stop="editItem(cell.item)">Modify</b-btn>
         <b-btn size="sm" v-if="cell.item.status_id === 1" variant="danger" @click.stop="deleteItem(cell.item, 1)">Inactivate</b-btn>

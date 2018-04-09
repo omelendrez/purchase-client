@@ -1,6 +1,6 @@
 <template>
   <div class="buttons">
-    <b-button type="submit" variant="info">Save</b-button>
+    <b-button type="submit" variant="info" class="save-button">Save</b-button>
     <b-button type="reset" class="to-right" variant="danger">Close</b-button>
   </div>
 </template>
