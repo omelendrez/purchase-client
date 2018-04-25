@@ -21,6 +21,10 @@
       </template>
     </b-table>
 
+    <b-form-group label="Per page" label-for="perPage" class="per-page">
+      <b-form-select v-model="perPage" :options="perPageOptions" />
+    </b-form-group>
+
     <b-pagination :total-rows="units.count" :per-page="perPage" v-model="currentPage" variant="info" />
 
     <b-modal id="modal-center" title="Inactivate" v-model="deleteShow" @ok="handleOk" ok-title="Yes. Inactivate" cancel-title="No. Leave it Active" ok-variant="danger" cancel-variant="success">
@@ -43,6 +47,7 @@ export default {
   data() {
     return {
       perPage: 10,
+      perPageOptions: [5, 10, 15, 20, 25],
       currentPage: 1,
       filter: null,
       deleteShow: false,
@@ -125,5 +130,8 @@ export default {
 }
 .reset-button {
   margin-left: 10px;
+}
+.per-page {
+  float: right;
 }
 </style>
