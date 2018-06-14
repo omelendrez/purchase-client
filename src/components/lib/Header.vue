@@ -23,6 +23,13 @@
               Reports</b-nav-item>
           </b-navbar-nav>
 
+          <div class="bell" v-if="alertActive">
+            <span class="fa-layers fa-fw fa-2x">
+              <i class="fas fa-bell"></i>
+              <span class="fa-layers-counter fa-lg" style="background:Tomato">2</span>
+            </span>
+          </div>
+
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto" v-if="isLogged">
             <b-nav-item-dropdown right>
@@ -32,10 +39,10 @@
                 {{userFullName}}
               </template>
               <b-dropdown-item href="#/login">
-                <i class="fas fa-sign-out-alt"></i> Close session</b-dropdown-item>
+                <i class="fas fa-sign-out-alt text-danger"></i> Close session</b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
               <b-dropdown-item href="#/change_password">
-                <i class="fas fa-unlock-alt"></i> Change password</b-dropdown-item>
+                <i class="fas fa-unlock-alt text-danger"></i> Change password</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
 
@@ -55,41 +62,41 @@
 
             <!-- admin -->
             <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('Organizations')" href="#/organizations">
-              <i class="fas fa-building"></i> Companies</b-nav-item>
+              <i class="fas fa-building text-danger"></i> Companies</b-nav-item>
             <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('Users')" href="#/users">
-              <i class="fas fa-user"></i> Users</b-nav-item>
-            <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('Workflows')" href="#/workflows">
-              <i class="fas fa-thumbs-up"></i> Workflows</b-nav-item>
+              <i class="fas fa-user text-danger"></i> Users</b-nav-item>
             <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('Permissions')" href="#/permissions">
-              <i class="fas fa-key"></i> Permissions</b-nav-item>
+              <i class="fas fa-key text-danger"></i> Permissions</b-nav-item>
+            <b-nav-item class="mx-4" v-if="canAccessOption('admin', 'ADM')" v-bind:active="optionIsSelected('Workflows')" href="#/workflows">
+              <i class="fas fa-thumbs-up text-danger"></i> Workflows</b-nav-item>
 
             <!-- master -->
             <b-nav-item class="mx-4" v-if="canAccessOption('master','ADM')" v-bind:active="optionIsSelected('Departments')" href="#/departments">
-              <i class="fas fa-users"></i> Departments</b-nav-item>
+              <i class="fas fa-users text-danger"></i> Departments</b-nav-item>
             <b-nav-item class="mx-4" v-if="canAccessOption('master','ADM')" v-bind:active="optionIsSelected('Locations')" href="#/locations">
-              <i class="fas fa-location-arrow"></i> Locations</b-nav-item>
+              <i class="fas fa-location-arrow text-danger"></i> Locations</b-nav-item>
             <b-nav-item class="mx-4" v-if="canAccessOption('master','ADM')" v-bind:active="optionIsSelected('Projects')" href="#/projects">
-              <i class="fas fa-industry"></i> Projects</b-nav-item>
+              <i class="fas fa-industry text-danger"></i> Projects</b-nav-item>
             <b-nav-item class="mx-4" v-if="canAccessOption('master','ADM')" v-bind:active="optionIsSelected('Vendors')" href="#/vendors">
-              <i class="fas fa-handshake"></i> Vendors</b-nav-item>
+              <i class="fas fa-handshake text-danger"></i> Vendors</b-nav-item>
             <b-nav-item class="mx-4" v-if="canAccessOption('master','ADM')" v-bind:active="optionIsSelected('Units')" href="#/units">
-              <i class="fas fa-boxes"></i> Units of measure</b-nav-item>
+              <i class="fas fa-boxes text-danger"></i> Units of measure</b-nav-item>
 
             <!-- activities -->
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PRI-PRA')" v-bind:active="optionIsSelected('Requisitions')" href="#/requisitions">
-              <i class="fas fa-shopping-cart"></i> Purchase Requisitions</b-nav-item>
+              <i class="fas fa-shopping-cart text-danger"></i> Purchase Requisitions</b-nav-item>
 
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-POI-POA')" v-bind:active="optionIsSelected('PurchaseOrders')" href="#/purchase_orders">
-              <i class="fas fa-shopping-cart"></i> Purchase Orders</b-nav-item>
+              <i class="fas fa-shopping-cart text-danger"></i> Purchase Orders</b-nav-item>
 
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PRI-PRA-POI-POA')" v-bind:active="optionIsSelected('Approvals')" href="#/approvals">
-              <i class="fas fa-thumbs-up"></i> Approvals</b-nav-item>
+              <i class="fas fa-thumbs-up text-danger"></i> Approvals</b-nav-item>
 
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-RRI')" :disabled="true" v-bind:active="optionIsSelected('ReceivingReports')" href="#/receive_reports">
-              <i class="fas fa-clipboard-check"></i> Receiving Reports</b-nav-item>
+              <i class="fas fa-clipboard-check text-danger"></i> Receiving Reports</b-nav-item>
 
             <b-nav-item class="mx-4" v-if="canAccessOption('activities','ADM-PFRI')" :disabled="true" v-bind:active="optionIsSelected('PaymentRequests')" href="#/payment_requests">
-              <i class="far fa-money-bill-alt"></i> Payment Requests</b-nav-item>
+              <i class="far fa-money-bill-alt text-danger"></i> Payment Requests</b-nav-item>
           </b-navbar-nav>
         </template>
 
@@ -100,6 +107,7 @@
     <div v-if="isLoading" class="fa-3x loading-spinner">
       <i class="fas fa-circle-notch fa-spin"></i>
     </div>
+
   </div>
 
 </template>
@@ -109,7 +117,9 @@ import Store from '../../store/store'
 export default {
   name: 'Header',
   data() {
-    return {}
+    return {
+      alertActive: false
+    }
   },
   computed: {
     isLoading() {
@@ -185,5 +195,12 @@ export default {
 #nav_collapse_sub a.active {
   background-color: #90a4ae;
   border-radius: 3px;
+}
+.bell {
+  margin: 0 auto;
+  cursor: pointer;
+}
+.bell .fa-bell {
+  color: rgb(1, 255, 1);
 }
 </style>

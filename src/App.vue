@@ -18,7 +18,8 @@ export default {
 
 <style>
 html {
-  font-size: small;
+  font-size: 14px;
+  line-height: 18px;
 }
 body {
   background-color: rgb(240, 240, 240) !important;
@@ -33,7 +34,7 @@ body {
   background-color: #f5f3ee;
 }
 table {
-  font-size: smaller;
+  font-size: small;
 }
 table.b-table.b-table-stacked > tbody > tr > [data-label] {
   grid-template-columns: 10% auto !important;

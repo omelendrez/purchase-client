@@ -123,7 +123,6 @@ export default {
     },
     onReset(evt) {
       evt.preventDefault()
-      /* Trick to reset/clear native browser form validation state */
       this.show = false
       this.form.password_current = ''
       this.form.password_new = ''
@@ -143,7 +142,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .budget {
   background-color: white;

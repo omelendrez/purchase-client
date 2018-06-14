@@ -78,7 +78,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import Store from '../store/store'
 import ApprovalButtons from './lib/ApprovalButtons'
 import Add from './lib/Add'

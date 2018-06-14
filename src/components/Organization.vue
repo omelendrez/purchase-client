@@ -72,7 +72,6 @@ export default {
     },
     onReset(evt) {
       evt.preventDefault()
-      /* Trick to reset/clear native browser form validation state */
       this.show = false
       this.$nextTick(() => {
         this.$router.push({ name: 'Organizations' })
